@@ -149,6 +149,25 @@ export async function mockRegister(name: string, email: string, _password: strin
   return { user, token: 'mock_token_' + Date.now() }
 }
 
+// ===== 演示模式登录 =====
+export function mockDemoLogin(): { user: UserProfile; token: string } {
+  const user: UserProfile = {
+    id: 'demo_user_' + Date.now(),
+    name: 'OOTD探索者',
+    email: 'demo@ootd.app',
+    avatar: '',
+    city: '北京市',
+    zodiac: '双子座',
+    style: [],
+    isPro: false,
+    credits: 10,
+    dailyGenerateCount: 0,
+    lastGenerateDate: '',
+    createdAt: new Date().toISOString(),
+  }
+  return { user, token: 'demo_token_' + Date.now() }
+}
+
 // ===== Mock衣橱数据 =====
 function getMockClothingItems(): ClothingItem[] {
   return [
