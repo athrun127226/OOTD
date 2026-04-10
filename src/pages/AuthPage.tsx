@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store'
-import { signInWithGoogle, handleRedirectResult, isFirebaseConfigured } from '@/services/firebaseAuth'
+import { signInWithGoogle, isFirebaseConfigured } from '@/services/firebaseAuth'
 import { mockDemoLogin } from '@/services/mockApi'
 
 export default function AuthPage() {
@@ -9,35 +9,6 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const login = useAuthStore((s) => s.login)
   const firebaseReady = isFirebaseConfigured()
-
-  // 处理重定向登录结果（页面加载时）
-  useEffect(() => {
-    const processRedirect = async () => {
-      try {
-        const result = await handleRedirectResult()
-        if (result) {
-          const { user, token } = result
-          login(
-            {
-              id: user.uid,
-              name: user.displayName || 'OOTD用户',
-              email: user.email || '',
-              avatar: user.photoURL || '',
-              city: '北京市',
-              zodiac: '双子座',
-              style: [],
-              isPro: false,
-            },
-            token
-          )
-        }
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : '登录失败，请重试'
-        setError(msg)
-      }
-    }
-    processRedirect()
-  }, [login])
 
   const handleGoogleLogin = async () => {
     setError('')
