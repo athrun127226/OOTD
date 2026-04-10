@@ -1,5 +1,12 @@
 /// <reference types="vite/client" />
 
+// 扩展 ImportMeta 接口
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<object, object, unknown>
+  export default component
+}
+
 interface ImportMetaEnv {
   readonly VITE_FIREBASE_API_KEY: string
   readonly VITE_FIREBASE_AUTH_DOMAIN: string
@@ -9,6 +16,11 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_APP_ID: string
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv
+// 使用类型合并而不是覆盖
+declare global {
+  interface ImportMeta {
+    readonly env: ImportMetaEnv
+  }
 }
+
+export {}
