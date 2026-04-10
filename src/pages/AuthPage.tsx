@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store'
-import { signInWithGoogle, handleRedirectResult, isFirebaseConfigured, logout as firebaseLogout } from '@/services/firebaseAuth'
+import { signInWithGoogle, handleRedirectResult, isFirebaseConfigured } from '@/services/firebaseAuth'
 import { mockDemoLogin } from '@/services/mockApi'
 
 export default function AuthPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const login = useAuthStore((s) => s.login)
-  const logout = useAuthStore((s) => s.logout)
   const firebaseReady = isFirebaseConfigured()
 
   // 处理重定向登录结果（页面加载时）
@@ -57,11 +56,6 @@ export default function AuthPage() {
   const handleDemoLogin = () => {
     const { user, token } = mockDemoLogin()
     login(user, token)
-  }
-
-  const handleLogout = () => {
-    firebaseLogout()
-    logout()
   }
 
   return (

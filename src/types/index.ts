@@ -68,12 +68,13 @@ export interface UserProfile {
   avatar?: string
   city: string
   zodiac: ZodiacSign
-  email: string
+  email?: string
   isPro: boolean
-  credits: number
-  dailyGenerateCount: number
-  lastGenerateDate: string
-  createdAt: string
+  style: string[]
+  credits?: number
+  dailyGenerateCount?: number
+  lastGenerateDate?: string
+  createdAt?: string
 }
 
 export type ZodiacSign = 
