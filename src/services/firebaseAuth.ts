@@ -19,6 +19,12 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
 }
 
+console.log('[Firebase] 配置检查:', {
+  hasApiKey: !!firebaseConfig.apiKey,
+  authDomain: firebaseConfig.authDomain,
+  projectId: firebaseConfig.projectId,
+})
+
 // 初始化 Firebase（如果已配置）
 let app: ReturnType<typeof initializeApp> | null = null
 let auth: ReturnType<typeof getAuth> | null = null
@@ -27,9 +33,12 @@ try {
   if (firebaseConfig.apiKey) {
     app = initializeApp(firebaseConfig)
     auth = getAuth(app)
+    console.log('[Firebase] 初始化成功')
+  } else {
+    console.warn('[Firebase] 未配置 API Key')
   }
 } catch (error) {
-  console.warn('Firebase 未配置，将使用演示模式')
+  console.error('[Firebase] 初始化失败:', error)
 }
 
 const googleProvider = new GoogleAuthProvider()
@@ -42,17 +51,26 @@ export async function signInWithGoogle(): Promise<void> {
     throw new Error('Firebase 未配置，请先在 Firebase Console 中设置项目配置')
   }
 
+  console.log('[Firebase] 开始重定向登录...')
   // 使用重定向方式登录，不会被浏览器拦截
   await signInWithRedirect(auth, googleProvider)
 }
 
 /** 处理重定向登录结果（在页面加载时调用） */
 export async function handleRedirectResult(): Promise<{ user: User; token: string } | null> {
-  if (!auth) return null
+  if (!auth) {
+    console.log('[Firebase] auth 未初始化，跳过重定向结果处理')
+    return null
+  }
 
+  console.log('[Firebase] 检查重定向结果...')
   const result = await getRedirectResult(auth)
-  if (!result) return null
+  if (!result) {
+    console.log('[Firebase] 没有重定向结果')
+    return null
+  }
 
+  console.log('[Firebase] 重定向登录成功:', result.user.email)
   const credential = GoogleAuthProvider.credentialFromResult(result)
   const token = credential?.idToken || ''
 
@@ -68,9 +86,13 @@ export async function logout(): Promise<void> {
 /** 监听认证状态变化 */
 export function onAuthChange(callback: (user: User | null) => void): () => void {
   if (!auth) {
-    // 演示模式：无 Firebase，返回空函数
+    console.warn('[Firebase] auth 未初始化，返回空监听函数')
+    // 立即调用回调，表示未登录
+    setTimeout(() => callback(null), 0)
     return () => {}
   }
+  
+  console.log('[Firebase] 设置认证状态监听')
   return onAuthStateChanged(auth, callback)
 }
 

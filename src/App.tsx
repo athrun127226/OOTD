@@ -15,8 +15,12 @@ function AppContent() {
 
   // 初始化 Firebase 认证状态
   useEffect(() => {
+    console.log('[App] 初始化认证监听...')
+    
     // 监听 Firebase 认证状态变化
     const unsubscribe = onAuthChange((user) => {
+      console.log('[App] 认证状态变化:', user ? `用户 ${user.email}` : '未登录')
+      
       if (user) {
         login(
           {
@@ -35,8 +39,13 @@ function AppContent() {
       setInitialized(true)
     })
 
-    return () => unsubscribe()
+    return () => {
+      console.log('[App] 清理认证监听')
+      unsubscribe()
+    }
   }, [login])
+
+  console.log('[App] 渲染状态:', { initialized, isAuthenticated })
 
   // 等待初始化完成
   if (!initialized) {
