@@ -14,12 +14,30 @@ export default function AuthPage() {
     setError('')
     setLoading(true)
     try {
-      // 使用重定向方式登录，页面会跳转
-      await signInWithGoogle()
-      // 注意：这里不会执行，因为页面会跳转
+      const result = await signInWithGoogle()
+      if (result) {
+        const { user, token } = result
+        login(
+          {
+            id: user.uid,
+            name: user.displayName || 'OOTD用户',
+            email: user.email || '',
+            avatar: user.photoURL || '',
+            city: '北京市',
+            zodiac: '双子座',
+            style: [],
+            isPro: false,
+          },
+          token
+        )
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '登录失败，请重试'
-      setError(msg)
+      // 用户取消弹窗不算错误
+      if (!msg.includes('popup-closed-by-user') && !msg.includes('cancelled')) {
+        setError(msg)
+      }
+    } finally {
       setLoading(false)
     }
   }

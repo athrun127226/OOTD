@@ -1,8 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import {
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   signOut,
   onAuthStateChanged,
   User,
@@ -45,32 +44,16 @@ const googleProvider = new GoogleAuthProvider()
 googleProvider.addScope('profile')
 googleProvider.addScope('email')
 
-/** Google 登录（使用重定向方式，避免弹窗被拦截） */
-export async function signInWithGoogle(): Promise<void> {
+/** Google 登录（使用弹窗方式） */
+export async function signInWithGoogle(): Promise<{ user: User; token: string }> {
   if (!auth) {
     throw new Error('Firebase 未配置，请先在 Firebase Console 中设置项目配置')
   }
 
-  console.log('[Firebase] 开始重定向登录...')
-  // 使用重定向方式登录，不会被浏览器拦截
-  await signInWithRedirect(auth, googleProvider)
-}
-
-/** 处理重定向登录结果（在页面加载时调用） */
-export async function handleRedirectResult(): Promise<{ user: User; token: string } | null> {
-  if (!auth) {
-    console.log('[Firebase] auth 未初始化，跳过重定向结果处理')
-    return null
-  }
-
-  console.log('[Firebase] 检查重定向结果...')
-  const result = await getRedirectResult(auth)
-  if (!result) {
-    console.log('[Firebase] 没有重定向结果')
-    return null
-  }
-
-  console.log('[Firebase] 重定向登录成功:', result.user.email)
+  console.log('[Firebase] 开始弹窗登录...')
+  const result = await signInWithPopup(auth, googleProvider)
+  console.log('[Firebase] 弹窗登录成功:', result.user.email)
+  
   const credential = GoogleAuthProvider.credentialFromResult(result)
   const token = credential?.idToken || ''
 
