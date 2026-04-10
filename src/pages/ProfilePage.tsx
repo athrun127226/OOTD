@@ -89,7 +89,7 @@ export default function ProfilePage() {
                   <span className="text-muted-foreground">注册时间</span>
                 </div>
                 <span className="text-sm font-medium">
-                  {new Date(user.createdAt).toLocaleDateString('zh-CN')}
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString('zh-CN') : '未知'}
                 </span>
               </div>
               <Button
