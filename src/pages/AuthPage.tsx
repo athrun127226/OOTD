@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store'
-import { signInWithGoogle, isFirebaseConfigured, logout as firebaseLogout } from '@/services/firebaseAuth'
+import { signInWithGoogle, handleRedirectResult, isFirebaseConfigured, logout as firebaseLogout } from '@/services/firebaseAuth'
 import { mockDemoLogin } from '@/services/mockApi'
 
 export default function AuthPage() {
@@ -11,34 +11,45 @@ export default function AuthPage() {
   const logout = useAuthStore((s) => s.logout)
   const firebaseReady = isFirebaseConfigured()
 
+  // 处理重定向登录结果（页面加载时）
+  useEffect(() => {
+    const processRedirect = async () => {
+      try {
+        const result = await handleRedirectResult()
+        if (result) {
+          const { user, token } = result
+          login(
+            {
+              id: user.uid,
+              name: user.displayName || 'OOTD用户',
+              email: user.email || '',
+              avatar: user.photoURL || '',
+              city: '北京市',
+              zodiac: '双子座',
+              style: [],
+              isPro: false,
+            },
+            token
+          )
+        }
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : '登录失败，请重试'
+        setError(msg)
+      }
+    }
+    processRedirect()
+  }, [login])
+
   const handleGoogleLogin = async () => {
     setError('')
     setLoading(true)
     try {
-      const result = await signInWithGoogle()
-      if (result) {
-        const { user, token } = result
-        login(
-          {
-            id: user.uid,
-            name: user.displayName || 'OOTD用户',
-            email: user.email || '',
-            avatar: user.photoURL || '',
-            city: '北京市',
-            zodiac: '双子座',
-            style: [],
-            isPro: false,
-          },
-          token
-        )
-      }
+      // 使用重定向方式登录，页面会跳转
+      await signInWithGoogle()
+      // 注意：这里不会执行，因为页面会跳转
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '登录失败，请重试'
-      // 用户取消弹窗不算错误
-      if (!msg.includes('popup-closed-by-user') && !msg.includes('cancelled')) {
-        setError(msg)
-      }
-    } finally {
+      setError(msg)
       setLoading(false)
     }
   }

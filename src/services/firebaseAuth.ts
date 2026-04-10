@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import {
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   User,
@@ -35,13 +36,23 @@ const googleProvider = new GoogleAuthProvider()
 googleProvider.addScope('profile')
 googleProvider.addScope('email')
 
-/** Google 登录 */
-export async function signInWithGoogle(): Promise<{ user: User; token: string } | null> {
+/** Google 登录（使用重定向方式，避免弹窗被拦截） */
+export async function signInWithGoogle(): Promise<void> {
   if (!auth) {
     throw new Error('Firebase 未配置，请先在 Firebase Console 中设置项目配置')
   }
 
-  const result = await signInWithPopup(auth, googleProvider)
+  // 使用重定向方式登录，不会被浏览器拦截
+  await signInWithRedirect(auth, googleProvider)
+}
+
+/** 处理重定向登录结果（在页面加载时调用） */
+export async function handleRedirectResult(): Promise<{ user: User; token: string } | null> {
+  if (!auth) return null
+
+  const result = await getRedirectResult(auth)
+  if (!result) return null
+
   const credential = GoogleAuthProvider.credentialFromResult(result)
   const token = credential?.idToken || ''
 
