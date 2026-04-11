@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button'
 import type { ClothingCategory, ClothingItem } from '@/types'
 import { getDefaultWardrobeItems } from '@/services/mockApi'
 
-// 分类（只用中文作为数据）
-const CATEGORIES: ClothingCategory[] = ['上衣', '下装', '外套', '连衣裙', '鞋子', '配饰']
+// 分类（内部使用中文，显示时翻译）
+const CATEGORIES_ZH: ClothingCategory[] = ['上衣', '下装', '外套', '连衣裙', '鞋子', '配饰']
 
 const categoryEmojis: Record<ClothingCategory, string> = {
   '上衣': '👕',
@@ -15,6 +15,22 @@ const categoryEmojis: Record<ClothingCategory, string> = {
   '连衣裙': '👗',
   '鞋子': '👟',
   '配饰': '💍',
+}
+
+// 分类翻译映射
+const categoryTranslations: Record<ClothingCategory, { zh: string; en: string }> = {
+  '上衣': { zh: '上衣', en: 'Tops' },
+  '下装': { zh: '下装', en: 'Bottoms' },
+  '外套': { zh: '外套', en: 'Outerwear' },
+  '连衣裙': { zh: '连衣裙', en: 'Dresses' },
+  '鞋子': { zh: '鞋子', en: 'Shoes' },
+  '配饰': { zh: '配饰', en: 'Accessories' },
+}
+
+// 英文转中文
+const enToZhCategory: Record<string, ClothingCategory> = {
+  'Tops': '上衣', 'Bottoms': '下装', 'Outerwear': '外套',
+  'Dresses': '连衣裙', 'Shoes': '鞋子', 'Accessories': '配饰'
 }
 
 function ClothingCard({
@@ -60,7 +76,7 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
   const fileRef = useRef<HTMLInputElement>(null)
 
   const isEn = i18n.language === 'en'
-  const categories = CATEGORIES
+  const categories = CATEGORIES_ZH
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -74,24 +90,14 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
     if (!name.trim() || !color.trim()) return
     
     // 统一存储为中文分类（内部使用）
-    let internalCategory = category
-    if (isEn) {
-      // 英文转中文
-      const enToZh: Record<string, ClothingCategory> = {
-        'Tops': '上衣', 'Bottoms': '下装', 'Outerwear': '外套',
-        'Dresses': '连衣裙', 'Shoes': '鞋子', 'Accessories': '配饰'
-      }
-      internalCategory = enToZh[category] || category
-    }
-    
     const newItem: ClothingItem = {
       id: 'item_' + Date.now(),
       name,
-      category: internalCategory,
+      category: category, // 已经是中文分类
       color,
       style: isEn ? 'Basic' : '百搭',
       imageUrl: previewUrl || `https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&h=300&fit=crop`,
-      tags: [color, internalCategory],
+      tags: [color, category],
       createdAt: new Date().toISOString(),
     }
     onUpload(newItem)
@@ -149,7 +155,7 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
                 onChange={(e) => setCategory(e.target.value as ClothingCategory)}
               >
                 {categories.map((c) => (
-                  <option key={c} value={c}>{categoryEmojis[c]} {c}</option>
+                  <option key={c} value={c}>{categoryEmojis[c]} {isEn ? categoryTranslations[c].en : categoryTranslations[c].zh}</option>
                 ))}
               </select>
             </div>
@@ -185,17 +191,14 @@ export default function WardrobePage() {
   const [showGuide, setShowGuide] = useState(items.length === 0)
 
   const isEn = i18n.language === 'en'
-  const categories = CATEGORIES
+  const categories = CATEGORIES_ZH
+  
+  // 获取分类的显示名称
+  const getCategoryLabel = (cat: ClothingCategory) => {
+    return isEn ? categoryTranslations[cat].en : categoryTranslations[cat].zh
+  }
 
   const filtered = activeCategory === 'all' ? items : items.filter((i) => {
-    // 根据分类过滤
-    if (isEn) {
-      const zhToEn: Record<string, string> = {
-        '上衣': 'Tops', '下装': 'Bottoms', '外套': 'Outerwear',
-        '连衣裙': 'Dresses', '鞋子': 'Shoes', '配饰': 'Accessories'
-      }
-      return zhToEn[i.category] === activeCategory || i.category === activeCategory
-    }
     return i.category === activeCategory
   })
 
@@ -238,13 +241,7 @@ export default function WardrobePage() {
             {isEn ? 'All' : '全部'} ({items.length})
           </button>
           {categories.map((cat) => {
-            const count = items.filter((i) => {
-              const zhToEn: Record<string, string> = {
-                '上衣': 'Tops', '下装': 'Bottoms', '外套': 'Outerwear',
-                '连衣裙': 'Dresses', '鞋子': 'Shoes', '配饰': 'Accessories'
-              }
-              return zhToEn[i.category] === cat || i.category === cat
-            }).length
+            const count = items.filter((i) => i.category === cat).length
             return (
               <button
                 key={cat}
@@ -255,7 +252,7 @@ export default function WardrobePage() {
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
-                {categoryEmojis[cat]} {cat} {count > 0 && `(${count})`}
+                {categoryEmojis[cat]} {getCategoryLabel(cat)} {count > 0 && `(${count})`}
               </button>
             )
           })}

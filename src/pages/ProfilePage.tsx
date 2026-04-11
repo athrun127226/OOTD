@@ -6,13 +6,28 @@ import PaymentModal from '@/components/PaymentModal'
 import { changeLanguage, getCurrentLanguage } from '@/i18n'
 import type { ZodiacSign } from '@/types'
 
-const ZODIACS: ZodiacSign[] = [
+// 星座（内部使用中文）
+const ZODIACS_ZH: ZodiacSign[] = [
   '白羊座', '金牛座', '双子座', '巨蟹座',
   '狮子座', '处女座', '天秤座', '天蝎座',
   '射手座', '摩羯座', '水瓶座', '双鱼座',
 ]
 
-const CITIES = ['北京', '上海', '广州', '深圳', '成都', '杭州', '武汉', '西安', '重庆', '南京']
+// 星座翻译
+const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
+  '白羊座': { zh: '白羊座', en: 'Aries' },
+  '金牛座': { zh: '金牛座', en: 'Taurus' },
+  '双子座': { zh: '双子座', en: 'Gemini' },
+  '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
+  '狮子座': { zh: '狮子座', en: 'Leo' },
+  '处女座': { zh: '处女座', en: 'Virgo' },
+  '天秤座': { zh: '天秤座', en: 'Libra' },
+  '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
+  '射手座': { zh: '射手座', en: 'Sagittarius' },
+  '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
+  '水瓶座': { zh: '水瓶座', en: 'Aquarius' },
+  '双鱼座': { zh: '双鱼座', en: 'Pisces' },
+}
 
 const zodiacEmojis: Record<ZodiacSign, string> = {
   '白羊座': '♈', '金牛座': '♉', '双子座': '♊', '巨蟹座': '♋',
@@ -93,7 +108,7 @@ export default function ProfilePage() {
                   <span className="text-muted-foreground">{t('profile.zodiac')}</span>
                 </div>
                 <span className="text-sm font-medium">
-                  {zodiacEmojis[user.zodiac]} {user.zodiac}
+                  {zodiacEmojis[user.zodiac]} {isEn ? zodiacTranslations[user.zodiac].en : user.zodiac}
                 </span>
               </div>
               <div className="flex items-center justify-between py-3">
@@ -125,18 +140,17 @@ export default function ProfilePage() {
               </div>
               <div>
                 <label className="text-sm font-medium mb-1.5 block">{t('profile.city')}</label>
-                <select
+                <input
                   className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  placeholder={isEn ? 'e.g., New York, Tokyo, Shanghai...' : '如：上海、北京、纽约...'}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                >
-                  {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
+                />
               </div>
               <div>
                 <label className="text-sm font-medium mb-1.5 block">{t('profile.zodiac')}</label>
                 <div className="grid grid-cols-4 gap-2">
-                  {ZODIACS.map((z) => (
+                  {ZODIACS_ZH.map((z) => (
                     <button
                       key={z}
                       onClick={() => setZodiac(z)}
@@ -146,7 +160,7 @@ export default function ProfilePage() {
                           : 'bg-muted text-muted-foreground hover:bg-muted/80'
                       }`}
                     >
-                      {zodiacEmojis[z]} {z.replace('座', '')}
+                      {zodiacEmojis[z]} {isEn ? zodiacTranslations[z].en.replace('座', '') : z.replace('座', '')}
                     </button>
                   ))}
                 </div>

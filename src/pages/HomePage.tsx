@@ -4,7 +4,35 @@ import { useAuthStore, useOOTDStore, useWardrobeStore } from '@/store'
 import { fetchWeather, fetchFortune, generateOOTD } from '@/services/mockApi'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { OOTDOutfit } from '@/types'
+import type { OOTDOutfit, ZodiacSign } from '@/types'
+
+// 星座翻译
+const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
+  '白羊座': { zh: '白羊座', en: 'Aries' },
+  '金牛座': { zh: '金牛座', en: 'Taurus' },
+  '双子座': { zh: '双子座', en: 'Gemini' },
+  '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
+  '狮子座': { zh: '狮子座', en: 'Leo' },
+  '处女座': { zh: '处女座', en: 'Virgo' },
+  '天秤座': { zh: '天秤座', en: 'Libra' },
+  '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
+  '射手座': { zh: '射手座', en: 'Sagittarius' },
+  '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
+  '水瓶座': { zh: '水瓶座', en: 'Aquarius' },
+  '双鱼座': { zh: '双鱼座', en: 'Pisces' },
+}
+
+// 颜色名称翻译
+const colorTranslations: Record<string, { zh: string; en: string }> = {
+  '玫瑰粉': { zh: '玫瑰粉', en: 'Rose Pink' },
+  '天空蓝': { zh: '天空蓝', en: 'Sky Blue' },
+  '薄荷绿': { zh: '薄荷绿', en: 'Mint Green' },
+  '奶油白': { zh: '奶油白', en: 'Cream White' },
+  '珊瑚橙': { zh: '珊瑚橙', en: 'Coral Orange' },
+  '紫罗兰': { zh: '紫罗兰', en: 'Violet' },
+  '金色': { zh: '金色', en: 'Gold' },
+  '米白': { zh: '米白', en: 'Beige' },
+}
 
 // 天气图标映射
 const weatherIcons: Record<string, string> = {
@@ -200,7 +228,11 @@ export default function HomePage() {
             {fortune && (
               <div className="glass rounded-2xl p-4 shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs text-muted-foreground">{fortune.zodiac}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {isEn && zodiacTranslations[fortune.zodiac as ZodiacSign] 
+                      ? zodiacTranslations[fortune.zodiac as ZodiacSign].en 
+                      : fortune.zodiac}
+                  </span>
                   <div className="flex text-xs">{renderStars(fortune.overall)}</div>
                 </div>
                 <div className="flex items-center gap-2 mb-1">
@@ -209,7 +241,9 @@ export default function HomePage() {
                     style={{ background: colorNameToHex(fortune.luckyColor) }}
                   />
                   <p className="text-xs font-medium text-foreground/80">
-                    {t('home.luckyColor')}: {fortune.luckyColor}
+                    {t('home.luckyColor')}: {isEn && colorTranslations[fortune.luckyColor] 
+                      ? colorTranslations[fortune.luckyColor].en 
+                      : fortune.luckyColor}
                   </p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug line-clamp-2">{fortune.todayTip}</p>
