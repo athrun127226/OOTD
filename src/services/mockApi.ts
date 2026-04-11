@@ -49,11 +49,22 @@ export async function fetchFortune(zodiac: ZodiacSign): Promise<FortuneData> {
 
 // ===== 模拟OOTD生成 =====
 export async function generateOOTD(
-  _wardrobeItems: ClothingItem[],
+  wardrobeItems: ClothingItem[],
   weather: WeatherData,
   fortune: FortuneData
 ): Promise<OOTDOutfit[]> {
   await delay(2000) // 模拟AI生成时间
+
+  // 使用用户的衣橱数据，如果没有则使用默认数据
+  const items = wardrobeItems.length > 0 ? wardrobeItems : getMockClothingItems()
+  
+  // 按类别分类衣物
+  const tops = items.filter(i => i.category === '上衣')
+  const bottoms = items.filter(i => i.category === '下装')
+  const outerwears = items.filter(i => i.category === '外套')
+  const dresses = items.filter(i => i.category === '连衣裙')
+  const shoes = items.filter(i => i.category === '鞋子')
+  const accessories = items.filter(i => i.category === '配饰')
 
   const styles = ['通勤风', '休闲风', '约会风', '运动风', '复古风']
   const occasions = ['日常通勤', '休闲外出', '约会聚餐', '运动健身', '逛街购物']
@@ -63,10 +74,68 @@ export async function generateOOTD(
     `浪漫气息扑面而来！柔和的色调与今日"${fortune.todayTip.substring(0, 10)}..."的运势暗示完美呼应，遇见美好的一天就从这套开始🌸`,
   ]
 
-  const mockItems = getMockClothingItems()
-  
-  return [
-    {
+  // 根据用户衣橱动态生成搭配方案
+  const outfits: OOTDOutfit[] = []
+
+  // 方案1：通勤风（上衣+下装+鞋子）
+  if (tops.length > 0 && bottoms.length > 0 && shoes.length > 0) {
+    outfits.push({
+      id: '1',
+      name: '清新通勤look',
+      style: '通勤风',
+      items: {
+        top: tops[0],
+        bottom: bottoms[0],
+        shoes: shoes[0],
+        outerwear: outerwears.length > 0 ? outerwears[0] : undefined,
+      },
+      aiComment: comments[0],
+      occasion: occasions[0],
+      luckyReason: `融入了${fortune.luckyColor}，为你带来桃花运加持`,
+      score: 4.8,
+    })
+  }
+
+  // 方案2：休闲风（外套+上衣+下装+鞋子）
+  if (tops.length > 1 && bottoms.length > 1 && shoes.length > 1) {
+    outfits.push({
+      id: '2',
+      name: '时髦休闲风',
+      style: '休闲风',
+      items: {
+        outerwear: outerwears.length > 0 ? outerwears[0] : undefined,
+        top: tops[1 % tops.length],
+        bottom: bottoms[1 % bottoms.length],
+        shoes: shoes[1 % shoes.length],
+      },
+      aiComment: comments[1],
+      occasion: occasions[1],
+      score: 4.5,
+    })
+  }
+
+  // 方案3：约会风（连衣裙+鞋子+配饰）
+  if (dresses.length > 0) {
+    outfits.push({
+      id: '3',
+      name: '约会浪漫风',
+      style: '约会风',
+      items: {
+        dress: dresses[0],
+        shoes: shoes.length > 0 ? shoes[0] : undefined,
+        accessories: accessories.length > 0 ? [accessories[0]] : undefined,
+      },
+      aiComment: comments[2],
+      occasion: occasions[2],
+      luckyReason: '整体配色呼应今日运势，爱情运UP',
+      score: 4.9,
+    })
+  }
+
+  // 如果用户衣橱数据不足，补充默认方案
+  if (outfits.length === 0) {
+    const mockItems = getMockClothingItems()
+    outfits.push({
       id: '1',
       name: '清新通勤look',
       style: '通勤风',
@@ -79,36 +148,10 @@ export async function generateOOTD(
       occasion: occasions[0],
       luckyReason: `融入了${fortune.luckyColor}，为你带来桃花运加持`,
       score: 4.8,
-    },
-    {
-      id: '2',
-      name: '时髦休闲风',
-      style: '休闲风',
-      items: {
-        outerwear: mockItems.find(i => i.category === '外套'),
-        top: mockItems.filter(i => i.category === '上衣')[1],
-        bottom: mockItems.filter(i => i.category === '下装')[1],
-        shoes: mockItems.filter(i => i.category === '鞋子')[1],
-      },
-      aiComment: comments[1],
-      occasion: occasions[1],
-      score: 4.5,
-    },
-    {
-      id: '3',
-      name: '约会浪漫风',
-      style: '约会风',
-      items: {
-        dress: mockItems.find(i => i.category === '连衣裙'),
-        shoes: mockItems.filter(i => i.category === '鞋子')[2],
-        accessories: mockItems.filter(i => i.category === '配饰'),
-      },
-      aiComment: comments[2],
-      occasion: occasions[2],
-      luckyReason: '整体配色呼应今日运势，爱情运UP',
-      score: 4.9,
-    },
-  ]
+    })
+  }
+
+  return outfits
 }
 
 // ===== 模拟登录 =====
