@@ -70,6 +70,9 @@ export interface UserProfile {
   zodiac: ZodiacSign
   email?: string
   isPro: boolean
+  proPlan?: 'monthly' | 'yearly'
+  proStartDate?: string
+  proEndDate?: string
   style: string[]
   credits?: number
   dailyGenerateCount?: number

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuthStore } from '@/store'
 import { Button } from '@/components/ui/button'
+import PaymentModal from '@/components/PaymentModal'
 import type { ZodiacSign } from '@/types'
 
 const ZODIACS: ZodiacSign[] = [
@@ -24,6 +25,7 @@ export default function ProfilePage() {
   const [city, setCity] = useState(user?.city || '上海')
   const [zodiac, setZodiac] = useState<ZodiacSign>(user?.zodiac || '天秤座')
   const [saved, setSaved] = useState(false)
+  const [showPayment, setShowPayment] = useState(false)
 
   if (!user) return null
 
@@ -175,7 +177,10 @@ export default function ProfilePage() {
                 ))}
               </ul>
               <div className="flex items-center gap-3">
-                <Button className="bg-white text-pink-600 hover:bg-white/90 rounded-xl font-bold shadow-lg">
+                <Button 
+                  onClick={() => setShowPayment(true)}
+                  className="bg-white text-pink-600 hover:bg-white/90 rounded-xl font-bold shadow-lg"
+                >
                   ¥9.9/月 立即升级
                 </Button>
                 <span className="text-xs opacity-70">¥88/年</span>
@@ -215,6 +220,12 @@ export default function ProfilePage() {
           退出登录
         </Button>
       </div>
+
+      {/* 支付弹窗 */}
+      <PaymentModal 
+        isOpen={showPayment} 
+        onClose={() => setShowPayment(false)} 
+      />
     </div>
   )
 }
