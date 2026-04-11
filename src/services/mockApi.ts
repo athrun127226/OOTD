@@ -77,7 +77,9 @@ export async function generateOOTD(
   // 根据用户衣橱动态生成搭配方案
   const outfits: OOTDOutfit[] = []
 
-  // 方案1：通勤风（上衣+下装，有鞋子更好）
+  // 生成条件：上衣+下装，或连衣裙，鞋子为选配
+
+  // 方案1：通勤风（上衣+下装）
   if (tops.length > 0 && bottoms.length > 0) {
     outfits.push({
       id: '1',
@@ -96,17 +98,17 @@ export async function generateOOTD(
     })
   }
 
-  // 方案2：休闲风（上衣+下装，有外套/鞋子更好）
-  if (tops.length > 0 && bottoms.length > 1) {
+  // 方案2：休闲风（上衣+下装第二套组合）
+  if (tops.length > 1 && bottoms.length > 1) {
     outfits.push({
       id: '2',
       name: '时髦休闲风',
       style: '休闲风',
       items: {
-        top: tops[1 % tops.length],
-        bottom: bottoms[1 % bottoms.length],
+        top: tops[1],
+        bottom: bottoms[1],
+        shoes: shoes.length > 0 ? shoes[0] : undefined,
         outerwear: outerwears.length > 0 ? outerwears[0] : undefined,
-        shoes: shoes.length > 1 ? shoes[1 % shoes.length] : undefined,
       },
       aiComment: comments[1],
       occasion: occasions[1],
@@ -114,7 +116,7 @@ export async function generateOOTD(
     })
   }
 
-  // 方案3：约会风（连衣裙优先，或上衣+下装组合）
+  // 方案3：约会风（连衣裙优先，否则用上衣+下装）
   if (dresses.length > 0) {
     outfits.push({
       id: '3',
@@ -139,7 +141,7 @@ export async function generateOOTD(
       items: {
         top: tops[tops.length - 1],
         bottom: bottoms[bottoms.length - 1],
-        shoes: shoes.length > 0 ? shoes[shoes.length - 1] : undefined,
+        shoes: shoes.length > 0 ? shoes[0] : undefined,
         accessories: accessories.length > 0 ? [accessories[0]] : undefined,
       },
       aiComment: comments[2],
