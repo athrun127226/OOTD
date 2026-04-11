@@ -21,7 +21,7 @@ const zodiacEmojis: Record<ZodiacSign, string> = {
 }
 
 export default function ProfilePage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { user, updateProfile, logout } = useAuthStore()
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(user?.name || '')
@@ -30,6 +30,8 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [currentLang, setCurrentLang] = useState<'zh' | 'en'>(getCurrentLanguage())
+
+  const isEn = i18n.language === 'en'
 
   if (!user) return null
 
@@ -49,7 +51,7 @@ export default function ProfilePage() {
     <div className="min-h-screen pb-28">
       <div className="max-w-lg mx-auto px-4 pt-6 space-y-5">
         {/* 顶部标题 */}
-        <h1 className="text-2xl font-bold">个人中心</h1>
+        <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
 
         {/* 用户信息卡 */}
         <div className="glass rounded-3xl p-6 shadow-md animate-slide-up">
@@ -64,14 +66,14 @@ export default function ProfilePage() {
               <div className="flex items-center gap-2 mt-1">
                 {user.isPro ? (
                   <span className="text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white px-2 py-0.5 rounded-full font-medium">
-                    ✨ Pro会员
+                    {t('profile.proMember')}
                   </span>
                 ) : (
                   <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
-                    免费版
+                    {t('profile.freeMember')}
                   </span>
                 )}
-                <span className="text-xs text-muted-foreground">💎 {user.credits} 穿搭币</span>
+                <span className="text-xs text-muted-foreground">💎 {user.credits} {t('profile.credits')}</span>
               </div>
             </div>
           </div>
@@ -81,14 +83,14 @@ export default function ProfilePage() {
               <div className="flex items-center justify-between py-3 border-b border-border">
                 <div className="flex items-center gap-2 text-sm">
                   <span>📍</span>
-                  <span className="text-muted-foreground">所在城市</span>
+                  <span className="text-muted-foreground">{t('profile.city')}</span>
                 </div>
                 <span className="text-sm font-medium">{user.city}</span>
               </div>
               <div className="flex items-center justify-between py-3 border-b border-border">
                 <div className="flex items-center gap-2 text-sm">
                   <span>⭐</span>
-                  <span className="text-muted-foreground">我的星座</span>
+                  <span className="text-muted-foreground">{t('profile.zodiac')}</span>
                 </div>
                 <span className="text-sm font-medium">
                   {zodiacEmojis[user.zodiac]} {user.zodiac}
@@ -97,10 +99,10 @@ export default function ProfilePage() {
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-2 text-sm">
                   <span>📅</span>
-                  <span className="text-muted-foreground">注册时间</span>
+                  <span className="text-muted-foreground">{t('profile.registerDate')}</span>
                 </div>
                 <span className="text-sm font-medium">
-                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString('zh-CN') : '未知'}
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString(isEn ? 'en-US' : 'zh-CN') : t('common.unknown')}
                 </span>
               </div>
               <Button
@@ -108,13 +110,13 @@ export default function ProfilePage() {
                 variant="outline"
                 className="w-full rounded-xl mt-2"
               >
-                ✏️ 编辑资料
+                {t('profile.editButton')}
               </Button>
             </div>
           ) : (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium mb-1.5 block">昵称</label>
+                <label className="text-sm font-medium mb-1.5 block">{t('profile.nickname')}</label>
                 <input
                   className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   value={name}
@@ -122,7 +124,7 @@ export default function ProfilePage() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">所在城市（用于获取天气）</label>
+                <label className="text-sm font-medium mb-1.5 block">{t('profile.city')}</label>
                 <select
                   className="w-full h-10 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   value={city}
@@ -132,7 +134,7 @@ export default function ProfilePage() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">我的星座（用于运势推算）</label>
+                <label className="text-sm font-medium mb-1.5 block">{t('profile.zodiac')}</label>
                 <div className="grid grid-cols-4 gap-2">
                   {ZODIACS.map((z) => (
                     <button
@@ -151,21 +153,21 @@ export default function ProfilePage() {
               </div>
               <div className="flex gap-3">
                 <Button variant="outline" onClick={() => setEditing(false)} className="flex-1 rounded-xl">
-                  取消
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   onClick={handleSave}
                   className="flex-1 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600"
                 >
-                  保存
+                  {t('common.save')}
                 </Button>
               </div>
             </div>
           )}
 
           {saved && (
-            <div className="mt-3 text-center text-sm text-green-600 bg-green-50 rounded-xl py-2">
-              ✓ 资料已更新
+            <div className="mt-3 text-center text-sm text-green-600 bg-green-50 dark:bg-green-950/30 rounded-xl py-2">
+              ✓ {t('profile.saved')}
             </div>
           )}
         </div>
@@ -176,10 +178,16 @@ export default function ProfilePage() {
             <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
             <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-white/10 rounded-full" />
             <div className="relative">
-              <p className="text-xs font-medium opacity-80 mb-1">解锁无限可能</p>
-              <h3 className="text-xl font-bold mb-3">升级 Pro 会员 ✨</h3>
+              <p className="text-xs font-medium opacity-80 mb-1">{t('profile.proFeatures.title')}</p>
+              <h3 className="text-xl font-bold mb-3">{t('profile.upgradePro')} ✨</h3>
               <ul className="space-y-1.5 mb-4">
-                {['无限衣橱容量', '每日无限次生成', 'AI智能抠图', '穿搭风格定制', '无水印分享海报'].map((feat) => (
+                {[
+                  t('profile.proFeatures.unlimited'),
+                  t('profile.proFeatures.dailyUnlimited'),
+                  t('profile.proFeatures.aiCutout'),
+                  t('profile.proFeatures.styleCustomize'),
+                  t('profile.proFeatures.noWatermark'),
+                ].map((feat) => (
                   <li key={feat} className="text-sm flex items-center gap-2">
                     <span className="text-white/70">✓</span> {feat}
                   </li>
@@ -190,9 +198,9 @@ export default function ProfilePage() {
                   onClick={() => setShowPayment(true)}
                   className="bg-white text-pink-600 hover:bg-white/90 rounded-xl font-bold shadow-lg"
                 >
-                  $1.50/月 立即升级
+                  {t('profile.monthly')} {t('profile.upgradeNow')}
                 </Button>
-                <span className="text-xs opacity-70">$12/年</span>
+                <span className="text-xs opacity-70">{t('profile.yearly')}</span>
               </div>
             </div>
           </div>
@@ -201,10 +209,10 @@ export default function ProfilePage() {
         {/* 功能列表 */}
         <div className="glass rounded-3xl overflow-hidden shadow-md animate-slide-up">
           {[
-            { icon: '🎨', label: t('profile.history'), desc: '查看过去生成的方案' },
-            { icon: '🔔', label: t('profile.notifications'), desc: '管理通知偏好' },
-            { icon: '🔒', label: t('profile.security'), desc: '修改密码、绑定手机' },
-            { icon: '📋', label: t('profile.about'), desc: 'OOTD Generator v1.0.0' },
+            { icon: '🎨', label: t('profile.history'), desc: t('profile.historyDesc') },
+            { icon: '🔔', label: t('profile.notifications'), desc: t('profile.notificationsDesc') },
+            { icon: '🔒', label: t('profile.security'), desc: t('profile.securityDesc') },
+            { icon: '📋', label: t('profile.about'), desc: t('profile.aboutDesc') },
           ].map((item, i) => (
             <button
               key={i}
@@ -257,7 +265,7 @@ export default function ProfilePage() {
           className="w-full rounded-2xl text-destructive border-destructive/30 hover:bg-destructive/10"
           onClick={logout}
         >
-          退出登录
+          {t('auth.logout')}
         </Button>
       </div>
 
