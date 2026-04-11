@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore, useOOTDStore, useWardrobeStore } from '@/store'
 import { fetchWeather, fetchFortune, generateOOTD } from '@/services/mockApi'
 import { Button } from '@/components/ui/button'
@@ -40,8 +41,13 @@ function ClothingCard({ item, label }: { item: { imageUrl: string; name: string;
 }
 
 // OOTD方案卡片
-function OutfitCard({ outfit, isActive }: { outfit: OOTDOutfit; isActive: boolean }) {
+function OutfitCard({ outfit, isActive, isEn }: { outfit: OOTDOutfit; isActive: boolean; isEn: boolean }) {
   const items = outfit.items
+  
+  // 分类翻译
+  const categoryLabels: Record<string, string> = isEn 
+    ? { '连衣裙': 'Dress', '上衣': 'Top', '外套': 'Outerwear', '下装': 'Bottom', '鞋子': 'Shoes', '配饰': 'Accessory' }
+    : { '连衣裙': '连衣裙', '上衣': '上衣', '外套': '外套', '下装': '下装', '鞋子': '鞋子', '配饰': '配饰' }
 
   return (
     <div
@@ -66,26 +72,29 @@ function OutfitCard({ outfit, isActive }: { outfit: OOTDOutfit; isActive: boolea
           </div>
           <div className="text-right">
             <StarRating score={outfit.score} />
-            <span className="text-xs text-muted-foreground mt-0.5 block">{outfit.score.toFixed(1)}分</span>
+            <span className="text-xs text-muted-foreground mt-0.5 block">
+              {outfit.score.toFixed(1)}{isEn ? '' : '分'}
+            </span>
           </div>
         </div>
 
         {/* 衣物组合展示 */}
         <div className="flex gap-3 justify-center py-3 flex-wrap">
-          {items.dress && <ClothingCard item={items.dress} label="连衣裙" />}
-          {items.top && <ClothingCard item={items.top} label="上衣" />}
-          {items.outerwear && <ClothingCard item={items.outerwear} label="外套" />}
-          {items.bottom && <ClothingCard item={items.bottom} label="下装" />}
-          {items.shoes && <ClothingCard item={items.shoes} label="鞋子" />}
+          {items.dress && <ClothingCard item={items.dress} label={categoryLabels['连衣裙']} />}
+          {items.top && <ClothingCard item={items.top} label={categoryLabels['上衣']} />}
+          {items.outerwear && <ClothingCard item={items.outerwear} label={categoryLabels['外套']} />}
+          {items.bottom && <ClothingCard item={items.bottom} label={categoryLabels['下装']} />}
+          {items.shoes && <ClothingCard item={items.shoes} label={categoryLabels['鞋子']} />}
           {items.accessories?.map((acc, i) => (
-            <ClothingCard key={i} item={acc} label="配饰" />
+            <ClothingCard key={i} item={acc} label={categoryLabels['配饰']} />
           ))}
         </div>
 
         {/* AI点评 */}
         <div className="mt-4 p-3 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950/30 dark:to-purple-950/30">
           <p className="text-xs text-foreground/80 leading-relaxed">
-            <span className="font-semibold text-primary">✨ AI点评：</span>{outfit.aiComment}
+            <span className="font-semibold text-primary">{isEn ? '✨ AI Comment:' : '✨ AI点评：'}</span>
+            {outfit.aiComment}
           </p>
           {outfit.luckyReason && (
             <p className="text-xs text-amber-600 dark:text-amber-400 mt-1.5 flex items-center gap-1">
@@ -99,10 +108,13 @@ function OutfitCard({ outfit, isActive }: { outfit: OOTDOutfit; isActive: boolea
 }
 
 export default function HomePage() {
+  const { t, i18n } = useTranslation()
   const user = useAuthStore((s) => s.user)
   const { weather, fortune, outfits, status, error, activeOutfitIndex, setWeather, setFortune, setOutfits, setStatus, setError, setActiveOutfitIndex } = useOOTDStore()
   const { items: wardrobeItems } = useWardrobeStore()
   const [initialLoading, setInitialLoading] = useState(true)
+
+  const isEn = i18n.language === 'en'
 
   // 初始化天气和运势
   useEffect(() => {
@@ -134,7 +146,7 @@ export default function HomePage() {
       setStatus('success')
       setActiveOutfitIndex(0)
     } catch {
-      setError('生成失败，请重试')
+      setError(isEn ? 'Generation failed, please retry' : '生成失败，请重试')
       setStatus('error')
     }
   }
@@ -152,9 +164,9 @@ export default function HomePage() {
       <div className="relative max-w-lg mx-auto px-4 pt-6 space-y-5">
         {/* 顶部问候 */}
         <div className="animate-fade-in">
-          <p className="text-muted-foreground text-sm">早上好 👋</p>
+          <p className="text-muted-foreground text-sm">{t('home.greeting')}</p>
           <h1 className="text-2xl font-bold">
-            {user?.name || '时髦达人'}，今天穿什么？
+            {t('home.title', { name: user?.name || (isEn ? 'Fashionista' : '时髦达人') })}
           </h1>
         </div>
 
@@ -196,7 +208,9 @@ export default function HomePage() {
                     className="w-5 h-5 rounded-full border-2 border-white shadow-sm flex-shrink-0"
                     style={{ background: colorNameToHex(fortune.luckyColor) }}
                   />
-                  <p className="text-xs font-medium text-foreground/80">幸运色：{fortune.luckyColor}</p>
+                  <p className="text-xs font-medium text-foreground/80">
+                    {t('home.luckyColor')}: {fortune.luckyColor}
+                  </p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug line-clamp-2">{fortune.todayTip}</p>
               </div>
@@ -217,12 +231,12 @@ export default function HomePage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                AI正在为你搭配中...
+                {t('home.generating')}
               </span>
             ) : (
               <span className="flex items-center gap-2">
                 <span className="text-xl">✨</span>
-                救命！一键生成今日OOTD
+                {t('home.generate')}
               </span>
             )}
             <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -230,7 +244,7 @@ export default function HomePage() {
           
           {wardrobeItems.length === 0 && (
             <p className="text-xs text-muted-foreground text-center">
-              💡 提示：先去衣橱页添加你的衣服，AI会基于你的实际单品来搭配
+              {t('home.tip')}
             </p>
           )}
         </div>
@@ -246,8 +260,10 @@ export default function HomePage() {
         {status === 'success' && outfits.length > 0 && (
           <div className="space-y-4 animate-slide-up">
             <div className="flex items-center justify-between">
-              <h2 className="font-bold text-lg">今日穿搭方案</h2>
-              <span className="text-xs text-muted-foreground">共{outfits.length}套</span>
+              <h2 className="font-bold text-lg">{t('home.todayOutfit')}</h2>
+              <span className="text-xs text-muted-foreground">
+                {t('home.plans', { count: outfits.length })}
+              </span>
             </div>
 
             {/* 方案切换标签 */}
@@ -262,7 +278,7 @@ export default function HomePage() {
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
-                  方案 {i + 1}
+                  {isEn ? 'Plan' : '方案'} {i + 1}
                 </button>
               ))}
             </div>
@@ -273,17 +289,17 @@ export default function HomePage() {
                 key={outfit.id}
                 className={`transition-all duration-300 ${i === activeOutfitIndex ? 'block' : 'hidden'}`}
               >
-                <OutfitCard outfit={outfit} isActive={true} />
+                <OutfitCard outfit={outfit} isActive={true} isEn={isEn} />
               </div>
             ))}
 
             {/* 操作按钮 */}
             <div className="flex gap-3 pb-4">
               <Button variant="outline" className="flex-1 rounded-xl gap-2" onClick={handleGenerate}>
-                <span>🔄</span> 重新生成
+                <span>🔄</span> {t('home.regenerate')}
               </Button>
               <Button className="flex-1 rounded-xl gap-2">
-                <span>📤</span> 分享OOTD
+                <span>📤</span> {t('home.share')}
               </Button>
             </div>
           </div>
