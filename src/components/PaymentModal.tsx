@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 import PayPalButton from './PayPalButton'
 
@@ -8,6 +9,7 @@ interface PaymentModalProps {
 }
 
 export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
+  const { t } = useTranslation()
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly')
 
   if (!isOpen) return null
@@ -17,7 +19,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
       <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 w-full max-w-md mx-4 shadow-2xl animate-slide-up">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold">升级 Pro 会员</h2>
+          <h2 className="text-xl font-bold">{t('payment.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-muted rounded-full transition-colors"
@@ -37,8 +39,12 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             }`}
           >
             <div className="text-2xl font-bold text-primary">$1.50</div>
-            <div className="text-sm text-muted-foreground">/月</div>
-            <div className="text-xs text-muted-foreground mt-1">月度订阅</div>
+            <div className="text-sm text-muted-foreground">
+              {t('payment.monthlyDesc')}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {t('payment.monthly')}
+            </div>
           </button>
           <button
             onClick={() => setSelectedPlan('yearly')}
@@ -49,23 +55,27 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             }`}
           >
             <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">
-              省 $6
+              {t('payment.savePercent')}
             </span>
             <div className="text-2xl font-bold text-primary">$12</div>
-            <div className="text-sm text-muted-foreground">/年</div>
-            <div className="text-xs text-muted-foreground mt-1">年度订阅</div>
+            <div className="text-sm text-muted-foreground">
+              {t('payment.yearlyDesc')}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {t('payment.yearly')}
+            </div>
           </button>
         </div>
 
         {/* Features */}
         <div className="bg-muted/30 rounded-xl p-4 mb-6">
-          <p className="text-sm font-medium mb-2">Pro 会员权益：</p>
+          <p className="text-sm font-medium mb-2">{t('profile.proFeatures.title')}</p>
           <ul className="text-xs text-muted-foreground space-y-1">
-            <li>✓ 无限衣橱容量</li>
-            <li>✓ 每日无限次生成</li>
-            <li>✓ AI智能抠图</li>
-            <li>✓ 穿搭风格定制</li>
-            <li>✓ 无水印分享海报</li>
+            <li>✓ {t('profile.proFeatures.unlimited')}</li>
+            <li>✓ {t('profile.proFeatures.dailyUnlimited')}</li>
+            <li>✓ {t('profile.proFeatures.aiCutout')}</li>
+            <li>✓ {t('profile.proFeatures.styleCustomize')}</li>
+            <li>✓ {t('profile.proFeatures.noWatermark')}</li>
           </ul>
         </div>
 
@@ -78,7 +88,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
         </div>
 
         <p className="text-xs text-center text-muted-foreground">
-          支付即表示同意我们的服务条款，可随时取消订阅
+          {t('payment.terms')}
         </p>
       </div>
     </div>

@@ -198,9 +198,9 @@ export default function ProfilePage() {
                   onClick={() => setShowPayment(true)}
                   className="bg-white text-pink-600 hover:bg-white/90 rounded-xl font-bold shadow-lg"
                 >
-                  {t('profile.upgradeNow')}
+                  {t('profile.monthlyPrice')} {t('profile.upgradeNow')}
                 </Button>
-                <span className="text-xs opacity-70">{t('profile.yearly')}</span>
+                <span className="text-xs opacity-70">{t('profile.yearlyPrice')}</span>
               </div>
             </div>
           </div>
