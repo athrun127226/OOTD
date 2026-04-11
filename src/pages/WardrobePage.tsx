@@ -5,17 +5,16 @@ import { Button } from '@/components/ui/button'
 import type { ClothingCategory, ClothingItem } from '@/types'
 import { getDefaultWardrobeItems } from '@/services/mockApi'
 
-// 中英文分类映射
-const CATEGORY_MAP_ZH: ClothingCategory[] = ['上衣', '下装', '外套', '连衣裙', '鞋子', '配饰']
-const CATEGORY_MAP_EN: ClothingCategory[] = ['Tops', 'Bottoms', 'Outerwear', 'Dresses', 'Shoes', 'Accessories']
+// 分类（只用中文作为数据）
+const CATEGORIES: ClothingCategory[] = ['上衣', '下装', '外套', '连衣裙', '鞋子', '配饰']
 
 const categoryEmojis: Record<ClothingCategory, string> = {
-  '上衣': '👕', 'Tops': '👕',
-  '下装': '👖', 'Bottoms': '👖',
-  '外套': '🧥', 'Outerwear': '🧥',
-  '连衣裙': '👗', 'Dresses': '👗',
-  '鞋子': '👟', 'Shoes': '👟',
-  '配饰': '💍', 'Accessories': '💍',
+  '上衣': '👕',
+  '下装': '👖',
+  '外套': '🧥',
+  '连衣裙': '👗',
+  '鞋子': '👟',
+  '配饰': '💍',
 }
 
 function ClothingCard({
@@ -61,7 +60,7 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
   const fileRef = useRef<HTMLInputElement>(null)
 
   const isEn = i18n.language === 'en'
-  const categories = isEn ? CATEGORY_MAP_EN : CATEGORY_MAP_ZH
+  const categories = CATEGORIES
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -186,10 +185,10 @@ export default function WardrobePage() {
   const [showGuide, setShowGuide] = useState(items.length === 0)
 
   const isEn = i18n.language === 'en'
-  const categories = isEn ? CATEGORY_MAP_EN : CATEGORY_MAP_ZH
+  const categories = CATEGORIES
 
   const filtered = activeCategory === 'all' ? items : items.filter((i) => {
-    // 支持中英文分类匹配
+    // 根据分类过滤
     if (isEn) {
       const zhToEn: Record<string, string> = {
         '上衣': 'Tops', '下装': 'Bottoms', '外套': 'Outerwear',
