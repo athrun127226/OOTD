@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import { useAuthStore } from '@/store'
 import { onAuthChange } from '@/services/firebaseAuth'
 import AuthPage from '@/pages/AuthPage'
@@ -89,9 +90,19 @@ function AppContent() {
 }
 
 export default function App() {
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || ''
+  
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <PayPalScriptProvider
+      options={{
+        clientId: paypalClientId,
+        currency: 'USD',
+        intent: 'capture',
+      }}
+    >
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </PayPalScriptProvider>
   )
 }
