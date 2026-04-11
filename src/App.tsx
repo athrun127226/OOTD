@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import './i18n' // 导入 i18n 配置
 import { useAuthStore } from '@/store'
 import { onAuthChange } from '@/services/firebaseAuth'
 import AuthPage from '@/pages/AuthPage'

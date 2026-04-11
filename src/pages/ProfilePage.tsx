@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/store'
 import { Button } from '@/components/ui/button'
 import PaymentModal from '@/components/PaymentModal'
+import { changeLanguage, getCurrentLanguage } from '@/i18n'
 import type { ZodiacSign } from '@/types'
 
 const ZODIACS: ZodiacSign[] = [
@@ -19,6 +21,7 @@ const zodiacEmojis: Record<ZodiacSign, string> = {
 }
 
 export default function ProfilePage() {
+  const { t } = useTranslation()
   const { user, updateProfile, logout } = useAuthStore()
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(user?.name || '')
@@ -26,6 +29,7 @@ export default function ProfilePage() {
   const [zodiac, setZodiac] = useState<ZodiacSign>(user?.zodiac || '天秤座')
   const [saved, setSaved] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
+  const [currentLang, setCurrentLang] = useState<'zh' | 'en'>(getCurrentLanguage())
 
   if (!user) return null
 
@@ -34,6 +38,11 @@ export default function ProfilePage() {
     setEditing(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleLanguageChange = (lang: 'zh' | 'en') => {
+    changeLanguage(lang)
+    setCurrentLang(lang)
   }
 
   return (
@@ -192,10 +201,10 @@ export default function ProfilePage() {
         {/* 功能列表 */}
         <div className="glass rounded-3xl overflow-hidden shadow-md animate-slide-up">
           {[
-            { icon: '🎨', label: '穿搭历史', desc: '查看过去生成的方案' },
-            { icon: '🔔', label: '消息通知', desc: '管理通知偏好' },
-            { icon: '🔒', label: '账号安全', desc: '修改密码、绑定手机' },
-            { icon: '📋', label: '关于我们', desc: 'OOTD Generator v1.0.0' },
+            { icon: '🎨', label: t('profile.history'), desc: '查看过去生成的方案' },
+            { icon: '🔔', label: t('profile.notifications'), desc: '管理通知偏好' },
+            { icon: '🔒', label: t('profile.security'), desc: '修改密码、绑定手机' },
+            { icon: '📋', label: t('profile.about'), desc: 'OOTD Generator v1.0.0' },
           ].map((item, i) => (
             <button
               key={i}
@@ -209,6 +218,37 @@ export default function ProfilePage() {
               <span className="text-muted-foreground text-sm">›</span>
             </button>
           ))}
+          
+          {/* 语言切换 */}
+          <div className="w-full flex items-center gap-4 p-4 border-b border-border last:border-0">
+            <span className="text-xl">🌐</span>
+            <div className="flex-1">
+              <p className="text-sm font-medium">{t('profile.language')}</p>
+              <p className="text-xs text-muted-foreground">{t('profile.languageDesc')}</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleLanguageChange('zh')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  currentLang === 'zh'
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                }`}
+              >
+                中文
+              </button>
+              <button
+                onClick={() => handleLanguageChange('en')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  currentLang === 'en'
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* 退出登录 */}
