@@ -22,19 +22,26 @@ function AppContent() {
       console.log('[App] 认证状态变化:', user ? `用户 ${user.email}` : '未登录')
       
       if (user) {
-        login(
-          {
-            id: user.uid,
-            name: user.displayName || 'OOTD用户',
-            email: user.email || '',
-            avatar: user.photoURL || '',
-            city: '北京市',
-            zodiac: '双子座',
-            style: [],
-            isPro: false,
-          },
-          ''
-        )
+        // 获取当前已有的用户数据，避免覆盖用户的个性化设置
+        const currentUser = useAuthStore.getState().user
+        
+        // 只有在用户不存在时才创建新用户（首次登录）
+        if (!currentUser || currentUser.id !== user.uid) {
+          login(
+            {
+              id: user.uid,
+              name: user.displayName || 'OOTD用户',
+              email: user.email || '',
+              avatar: user.photoURL || '',
+              city: '上海',
+              zodiac: '天秤座',
+              style: [],
+              isPro: false,
+              createdAt: new Date().toISOString(),
+            },
+            ''
+          )
+        }
       }
       setInitialized(true)
     })
