@@ -181,9 +181,9 @@ export default function ProfilePage() {
                   onClick={() => setShowPayment(true)}
                   className="bg-white text-pink-600 hover:bg-white/90 rounded-xl font-bold shadow-lg"
                 >
-                  ¥9.9/月 立即升级
+                  $1.50/月 立即升级
                 </Button>
-                <span className="text-xs opacity-70">¥88/年</span>
+                <span className="text-xs opacity-70">$12/年</span>
               </div>
             </div>
           </div>

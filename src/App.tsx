@@ -92,6 +92,9 @@ function AppContent() {
 export default function App() {
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || ''
   
+  // Debug: 检查 Client ID 是否正确加载
+  console.log('[App] PayPal Client ID:', paypalClientId ? '已加载' : '未加载')
+  
   return (
     <PayPalScriptProvider
       options={{

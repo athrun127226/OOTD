@@ -12,7 +12,7 @@ interface PayPalButtonProps {
 function PayPalButtonInner({ plan, onSuccess }: PayPalButtonProps) {
   const { user, updateProfile } = useAuthStore()
   const [isProcessing, setIsProcessing] = useState(false)
-  const [{ isPending }] = usePayPalScriptReducer()
+  const [{ isPending, isRejected }] = usePayPalScriptReducer()
 
   // PayPal 不支持 CNY，使用 USD（约等于价格）
   const pricing = {
@@ -21,6 +21,15 @@ function PayPalButtonInner({ plan, onSuccess }: PayPalButtonProps) {
   }
 
   const { amount, description } = pricing[plan]
+
+  // 检查 PayPal SDK 是否加载失败
+  if (isRejected) {
+    return (
+      <div className="text-center py-4 text-red-500 text-sm">
+        ❌ PayPal 加载失败，请刷新页面重试
+      </div>
+    )
+  }
 
   if (isPending) {
     return (
@@ -94,5 +103,16 @@ function PayPalButtonInner({ plan, onSuccess }: PayPalButtonProps) {
 }
 
 export default function PayPalButton(props: PayPalButtonProps) {
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID
+  
+  // 如果没有 Client ID，显示错误
+  if (!paypalClientId) {
+    return (
+      <div className="text-center py-4 text-red-500 text-sm">
+        ❌ 支付功能配置错误（缺少 Client ID）
+      </div>
+    )
+  }
+  
   return <PayPalButtonInner {...props} />
 }
