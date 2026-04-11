@@ -1,11 +1,84 @@
 import type { WeatherData, FortuneData, OOTDOutfit, ClothingItem, UserProfile, ZodiacSign } from '@/types'
 
+export type Lang = 'zh' | 'en'
+
+// ===== 国际化文本 =====
+const i18n = {
+  zh: {
+    // 天气
+    weatherConditions: ['晴天', '多云', '小雨', '阴天', '大风'],
+    windDirection: '东南风',
+    // 运势幸运色
+    luckyColors: ['玫瑰粉', '天空蓝', '薄荷绿', '奶油白', '珊瑚橙', '紫罗兰', '金色', '米白'],
+    // 运势提示
+    fortuneTips: [
+      '今日宜穿亮色系，桃花运佳，出行顺利',
+      '今日宜低调，深色系穿搭能带来稳定的财运',
+      '今日幸运色为蓝色，穿着蓝色单品可提升贵人缘',
+      '今日宜清新系穿搭，活力满满，事业顺心',
+      '今日宜穿柔和色调，感情运势上升，适合约会',
+    ],
+    // OOTD风格
+    styles: ['通勤风', '休闲风', '约会风', '运动风', '复古风'],
+    // OOTD场合
+    occasions: ['日常通勤', '休闲外出', '约会聚餐', '运动健身', '逛街购物'],
+    // OOTD名称
+    outfitNames: ['清新通勤look', '时髦休闲风', '约会浪漫风', '简约约会风'],
+    // 幸运理由
+    luckyReasons: [
+      '融入了{luckyColor}，为你带来桃花运加持',
+      '整体配色呼应今日运势，爱情运UP',
+    ],
+    // AI评论
+    aiComments: [
+      '这套搭配完美契合今日{condition}的天气，气温{temp}°C穿着舒适。{luckyColor}的点缀呼应了{zodiac}的幸运色，自信出门，好运随行✨',
+      '经典利落的{style}穿搭，在{condition}的天气中既保暖又不失时髦。简约的配色更显身材，是打工人的最佳选择💼',
+      '浪漫气息扑面而来！柔和的色调与今日运势暗示完美呼应，遇见美好的一天就从这套开始🌸',
+    ],
+    // 运势摘要
+    fortuneSummary: '{zodiac}今日整体运势不错，保持积极心态，好事连连。',
+  },
+  en: {
+    // 天气
+    weatherConditions: ['Sunny', 'Cloudy', 'Light Rain', 'Overcast', 'Windy'],
+    windDirection: 'Southeast',
+    // 运势幸运色
+    luckyColors: ['Rose Pink', 'Sky Blue', 'Mint Green', 'Cream White', 'Coral Orange', 'Violet', 'Gold', 'Beige'],
+    // 运势提示
+    fortuneTips: [
+      'Wear bright colors today for good romance luck and smooth travels',
+      'Keep it low-key today, dark colors bring stable financial luck',
+      'Blue is your lucky color today, wearing blue boosts your social connections',
+      'Fresh and clean style today, full of energy and career success',
+      'Soft tones today enhance your love luck, perfect for dates',
+    ],
+    // OOTD风格
+    styles: ['Commuter', 'Casual', 'Date Night', 'Athletic', 'Vintage'],
+    // OOTD场合
+    occasions: ['Daily Commute', 'Casual Outing', 'Date Night', 'Workout', 'Shopping'],
+    // OOTD名称
+    outfitNames: ['Fresh Commuter Look', 'Trendy Casual', 'Romantic Date Style', 'Simple Date Look'],
+    // 幸运理由
+    luckyReasons: [
+      'Incorporates {luckyColor} to boost your romance luck',
+      'Color scheme aligns with today\'s fortune, love luck UP',
+    ],
+    // AI评论
+    aiComments: [
+      'This outfit perfectly matches today\'s {condition} weather, comfortable at {temp}°C. The {luckyColor} accent echoes {zodiac}\'s lucky color - step out with confidence! ✨',
+      'A classic {style} look that\'s both warm and stylish in {condition} weather. Simple colors that flatter - perfect for work. 💼',
+      'Romance is in the air! Soft tones perfectly echo today\'s fortune hints. A beautiful day starts with this outfit. 🌸',
+    ],
+    // 运势摘要
+    fortuneSummary: '{zodiac} has good overall fortune today. Stay positive and good things will come.',
+  },
+}
+
 // ===== 模拟天气数据 =====
-export async function fetchWeather(city: string): Promise<WeatherData> {
+export async function fetchWeather(city: string, lang: Lang = 'zh'): Promise<WeatherData> {
   await delay(800)
-  const conditions = ['晴天', '多云', '小雨', '阴天', '大风']
-  const conditionCodes = ['sunny', 'cloudy', 'rainy', 'overcast', 'windy']
-  const idx = Math.floor(Math.random() * conditions.length)
+  const texts = i18n[lang]
+  const idx = Math.floor(Math.random() * texts.weatherConditions.length)
   return {
     city,
     temperature: {
@@ -13,26 +86,22 @@ export async function fetchWeather(city: string): Promise<WeatherData> {
       max: 22 + Math.floor(Math.random() * 8),
       current: 18 + Math.floor(Math.random() * 8),
     },
-    condition: conditions[idx],
-    conditionCode: conditionCodes[idx],
+    condition: texts.weatherConditions[idx],
+    conditionCode: ['sunny', 'cloudy', 'rainy', 'overcast', 'windy'][idx],
     humidity: 50 + Math.floor(Math.random() * 40),
     windSpeed: 5 + Math.floor(Math.random() * 15),
-    windDirection: '东南风',
+    windDirection: texts.windDirection,
     feelsLike: 17 + Math.floor(Math.random() * 6),
   }
 }
 
 // ===== 模拟运势数据 =====
-export async function fetchFortune(zodiac: ZodiacSign): Promise<FortuneData> {
+export async function fetchFortune(zodiac: ZodiacSign, lang: Lang = 'zh'): Promise<FortuneData> {
   await delay(600)
-  const luckyColors = ['玫瑰粉', '天空蓝', '薄荷绿', '奶油白', '珊瑚橙', '紫罗兰', '金色', '米白']
-  const tips = [
-    '今日宜穿亮色系，桃花运佳，出行顺利',
-    '今日宜低调，深色系穿搭能带来稳定的财运',
-    '今日幸运色为蓝色，穿着蓝色单品可提升贵人缘',
-    '今日宜清新系穿搭，活力满满，事业顺心',
-    '今日宜穿柔和色调，感情运势上升，适合约会',
-  ]
+  const texts = i18n[lang]
+  const luckyColor = texts.luckyColors[Math.floor(Math.random() * texts.luckyColors.length)]
+  const tip = texts.fortuneTips[Math.floor(Math.random() * texts.fortuneTips.length)]
+  
   return {
     zodiac,
     overall: 3 + Math.floor(Math.random() * 3),
@@ -40,10 +109,10 @@ export async function fetchFortune(zodiac: ZodiacSign): Promise<FortuneData> {
     career: 2 + Math.floor(Math.random() * 4),
     wealth: 2 + Math.floor(Math.random() * 4),
     health: 3 + Math.floor(Math.random() * 3),
-    luckyColor: luckyColors[Math.floor(Math.random() * luckyColors.length)],
+    luckyColor,
     luckyNumber: Math.floor(Math.random() * 9) + 1,
-    todayTip: tips[Math.floor(Math.random() * tips.length)],
-    summary: `${zodiac}今日整体运势不错，保持积极心态，好事连连。`,
+    todayTip: tip,
+    summary: texts.fortuneSummary.replace('{zodiac}', zodiac),
   }
 }
 
@@ -51,9 +120,11 @@ export async function fetchFortune(zodiac: ZodiacSign): Promise<FortuneData> {
 export async function generateOOTD(
   wardrobeItems: ClothingItem[],
   weather: WeatherData,
-  fortune: FortuneData
+  fortune: FortuneData,
+  lang: Lang = 'zh'
 ): Promise<OOTDOutfit[]> {
-  await delay(2000) // 模拟AI生成时间
+  await delay(2000)
+  const texts = i18n[lang]
 
   // 使用用户的衣橱数据，如果没有则使用默认数据
   const items = wardrobeItems.length > 0 ? wardrobeItems : getMockClothingItems()
@@ -66,87 +137,81 @@ export async function generateOOTD(
   const shoes = items.filter(i => i.category === '鞋子')
   const accessories = items.filter(i => i.category === '配饰')
 
-  const styles = ['通勤风', '休闲风', '约会风', '运动风', '复古风']
-  const occasions = ['日常通勤', '休闲外出', '约会聚餐', '运动健身', '逛街购物']
-  const comments = [
-    `这套搭配完美契合今日${weather.condition}的天气，气温${weather.temperature.current}°C穿着舒适。${fortune.luckyColor}的点缀呼应了${fortune.zodiac}的幸运色，自信出门，好运随行✨`,
-    `经典利落的${styles[1]}穿搭，在${weather.condition}的天气中既保暖又不失时髦。简约的配色更显身材，是打工人的最佳选择💼`,
-    `浪漫气息扑面而来！柔和的色调与今日"${fortune.todayTip.substring(0, 10)}..."的运势暗示完美呼应，遇见美好的一天就从这套开始🌸`,
-  ]
-
-  // 根据用户衣橱动态生成搭配方案
   const outfits: OOTDOutfit[] = []
-
-  // 生成条件：上衣+下装，或连衣裙，鞋子为选配
 
   // 方案1：通勤风（上衣+下装）
   if (tops.length > 0 && bottoms.length > 0) {
     outfits.push({
       id: '1',
-      name: '清新通勤look',
-      style: '通勤风',
+      name: texts.outfitNames[0],
+      style: texts.styles[0],
       items: {
         top: tops[0],
         bottom: bottoms[0],
         shoes: shoes.length > 0 ? shoes[0] : undefined,
         outerwear: outerwears.length > 0 ? outerwears[0] : undefined,
       },
-      aiComment: comments[0],
-      occasion: occasions[0],
-      luckyReason: `融入了${fortune.luckyColor}，为你带来桃花运加持`,
+      aiComment: texts.aiComments[0]
+        .replace('{condition}', weather.condition)
+        .replace('{temp}', String(weather.temperature.current))
+        .replace('{luckyColor}', fortune.luckyColor)
+        .replace('{zodiac}', fortune.zodiac),
+      occasion: texts.occasions[0],
+      luckyReason: texts.luckyReasons[0].replace('{luckyColor}', fortune.luckyColor),
       score: 4.8,
     })
   }
 
-  // 方案2：休闲风（上衣+下装第二套组合）
+  // 方案2：休闲风
   if (tops.length > 1 && bottoms.length > 1) {
     outfits.push({
       id: '2',
-      name: '时髦休闲风',
-      style: '休闲风',
+      name: texts.outfitNames[1],
+      style: texts.styles[1],
       items: {
         top: tops[1],
         bottom: bottoms[1],
         shoes: shoes.length > 0 ? shoes[0] : undefined,
         outerwear: outerwears.length > 0 ? outerwears[0] : undefined,
       },
-      aiComment: comments[1],
-      occasion: occasions[1],
+      aiComment: texts.aiComments[1]
+        .replace('{style}', texts.styles[1])
+        .replace('{condition}', weather.condition),
+      occasion: texts.occasions[1],
       score: 4.5,
     })
   }
 
-  // 方案3：约会风（连衣裙优先，否则用上衣+下装）
+  // 方案3：约会风
   if (dresses.length > 0) {
     outfits.push({
       id: '3',
-      name: '约会浪漫风',
-      style: '约会风',
+      name: texts.outfitNames[2],
+      style: texts.styles[2],
       items: {
         dress: dresses[0],
         shoes: shoes.length > 0 ? shoes[0] : undefined,
         accessories: accessories.length > 0 ? [accessories[0]] : undefined,
       },
-      aiComment: comments[2],
-      occasion: occasions[2],
-      luckyReason: '整体配色呼应今日运势，爱情运UP',
+      aiComment: texts.aiComments[2],
+      occasion: texts.occasions[2],
+      luckyReason: texts.luckyReasons[1],
       score: 4.9,
     })
   } else if (tops.length > 0 && bottoms.length > 0) {
-    // 没有连衣裙，用上衣+下装组合
     outfits.push({
       id: '3',
-      name: '简约约会风',
-      style: '约会风',
+      name: texts.outfitNames[3],
+      style: texts.styles[2],
       items: {
         top: tops[tops.length - 1],
         bottom: bottoms[bottoms.length - 1],
         shoes: shoes.length > 0 ? shoes[0] : undefined,
         accessories: accessories.length > 0 ? [accessories[0]] : undefined,
       },
-      aiComment: comments[2],
-      occasion: occasions[2],
-      luckyReason: '整体配色呼应今日运势，爱情运UP',
+      aiComment: texts.aiComments[2],
+      occasion: texts.occasions[2],
+      luckyReason: texts.luckyReasons[1],
       score: 4.7,
     })
   }
@@ -156,16 +221,20 @@ export async function generateOOTD(
     const mockItems = getMockClothingItems()
     outfits.push({
       id: '1',
-      name: '清新通勤look',
-      style: '通勤风',
+      name: texts.outfitNames[0],
+      style: texts.styles[0],
       items: {
         top: mockItems.find(i => i.category === '上衣'),
         bottom: mockItems.find(i => i.category === '下装'),
         shoes: mockItems.find(i => i.category === '鞋子'),
       },
-      aiComment: comments[0],
-      occasion: occasions[0],
-      luckyReason: `融入了${fortune.luckyColor}，为你带来桃花运加持`,
+      aiComment: texts.aiComments[0]
+        .replace('{condition}', weather.condition)
+        .replace('{temp}', String(weather.temperature.current))
+        .replace('{luckyColor}', fortune.luckyColor)
+        .replace('{zodiac}', fortune.zodiac),
+      occasion: texts.occasions[0],
+      luckyReason: texts.luckyReasons[0].replace('{luckyColor}', fortune.luckyColor),
       score: 4.8,
     })
   }

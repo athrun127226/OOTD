@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore, useOOTDStore, useWardrobeStore } from '@/store'
 import { fetchWeather, fetchFortune, generateOOTD } from '@/services/mockApi'
+import type { Lang } from '@/services/mockApi'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { OOTDOutfit, ZodiacSign } from '@/types'
@@ -148,10 +149,11 @@ export default function HomePage() {
   useEffect(() => {
     const init = async () => {
       if (!user) return
+      const lang: Lang = isEn ? 'en' : 'zh'
       try {
         const [weatherData, fortuneData] = await Promise.all([
-          fetchWeather(user.city || '上海'),
-          fetchFortune(user.zodiac || '天秤座'),
+          fetchWeather(user.city || '上海', lang),
+          fetchFortune(user.zodiac || '天秤座', lang),
         ])
         setWeather(weatherData)
         setFortune(fortuneData)
@@ -162,14 +164,15 @@ export default function HomePage() {
       }
     }
     init()
-  }, [user, setWeather, setFortune])
+  }, [user, setWeather, setFortune, isEn])
 
   const handleGenerate = async () => {
     if (status === 'loading') return
     setStatus('loading')
     setError(null)
+    const lang: Lang = isEn ? 'en' : 'zh'
     try {
-      const results = await generateOOTD(wardrobeItems, weather!, fortune!)
+      const results = await generateOOTD(wardrobeItems, weather!, fortune!, lang)
       setOutfits(results)
       setStatus('success')
       setActiveOutfitIndex(0)

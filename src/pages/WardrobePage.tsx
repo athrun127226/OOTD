@@ -27,12 +27,6 @@ const categoryTranslations: Record<ClothingCategory, { zh: string; en: string }>
   '配饰': { zh: '配饰', en: 'Accessories' },
 }
 
-// 英文转中文
-const enToZhCategory: Record<string, ClothingCategory> = {
-  'Tops': '上衣', 'Bottoms': '下装', 'Outerwear': '外套',
-  'Dresses': '连衣裙', 'Shoes': '鞋子', 'Accessories': '配饰'
-}
-
 function ClothingCard({
   item,
   onDelete,
