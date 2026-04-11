@@ -22,11 +22,12 @@ function AppContent() {
       console.log('[App] 认证状态变化:', user ? `用户 ${user.email}` : '未登录')
       
       if (user) {
-        // 获取当前已有的用户数据，避免覆盖用户的个性化设置
+        // 获取当前已有的用户数据
         const currentUser = useAuthStore.getState().user
+        const updateProfile = useAuthStore.getState().updateProfile
         
-        // 只有在用户不存在时才创建新用户（首次登录）
         if (!currentUser || currentUser.id !== user.uid) {
+          // 首次登录：创建新用户
           login(
             {
               id: user.uid,
@@ -41,6 +42,9 @@ function AppContent() {
             },
             ''
           )
+        } else if (!currentUser.createdAt) {
+          // 旧用户缺少注册时间：补充注册时间
+          updateProfile({ createdAt: new Date().toISOString() })
         }
       }
       setInitialized(true)
