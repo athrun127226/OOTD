@@ -35,8 +35,9 @@ export default function PayPalButton({ plan, onSuccess }: PayPalButtonProps) {
           label: 'pay',
           height: 48,
         }}
-        createOrder={(data, actions) => {
+        createOrder={(_data, actions) => {
           return actions.order.create({
+            intent: 'CAPTURE',
             purchase_units: [
               {
                 description,
@@ -48,7 +49,7 @@ export default function PayPalButton({ plan, onSuccess }: PayPalButtonProps) {
             ],
           })
         }}
-        onApprove={async (data, actions) => {
+        onApprove={async (_data, actions) => {
           if (!actions.order) return
           
           setIsProcessing(true)
