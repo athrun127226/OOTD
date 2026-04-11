@@ -38,10 +38,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                 : 'border-muted hover:border-muted/80'
             }`}
           >
-            <div className="text-2xl font-bold text-primary">$1.50</div>
-            <div className="text-sm text-muted-foreground">
-              {t('payment.monthlyDesc')}
-            </div>
+            <div className="text-2xl font-bold text-primary">{t('payment.monthlyPrice')}</div>
             <div className="text-xs text-muted-foreground mt-1">
               {t('payment.monthly')}
             </div>
@@ -57,10 +54,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">
               {t('payment.savePercent')}
             </span>
-            <div className="text-2xl font-bold text-primary">$12</div>
-            <div className="text-sm text-muted-foreground">
-              {t('payment.yearlyDesc')}
-            </div>
+            <div className="text-2xl font-bold text-primary">{t('payment.yearlyPrice')}</div>
             <div className="text-xs text-muted-foreground mt-1">
               {t('payment.yearly')}
             </div>
