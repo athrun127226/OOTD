@@ -37,7 +37,7 @@ export function getCurrentLanguage(): 'zh' | 'en' {
 export function getPaymentConfig(lang: 'zh' | 'en') {
   if (lang === 'zh') {
     return {
-      currency: 'USD',
+      currency: 'USD', // PayPal 不支持 CNY，暂用 USD
       monthly: { amount: '1.50', display: '$1.50/月' },
       yearly: { amount: '12.00', display: '$12/年' },
     }
