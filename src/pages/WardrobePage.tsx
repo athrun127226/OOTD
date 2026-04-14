@@ -38,23 +38,23 @@ function ClothingCard({
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-muted group card-hover cursor-pointer"
+      className="relative rounded-2xl overflow-hidden bg-card border border-border group cursor-pointer transition-all hover:shadow-lg hover:shadow-primary/10"
       onMouseEnter={() => setShowDelete(true)}
       onMouseLeave={() => setShowDelete(false)}
     >
-      <div className="aspect-square">
-        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+      <div className="aspect-square bg-muted/50">
+        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
-      <div className="p-2">
-        <p className="text-xs font-medium truncate">{item.name}</p>
-        <p className="text-xs text-muted-foreground">{item.color}</p>
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 pt-6">
+        <p className="text-xs font-medium text-white truncate">{item.name}</p>
+        <p className="text-xs text-white/70">{item.color}</p>
       </div>
       {showDelete && (
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(item.id) }}
-          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-destructive text-white flex items-center justify-center text-xs hover:bg-destructive/90 transition-all shadow-md"
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center text-sm hover:bg-destructive transition-all shadow-md"
         >
-          ×
+          ✕
         </button>
       )}
     </div>
@@ -203,36 +203,35 @@ export default function WardrobePage() {
   }
 
   return (
-    <div className="min-h-screen pb-28">
+    <div className="min-h-screen pb-28 bg-background">
       <div className="max-w-lg mx-auto px-4 pt-6">
-        {/* 头部 */}
-        <div className="flex items-center justify-between mb-5">
+        {/* 头部 - 现代简约风格 */}
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold">{t('wardrobe.title')}</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
+            <h1 className="text-2xl font-bold text-foreground">{t('wardrobe.title')}</h1>
+            <p className="text-sm text-muted-foreground mt-1">
               {t('wardrobe.itemCount', { count: items.length })}
             </p>
           </div>
-          <Button
+          <button
             onClick={() => setShowUpload(true)}
-            size="sm"
-            className="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 shadow-md"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white font-medium text-sm shadow-md hover:bg-primary/90 transition-all hover:-translate-y-0.5"
           >
-            + {t('wardrobe.addItem')}
-          </Button>
+            <span className="text-lg">+</span> {t('wardrobe.addItem')}
+          </button>
         </div>
 
-        {/* 分类筛选 */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+        {/* 分类筛选 - 现代标签样式 */}
+        <div className="flex gap-2 overflow-x-auto pb-3 mb-5 scrollbar-hide">
           <button
             onClick={() => setActiveCategory('all')}
-            className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               activeCategory === 'all'
-                ? 'bg-primary text-primary-foreground shadow-md'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                ? 'bg-primary text-white shadow-md shadow-primary/30'
+                : 'bg-secondary text-muted-foreground hover:bg-secondary/80'
             }`}
           >
-            {isEn ? 'All' : '全部'} ({items.length})
+            {isEn ? 'All' : '全部'} <span className="ml-1 opacity-70">({items.length})</span>
           </button>
           {categories.map((cat) => {
             const count = items.filter((i) => i.category === cat).length
@@ -240,13 +239,13 @@ export default function WardrobePage() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
                   activeCategory === cat
-                    ? 'bg-primary text-primary-foreground shadow-md'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    ? 'bg-primary text-white shadow-md shadow-primary/30'
+                    : 'bg-secondary text-muted-foreground hover:bg-secondary/80'
                 }`}
               >
-                {categoryEmojis[cat]} {getCategoryLabel(cat)} {count > 0 && `(${count})`}
+                {categoryEmojis[cat]} {getCategoryLabel(cat)} {count > 0 && <span className="ml-1 opacity-70">({count})</span>}
               </button>
             )
           })}

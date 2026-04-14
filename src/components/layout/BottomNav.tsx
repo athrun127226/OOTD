@@ -37,29 +37,28 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40">
-      {/* Blur background */}
-      <div className="absolute inset-0 glass border-t border-border" />
+      {/* 现代毛玻璃背景 */}
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border-t border-border/50" />
       
-      <div className="relative max-w-lg mx-auto flex items-center justify-around px-4 pt-2 pb-safe-area-inset-bottom">
+      <div className="relative max-w-lg mx-auto flex items-center justify-around px-6 pt-2 pb-safe-area-inset-bottom">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path
           return (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center gap-0.5 py-2 px-5 rounded-2xl transition-all ${
+              className={`relative flex flex-col items-center gap-1 py-2.5 px-6 rounded-2xl transition-all ${
                 isActive
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              {item.icon(isActive)}
+              <div className={`p-2 rounded-xl transition-all ${isActive ? 'bg-primary/10' : ''}`}>
+                {item.icon(isActive)}
+              </div>
               <span className={`text-xs font-medium ${isActive ? 'text-primary' : ''}`}>
                 {t(item.labelKey)}
               </span>
-              {isActive && (
-                <span className="absolute -bottom-0 w-8 h-0.5 bg-primary rounded-full" />
-              )}
             </Link>
           )
         })}

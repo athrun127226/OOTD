@@ -63,28 +63,28 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen pb-28">
+    <div className="min-h-screen pb-28 bg-background">
       <div className="max-w-lg mx-auto px-4 pt-6 space-y-5">
         {/* 顶部标题 */}
-        <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t('profile.title')}</h1>
 
-        {/* 用户信息卡 */}
-        <div className="glass rounded-3xl p-6 shadow-md animate-slide-up">
+        {/* 用户信息卡 - 现代白色卡片 */}
+        <div className="bg-card rounded-2xl p-6 border border-border shadow-sm animate-slide-up">
           <div className="flex items-center gap-4 mb-5">
-            {/* 头像 */}
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+            {/* 头像 - 紫色渐变 */}
+            <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-primary/30">
               {user.name?.charAt(0)?.toUpperCase() || '?'}
             </div>
             <div>
-              <h2 className="text-lg font-bold">{user.name}</h2>
+              <h2 className="text-lg font-bold text-foreground">{user.name}</h2>
               <p className="text-sm text-muted-foreground">{user.email}</p>
               <div className="flex items-center gap-2 mt-1">
                 {user.isPro ? (
-                  <span className="text-xs bg-gradient-to-r from-amber-400 to-orange-500 text-white px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-xs bg-primary text-white px-2.5 py-1 rounded-full font-medium">
                     {t('profile.proMember')}
                   </span>
                 ) : (
-                  <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-secondary text-muted-foreground px-2.5 py-1 rounded-full">
                     {t('profile.freeMember')}
                   </span>
                 )}

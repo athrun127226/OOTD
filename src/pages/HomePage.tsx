@@ -188,15 +188,15 @@ export default function HomePage() {
     ))
 
   return (
-    <div className="min-h-screen pb-24">
-      {/* Hero gradient background */}
-      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-pink-100/60 to-transparent dark:from-pink-950/30 pointer-events-none" />
+    <div className="min-h-screen pb-24 bg-background">
+      {/* 现代简约背景 */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
       
       <div className="relative max-w-lg mx-auto px-4 pt-6 space-y-5">
         {/* 顶部问候 */}
         <div className="animate-fade-in">
           <p className="text-muted-foreground text-sm">{t('home.greeting')}</p>
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold text-foreground">
             {t('home.title', { name: user?.name || (isEn ? 'Fashionista' : '时髦达人') })}
           </h1>
         </div>
@@ -210,17 +210,17 @@ export default function HomePage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 animate-slide-up">
-            {/* 天气卡片 */}
+            {/* 天气卡片 - 现代白色卡片 */}
             {weather && (
-              <div className="glass rounded-2xl p-4 shadow-md">
+              <div className="bg-card rounded-2xl p-4 border border-border shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-2xl">{weatherIcons[weather.conditionCode] || '🌤️'}</span>
                   <div>
                     <p className="text-xs text-muted-foreground">{weather.city}</p>
-                    <p className="font-semibold text-sm">{weather.condition}</p>
+                    <p className="font-medium text-sm">{weather.condition}</p>
                   </div>
                 </div>
-                <p className="text-2xl font-bold">{weather.temperature.current}°C</p>
+                <p className="text-2xl font-bold text-primary">{weather.temperature.current}°C</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {weather.temperature.min}° ~ {weather.temperature.max}° · {weather.windDirection}
                 </p>
@@ -229,7 +229,7 @@ export default function HomePage() {
             
             {/* 运势卡片 */}
             {fortune && (
-              <div className="glass rounded-2xl p-4 shadow-md">
+              <div className="bg-card rounded-2xl p-4 border border-border shadow-sm">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs text-muted-foreground">
                     {isEn && zodiacTranslations[fortune.zodiac as ZodiacSign] 
@@ -255,12 +255,12 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* 核心 CTA 按钮 */}
+        {/* 核心 CTA 按钮 - 现代紫色渐变 */}
         <div className="flex flex-col items-center gap-3 py-4 animate-slide-up">
-          <Button
+          <button
             onClick={handleGenerate}
             disabled={status === 'loading' || !weather || !fortune}
-            className="w-full h-16 text-lg font-bold rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:from-pink-600 hover:via-rose-600 hover:to-purple-700 shadow-xl hover:shadow-2xl border-0 relative overflow-hidden group"
+            className="w-full h-16 text-lg font-bold rounded-2xl bg-primary text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {status === 'loading' ? (
               <span className="flex items-center gap-3">
@@ -276,8 +276,7 @@ export default function HomePage() {
                 {t('home.generate')}
               </span>
             )}
-            <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Button>
+          </button>
           
           {wardrobeItems.length === 0 && (
             <p className="text-xs text-muted-foreground text-center">
