@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wardrobe | Celestial Advisor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f6f3ec",
+                    "background": "#fcf9f2",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e5e2db",
+                    "on-background": "#1c1c18",
+                    "inverse-on-surface": "#f3f0e9",
+                    "primary-container": "#657c3e",
+                    "error-container": "#ffdad6",
+                    "primary": "#4d6328",
+                    "surface-container-high": "#ebe8e1",
+                    "on-secondary-container": "#745c00",
+                    "secondary": "#735c00",
+                    "on-surface": "#1c1c18",
+                    "tertiary-fixed": "#f0dbff",
+                    "surface-bright": "#fcf9f2",
+                    "primary-fixed-dim": "#b6d088",
+                    "primary-fixed": "#d2eca2",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#31312c",
+                    "secondary-fixed-dim": "#e9c349",
+                    "on-tertiary-fixed": "#241433",
+                    "on-primary-container": "#faffe8",
+                    "tertiary-container": "#806d91",
+                    "on-primary-fixed": "#131f00",
+                    "secondary-fixed": "#ffe088",
+                    "secondary-container": "#fed65b",
+                    "outline": "#75786e",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c5c8bc",
+                    "surface-dim": "#dcdad3",
+                    "surface-container": "#f1eee7",
+                    "on-primary-fixed-variant": "#394d14",
+                    "surface-tint": "#50652a",
+                    "on-tertiary-fixed-variant": "#514061",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#fffbff",
+                    "on-secondary-fixed": "#241a00",
+                    "surface-container-highest": "#e5e2db",
+                    "on-surface-variant": "#45483f",
+                    "inverse-primary": "#b6d088",
+                    "tertiary": "#675577",
+                    "tertiary-fixed-dim": "#d5bee6",
+                    "surface": "#fcf9f2",
+                    "on-secondary-fixed-variant": "#574500",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #fcf9f2;
+            font-family: 'Manrope', sans-serif;
+        }
+        .serif-text {
+            font-family: 'Newsreader', serif;
+        }
+        .aspect-portrait {
+            aspect-ratio: 3 / 4;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f2] dark:bg-stone-950 flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto top-0 sticky z-40">
+<div class="text-2xl font-serif italic text-[#4d6328] dark:text-[#7d8f69] font-headline">Celestial Advisor</div>
+<div class="hidden md:flex gap-8 items-center">
+<nav class="flex gap-6">
+<a class="text-[#735c00] dark:text-[#a68b00] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors px-2 py-1 font-label" href="#">Profile</a>
+<a class="text-[#4d6328] dark:text-[#7d8f69] font-bold border-b-2 border-[#4d6328] px-2 py-1 font-label" href="#">Wardrobe</a>
+<a class="text-[#735c00] dark:text-[#a68b00] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors px-2 py-1 font-label" href="#">Lookbook</a>
+<a class="text-[#735c00] dark:text-[#a68b00] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors px-2 py-1 font-label" href="#">Ask AI</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#4d6328] cursor-pointer">wb_sunny</span>
+<span class="material-symbols-outlined text-[#4d6328] cursor-pointer">auto_awesome</span>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant/30" data-alt="close-up portrait of a person with a serene expression, soft natural lighting, earthy toned clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZV4iLPXf5JW1FlRRmiZ6dCz8kbZL-CHFSZXvtFB8IoueQGDCjBEXCIyoncma5BTR_LUQvljz_AJG2mP0gGU6K021or-Qc_xg-vItmc89ewd-CdDYzjUPI8KaaFEIBQlARIGcBzkV35aoIPrnvehkAftBCvb-yBnnlPA2VyJw6HTOx-ngwJaQqO02Sv1LOCBv6HdozRTFk-MOCgDd_KLU4qMVbnjs0jDPaiQGJXk1kh-ZeqAkuP8mNifNNYVS7kuOwQDJmoqKtnKw"/>
+</div>
+</div>
+<div class="md:hidden flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+</header>
+<main class="flex-grow w-full max-w-screen-2xl mx-auto px-6 pt-8 pb-32">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<h1 class="text-5xl md:text-7xl font-headline serif-text text-on-background mb-4">The Wardrobe</h1>
+<p class="text-on-surface-variant max-w-2xl font-body leading-relaxed">
+                A curated repository of your earthly garments, cataloged for celestial alignment. Each piece is measured against the elements and the stars to ensure your presence is always in harmony.
+            </p>
+</section>
+<!-- Filter Bar -->
+<section class="mb-10 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex flex-wrap gap-3">
+<div class="group relative">
+<button class="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
+                        Season <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<div class="group relative">
+<button class="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
+                        Type <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+<div class="group relative">
+<button class="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
+                        Frequency <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<button class="flex items-center gap-2 text-primary font-bold font-label hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">add_circle</span>
+                UPLOAD NEW PIECE
+            </button>
+</section>
+<!-- Wardrobe Grid -->
+<section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-6 md:gap-x-8">
+<!-- Card 1 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="high-quality editorial shot of a sage green linen trench coat hanging against a textured cream plaster wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOTEy5PzcrjmsgiSeU9cI-dTIUHuMV-Bw5Si8aDW-kXbX6xEj2X061CQuqHgIGMrxTrT7MbkaHxVYpdV7vyQZ8nwMdBHjlHW4BGehj-c5Y66zZMUZAgQ27MjUdEp0g-ZFoGq6MDAvt2eIiEzB60N1F27vKfu4RVjCfiQf5fH4YX4eVx1QjwMYuKKwTqOKIhDL4xb41Z0iLJPD2ixKhCmT5za0LrazP-USwnu8lP1PC-_6nmQUKUQpEDrIjoY5CN7Jhq_Wu8UrJUe8"/>
+<div class="absolute top-3 right-3">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label">Solar</span>
+</div>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Linen Sage Duster</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 18° - 24°C</span>
+<span class="text-[10px] text-tertiary font-label mt-1">Rarely Worn</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col gap-3 group md:translate-y-6">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="overhead flat lay of a thick cream knit wool sweater on organic cotton fabric with soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-PBtQ8Pgc_OV9t6DkVPhVOfv50PAgV_doQdXLpMvt--3bjUKmbPAx9vY9Quxwn86SBT_-GCA67ESdSC1-Qfrklt5zl9Es1VS9tpMRmqvdXT2cw3238_kTiCGBNWiOKzJMbnWolDKQtI7pMaBHVA-eBVyJpH8AYLnCsrGXvfHMchBn5P-7o7anyOR1wjyA0zG-TQF-lYRjhysn9wL52H39ULaxFr77qJWORalrEm2eDREyZET2qOR6Ymfok5makWaok0u7d_CBlIk"/>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Aran Wool Tunic</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 2° - 10°C</span>
+<span class="text-[10px] text-primary font-label mt-1">Daily Essential</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="minimalist studio shot of dark indigo raw denim trousers folded neatly on a wooden stool" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmrxoPcAIrgrF84rD12mlw3N0XFz1cfPXMKGVsKkEFo_P2S-iq4F9ulgqG8-iV9h9Th0CVkUzSkOrhoAdvKZJ30QH10HebMUgz4R4MPFJJdIDSRZ95kEz5GE2Zbzja2HIvr0O33lhdLCYOq9n7_WCQZcSXlRb1a1kfHU3-7fULW1F7Jbpf6-ViJxAAwFEfRCqOy8MxTdhOf2IyU1o-mNKcmrUeLD1jr3mpcwqHdYbm6MgdtLbI6QAzRP2QVW5VO_kCpf3JrQqFgqA"/>
+<div class="absolute top-3 right-3">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label">Lunar</span>
+</div>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Raw Indigo Selvedge</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 10° - 20°C</span>
+<span class="text-[10px] text-primary font-label mt-1">Frequent</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="flex flex-col gap-3 group md:translate-y-6">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="soft focus photo of a silk amber colored slip dress draped over a vintage velvet chair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYQqYLwxrBO-W3zEF0xhM0V4FuxOfjk1BGFpXEd8Ly5Dg4sjT9bOh9IikBH88H66BttisepDU8bLAZXsoooVYn-6m5pWNWD9QM-LBFaaI7_RL9cj4F6CiBjRqnxW28L67BYsT7yh0t0PbcPLAxB6IZy4PeEiM_YwyjjKudr19GROHoImQ1YYs1lrn3LcuoGeRLf0iDqbYphFiL-phXIkn2PZMkNhskEwCR9yn0hGCJJob_JHiFWEsIrpa64jn5Ft95pmn4RQk_wLw"/>
+<div class="absolute top-3 right-3">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label">Venusian</span>
+</div>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Amber Silk Slip</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 22° - 30°C</span>
+<span class="text-[10px] text-tertiary font-label mt-1">Occasional</span>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="textured close up of a charcoal grey cashmere scarf tied in a loose knot on a marble surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZqqQRY8VAZTApTrBu624Npv-OJ7kXrzXrBBHhk5Apqk7v-zf5R5QqNNHkIexBYVSk8j-JJw_FeKW5PzEVFEX6HaYSdn2DEvVvM0Y4joEolpfAF-wEMdX-fCTahfc1xDi1h-Al8fdCmEkMYF8f9l_G0GrzsIqdMtjrBmDyB_Gf08oqNT_TXfNIVbOfv514W6lz5E8nDHkNUJPg4FNwEcg7L60fkK8mI0lxK4DNP6Syk_zw24zZpGDUdNlOcYTcqc-KkAX0sNrlmak"/>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Cloud Cashmere Wrap</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for -5° - 12°C</span>
+<span class="text-[10px] text-primary font-label mt-1">Daily Essential</span>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="flex flex-col gap-3 group md:translate-y-6">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="modern photography of a terracotta cotton t-shirt neatly pressed on a sand-colored background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByiPuS8ymZBm07s9zxWoVyDShN6aqt4bu0jPg0TMevAPBLYSBUIR1GmAcKUo8xky0TcFqDJBCxb6SOo4bAgN1cXXnlmj11dk4P0bpZZlftf8m7pqC8RIJuxc0QLDbBaq-lZ3A90m8O2SGfepNXAx-odjcoShWIDvFTxXdkcF6LKM36jXI8ViAdJKFYAkk9YqbrQNisFfYjQBnJvYZp8fRVYNUoXMBN6iTAsuL4O1R6cncXXP2i7I8mk5f-4iK8a5rS33KdQ6kic0k"/>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Earth Core Tee</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 20° - 35°C</span>
+<span class="text-[10px] text-primary font-label mt-1">Frequent</span>
+</div>
+</div>
+</div>
+<!-- Card 7 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="full length view of a structured olive utility jacket with multiple pockets, slightly worn look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8OuOzzISViyk2o5eaVpKA6VK454Ptq3ul04pNpMjSy_jI8G0hOA5JtKRA__S49gvIrNnBH8cZEHRtWigfD-vzeFfGDfFKDXOkE74j-vjgUv5D73YvEs5aPweG2xFzsoyJJlrZMNLUCKuYzrmYcFlyrnUzh1-1BYJ9fDP8RyTXh5DdbSfb1zrxeVhWzYSh9tgI4pbZc46d_MQ47eEjuktIq8Fs-blR7vEGrDo13_Y46q3wVHT9fQbl28fvE-YaXUtx_S6muYPeUiY"/>
+<div class="absolute top-3 right-3">
+<span class="bg-primary-container text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label">Saturnian</span>
+</div>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Field Master Jacket</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 12° - 22°C</span>
+<span class="text-[10px] text-primary font-label mt-1">Frequent</span>
+</div>
+</div>
+</div>
+<!-- Card 8 -->
+<div class="flex flex-col gap-3 group md:translate-y-6">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full aspect-portrait object-cover" data-alt="ethereal shot of a light cream pleated skirt catching a gentle breeze in a field of dry grass" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNV-FhhpdN8WAMztl5E5eHDbVNkPDqdnOn-xNduYZPsbVbbI3H_FLVyDlYKcWMbO5g8g8LDwnPtp0D2wer-ctka3Rx5ZRGs0J4TQH7yMKdQDrBh6XopUxJm4e7WJ8qJqrQs95tlCZt-0iGppJQISZx0yEw-zcZhiLpNM-tJYixczzxb-zI9ns2tNgbbayHGx6XvsbKYFST-jzFfKm-xfTKOcPs3TOF0DcrRMkxRG74T7rf3MBXDyX_ylqpIn5Hs-4n-YzKL0Ni3s8"/>
+</div>
+<div class="px-1">
+<h3 class="font-headline text-xl text-on-background">Breeze Pleated Midi</h3>
+<div class="flex flex-col mt-1">
+<span class="text-[11px] text-on-surface-variant font-label uppercase tracking-wider">Best for 15° - 25°C</span>
+<span class="text-[10px] text-tertiary font-label mt-1">Occasional</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Visible on mobile only as per responsive pivot) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fcf9f2]/90 dark:bg-stone-950/90 backdrop-blur-xl shadow-[0_-4px_24px_0_rgba(0,0,0,0.06)] rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center text-[#735c00] dark:text-stone-400 opacity-70 transition-opacity hover:opacity-100">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[11px] uppercase tracking-widest font-medium font-label mt-1">Profile</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#657c3e] dark:bg-[#4d6328] text-white rounded-full w-14 h-14 -translate-y-2 transition-transform scale-95 duration-300">
+<span class="material-symbols-outlined">checkroom</span>
+<span class="text-[8px] uppercase tracking-tighter font-bold">Wardrobe</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735c00] dark:text-stone-400 opacity-70 transition-opacity hover:opacity-100">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[11px] uppercase tracking-widest font-medium font-label mt-1">Lookbook</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#735c00] dark:text-stone-400 opacity-70 transition-opacity hover:opacity-100">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storm</span>
+<span class="text-[11px] uppercase tracking-widest font-medium font-label mt-1">Ask AI</span>
+</div>
+</nav>
+</body></html>

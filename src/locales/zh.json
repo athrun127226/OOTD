@@ -1,3 +1,155 @@
-{"common": {"loading": "加载中...", "save": "保存", "cancel": "取消", "edit": "编辑"}, "auth": {"login": "登录", "register": "注册", "logout": "退出登录", "email": "邮箱", "password": "密码", "googleLogin": "使用 Google 登录"}, "nav": {"home": "首页", "wardrobe": "衣橱", "profile": "我的"}, "profile": {"title": "个人中心", "editProfile": "编辑资料", "nickname": "昵称", "city": "所在城市", "zodiac": "我的星座", "registerDate": "注册时间", "proMember": "Pro会员", "freeMember": "免费版", "credits": "穿搭币", "upgradePro": "升级 Pro 会员", "proFeatures": {"title": "解锁无限可能", "unlimited": "无限衣橱容量", "dailyUnlimited": "每日无限次生成", "aiCutout": "AI智能抠图", "styleCustomize": "穿搭风格定制", "noWatermark": "无水印分享海报"}, "monthly": "¥9.9/月", "yearly": "¥88/年", "upgradeNow": "立即升级",
+{
+  "app": {
+    "title": "OOTD助手",
+    "subtitle": "每日穿搭顾问"
+  },
+  "common": {
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "edit": "编辑"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "email": "邮箱",
+    "password": "密码",
+    "googleLogin": "使用 Google 登录"
+  },
+  "user": {
+    "defaultName": "用户"
+  },
+  "nav": {
+    "home": "首页",
+    "wardrobe": "衣橱",
+    "profile": "个人中心",
+    "lookbook": "穿搭集",
+    "askAI": "AI生成",
+    "settings": "设置",
+    "support": "帮助",
+    "dailyInsight": "今日灵感"
+  },
+  "profile": {
+    "title": "个人中心",
+    "editProfile": "编辑资料",
+    "nickname": "昵称",
+    "city": "所在城市",
+    "zodiac": "我的星座",
+    "registerDate": "注册时间",
+    "proMember": "Pro会员",
+    "freeMember": "免费版",
+    "credits": "穿搭币",
+    "upgradePro": "升级 Pro 会员",
+    "proFeatures": {
+      "title": "解锁无限可能",
+      "unlimited": "无限衣橱容量",
+      "dailyUnlimited": "每日无限次生成",
+      "aiCutout": "AI智能抠图",
+      "styleCustomize": "穿搭风格定制",
+      "noWatermark": "无水印分享海报"
+    },
+    "monthly": "¥9.9/月",
+    "yearly": "¥88/年",
+    "upgradeNow": "立即升级",
     "monthlyPrice": "¥9.9/月",
-    "yearlyPrice": "¥88/年", "history": "穿搭历史", "notifications": "消息通知", "security": "账号安全", "about": "关于我们", "language": "语言设置", "languageDesc": "切换界面语言"}, "home": {"greeting": "早上好", "subtitle": "今天穿什么？", "weather": "天气", "fortune": "运势", "luckyColor": "幸运色", "generate": "救命！一键生成今日OOTD", "regenerate": "重新生成", "share": "分享OOTD", "todayOutfit": "今日穿搭方案", "plans": "套", "generating": "AI正在为你搭配中...", "tip": "提示：先去衣橱页添加你的衣服，AI会基于你的实际单品来搭配"}, "wardrobe": {"title": "我的衣橱", "addItem": "添加衣物", "category": "分类", "color": "颜色", "style": "风格", "tags": "标签", "noItems": "还没有添加衣物", "addItemTip": "点击下方按钮添加你的第一件衣服"}, "payment": {"choosePlan": "选择套餐", "title": "升级 Pro 会员", "monthly": "月度订阅", "yearly": "年度订阅", "monthlyPrice": "¥9.9", "yearlyPrice": "¥88", "monthlyDesc": "¥9.9/月", "yearlyDesc": "¥88/年", "savePercent": "省 ¥60", "payWithPayPal": "使用 PayPal 支付", "terms": "支付即表示同意我们的服务条款，可随时取消订阅"}}
+    "yearlyPrice": "¥88/年",
+    "history": "穿搭历史",
+    "notifications": "消息通知",
+    "security": "账号安全",
+    "about": "关于我们",
+    "language": "语言设置",
+    "languageDesc": "切换界面语言"
+  },
+  "home": {
+    "greeting": "早上好",
+    "subtitle": "今天穿什么？",
+    "weather": "天气",
+    "fortune": "运势",
+    "luckyColor": "幸运色",
+    "generate": "救命！一键生成今日OOTD",
+    "regenerate": "重新生成",
+    "share": "分享OOTD",
+    "todayOutfit": "今日穿搭方案",
+    "plans": "套",
+    "generating": "AI正在为你搭配中...",
+    "tip": "提示：先去衣橱页添加你的衣服，AI会基于你的实际单品来搭配",
+    "emptyWardrobe": {
+      "title": "衣橱空空如也",
+      "message": "请前往添加你的衣物，AI才能为你搭配",
+      "action": "前往衣橱"
+    }
+  },
+  "wardrobe": {
+    "title": "我的衣橱",
+    "addItem": "添加衣物",
+    "category": "分类",
+    "color": "颜色",
+    "style": "风格",
+    "tags": "标签",
+    "noItems": "还没有添加衣物",
+    "addItemTip": "点击下方按钮添加你的第一件衣服"
+  },
+  "payment": {
+    "choosePlan": "选择套餐",
+    "title": "升级 Pro 会员",
+    "monthly": "月度订阅",
+    "yearly": "年度订阅",
+    "monthlyPrice": "¥9.9",
+    "yearlyPrice": "¥88",
+    "monthlyDesc": "¥9.9/月",
+    "yearlyDesc": "¥88/年",
+    "savePercent": "省 ¥60",
+    "payWithPayPal": "使用 PayPal 支付",
+    "terms": "支付即表示同意我们的服务条款，可随时取消订阅"
+  },
+  "lookbook": {
+    "title": "我的穿搭集",
+    "description": "你的个人风格精选集，尘世质感与天体灵感的交汇。每一套穿搭都是你不断演变的审美叙事中的一个篇章。",
+    "filterBy": "筛选",
+    "seasonAutumn": "季节：秋季",
+    "occasion": "场合",
+    "weather": "天气",
+    "preferences": "偏好设置",
+    "aiRecommendation": "AI推荐",
+    "newInspiration": "寻找新灵感？",
+    "newInspirationDesc": "让天体缪斯为你下一次旅程策划一套全新穿搭。",
+    "consultAI": "咨询 ASK AI",
+    "discoveryCompleted": "已完成 {{count}} 套穿搭探索",
+    "loadArchive": "加载档案",
+    "bestFor": "适合 {{temp}}",
+    "saved": "已收藏"
+  },
+  "membership": {
+    "title": "天体会员",
+    "subtitle": "让你的衣橱与星辰对齐。简约精选，灵感无限。",
+    "freePlan": "免费版",
+    "freePrice": "¥0",
+    "monthlyPlan": "月度会员",
+    "yearlyPlan": "年度会员",
+    "mostPopular": "最受欢迎",
+    "savePercent": "省41%",
+    "perMonth": "/ 月",
+    "perYear": "/ 年",
+    "approxMonthly": "约 ¥28/月",
+    "essentialElements": "基础权益",
+    "boundlessStyle": "无界风格",
+    "annualCommitment": "年度承诺",
+    "currentPlan": "当前方案",
+    "upgradeMonthly": "升级月度版",
+    "upgradeAnnually": "升级年度版",
+    "closetLimit": "衣橱容量：",
+    "dailyRecommendations": "每日推荐：",
+    "lookbookSaves": "穿搭收藏：",
+    "askAi": "AI生成：",
+    "unlimited": "无限",
+    "enabled": "已开启",
+    "limited15": "\u226415件",
+    "oneSet": "1套",
+    "fiveSets": "5套",
+    "threeSets": "3套",
+    "quote": "\"3套穿搭，而非30套——因为真正的风格在于清晰，而非选择疲劳。\"",
+    "disclaimer": "AI功能由生成式模型驱动。结果可能因照片质量和光线而异。",
+    "upgradeNow": "立即升级"
+  }
+}

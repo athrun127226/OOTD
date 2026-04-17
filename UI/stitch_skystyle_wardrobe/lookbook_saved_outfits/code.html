@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f3f0e9",
+                    "primary-fixed": "#d2eca2",
+                    "tertiary-container": "#806d91",
+                    "outline": "#75786e",
+                    "on-tertiary-container": "#fffbff",
+                    "on-surface-variant": "#45483f",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#e9c349",
+                    "tertiary-fixed-dim": "#d5bee6",
+                    "secondary-fixed": "#ffe088",
+                    "outline-variant": "#c5c8bc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#574500",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#b6d088",
+                    "surface-variant": "#e5e2db",
+                    "surface-container-high": "#ebe8e1",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#131f00",
+                    "on-primary-container": "#faffe8",
+                    "surface-dim": "#dcdad3",
+                    "tertiary": "#675577",
+                    "surface-tint": "#50652a",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#b6d088",
+                    "background": "#fcf9f2",
+                    "inverse-surface": "#31312c",
+                    "on-secondary-fixed": "#241a00",
+                    "surface-bright": "#fcf9f2",
+                    "secondary-container": "#fed65b",
+                    "on-background": "#1c1c18",
+                    "on-tertiary-fixed": "#241433",
+                    "on-primary-fixed-variant": "#394d14",
+                    "on-tertiary-fixed-variant": "#514061",
+                    "secondary": "#735c00",
+                    "surface-container": "#f1eee7",
+                    "surface-container-low": "#f6f3ec",
+                    "surface": "#fcf9f2",
+                    "tertiary-fixed": "#f0dbff",
+                    "surface-container-highest": "#e5e2db",
+                    "primary-container": "#657c3e",
+                    "on-secondary": "#ffffff",
+                    "primary": "#4d6328",
+                    "on-error": "#ffffff",
+                    "on-surface": "#1c1c18",
+                    "on-secondary-container": "#745c00",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, .font-serif { font-family: 'Newsreader', serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-screen w-72 sticky top-0 bg-surface-container-low py-12 px-6 justify-between shadow-[32px_0_64px_rgba(0,0,0,0.04)] z-20">
+<div class="space-y-12">
+<!-- Brand Logo -->
+<div class="px-4">
+<span class="text-xl font-serif italic text-primary">The Naturalist</span>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col space-y-4">
+<a class="flex items-center gap-4 py-2 text-stone-500 hover:bg-stone-100 transition-colors pl-4" href="#">
+<span class="material-symbols-outlined" data-icon="person_outline">person_outline</span>
+<span class="font-sans tracking-wide">Style Profile</span>
+</a>
+<a class="flex items-center gap-4 py-2 text-stone-500 hover:bg-stone-100 transition-colors pl-4" href="#">
+<span class="material-symbols-outlined" data-icon="checkroom">checkroom</span>
+<span class="font-sans tracking-wide">Wardrobe</span>
+</a>
+<a class="flex items-center gap-4 py-2 text-primary font-bold border-l-2 border-primary pl-4 translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans tracking-wide">Lookbook</span>
+</a>
+<a class="flex items-center gap-4 py-2 text-stone-500 hover:bg-stone-100 transition-colors pl-4" href="#">
+<span class="material-symbols-outlined" data-icon="tempest">storm</span>
+<span class="font-sans tracking-wide">ASK AI</span>
+</a>
+</nav>
+</div>
+<!-- User Profile & CTA -->
+<div class="space-y-6">
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-4 px-6 rounded-xl font-medium shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+                Daily Insight
+            </button>
+<div class="flex items-center gap-4 px-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Julianne" class="w-full h-full object-cover" data-alt="close-up portrait of a serene woman with natural hair and soft sunlight hitting her face, editorial photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYDSl8uPwoZEqdDQN06W8ahkLKzHqyQ27olbWY5K_NDbGWyUgHjO_kN0Li2FooJupo9ByalPm-bsw4JDnaR58FPRXv3AKLF038rX1-EvBHtV44lLsb2NA-06N9T1KRit3XicUhiNNxsGpPsePUl_4TIcdK7ynEA5kmd__onUCa1sJ3NtFbvBG2KaRnUFDezs91L7oqQyuvVfRoGsWomU2Dni5Vhwy9sFfS1GDwbl8PARrrBHhqmMT-HOT4dcquKxwzcHcFCSfSp6A"/>
+</div>
+<div>
+<p class="font-serif text-lg leading-tight">Julianne</p>
+<p class="text-xs font-sans text-stone-500 uppercase tracking-widest">Celestial Muse</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-8 md:px-16 py-12 lg:py-16 max-w-7xl">
+<!-- Header Section -->
+<header class="mb-12 max-w-2xl">
+<h1 class="text-5xl md:text-6xl font-serif text-on-surface mb-6 tracking-tight">Your Lookbook</h1>
+<p class="text-on-surface-variant font-serif italic text-xl leading-relaxed opacity-80">
+                A curated anthology of your personal style, where terrestrial textures meet celestial inspiration. Each ensemble is a chapter in your evolving aesthetic narrative.
+            </p>
+</header>
+<!-- Filters Section -->
+<section class="mb-12 flex flex-wrap items-center gap-3">
+<span class="text-label-md font-sans text-stone-400 mr-2 tracking-widest uppercase text-[10px]">Filter by</span>
+<button class="px-6 py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-sans text-sm hover:opacity-80 transition-opacity">Season: Autumn</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-sans text-sm hover:bg-surface-variant transition-colors">Occasion</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-sans text-sm hover:bg-surface-variant transition-colors">Weather</button>
+<div class="flex-1"></div>
+<button class="flex items-center gap-2 text-primary font-sans text-sm font-semibold">
+<span class="material-symbols-outlined text-lg" data-icon="tune">tune</span>
+                Preferences
+            </button>
+</section>
+<!-- Lookbook Grid (Bento Grid Inspired Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+<!-- Outfit Card 1 -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-surface-container transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+<img alt="Outfit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="full body editorial shot of a woman in an olive silk dress and linen blazer, standing in a sun-drenched stone courtyard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC85PgkyN4CtfYnIboqd45wOKhe32HZpxiG97sFWDTw-gxZEb_RN0fOYmxsXLsGF-PGPw3vw1s1UuARcIF9idvAGT460SPqHTZTyEe1L0ysF8jNI7ZWTgRrKmgjCsNlYk-Z81QvH4e68KuNZHwkJIZ211KuZ-W4qDxrUhVTbpmRypeWjfBmYd87ATqQPiLKHsWCCvJEJjQJjKl6F5QYb-w2JTKmXXdYsGf7OCQi3z2oaOZNEb_0qC1rqF1PH1YTWIZzFt_Gcm3vYLA"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface/80 backdrop-blur-xl px-3 py-1 rounded-full text-[10px] font-sans font-bold tracking-widest text-primary uppercase border border-primary/10">AI Recommendation</span>
+</div>
+<div class="absolute bottom-4 right-4">
+<button class="w-10 h-10 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-on-surface shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</button>
+</div>
+</div>
+<div class="px-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-2xl font-serif italic text-on-surface">Gallery Opening</h3>
+<span class="text-secondary font-serif text-sm">Oct 12</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="thermostat">thermostat</span>
+                            Best for 18°C - 22°C
+                        </span>
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide">
+                            Evening
+                        </span>
+</div>
+</div>
+</article>
+<!-- Outfit Card 2 -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-surface-container transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+<img alt="Outfit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="fashion collage of organic linen trousers, a terracotta knit sweater, and leather sandals arranged artistically on a textured beige fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrDVJ8yYxz2eIjgcVEIK15W0YAaWsJYg8ORfXhKUOhYYnBzjtPiKAAloOT8d6ZjI7E_QwEN6VqOZZ8zoXABC6BVIbTFBV0RvHoryj15S9WLqHIXIBCYFs1i04yrDWHPppxFjvPOMeP-UAUFRCuR4Cml-uPoZqNpqiwzVt8tfsuZZp1KVwO1OS9Z68hCUmhDM9r0b32rlsVY6kooxYXPCvv8Uv_p2FPMaC2LMUaJNXnk6e-8MMZOFmCedLglu5Hcr0jFrbj3sounKA"/>
+<div class="absolute bottom-4 right-4">
+<button class="w-10 h-10 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</button>
+</div>
+</div>
+<div class="px-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-2xl font-serif italic text-on-surface">Weekend Brunch</h3>
+<span class="text-secondary font-serif text-sm">Sep 28</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="thermostat">thermostat</span>
+                            Best for 20°C - 24°C
+                        </span>
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide">
+                            Daytime
+                        </span>
+</div>
+</div>
+</article>
+<!-- Outfit Card 3 -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-surface-container transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+<img alt="Outfit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="editorial fashion photography of a woman wearing a heavy charcoal wool coat and cream scarf against a misty pine forest background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxeyAd2xwSI8pD04TrPFDZa0MmlEgPZTCvJfmD54-pEcE537gxtRiF4AYilb9x7yDLBDpgtvND80DmeWIrnHDOmcatzhY_7NMZNUk-RTeQ0HiUeLHA6mYiQ_MoOTAHO2jOfIhz4GvG_sS-8Fah7i01S9fK5_r0M6p71cCO7ed_0OOJFQ-NocQPwzOlZ-nzm5Rnz5gpJpJmfcIJwNtSvV1RcFeBr4pYfN_6o47CMdTZS5jwbm7sl0NEvXHbFyTT-dhxSD0JPo_ufZs"/>
+<div class="absolute top-4 left-4">
+<span class="bg-surface/80 backdrop-blur-xl px-3 py-1 rounded-full text-[10px] font-sans font-bold tracking-widest text-primary uppercase border border-primary/10">AI Recommendation</span>
+</div>
+<div class="absolute bottom-4 right-4">
+<button class="w-10 h-10 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</button>
+</div>
+</div>
+<div class="px-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-2xl font-serif italic text-on-surface">Forest Retreat</h3>
+<span class="text-secondary font-serif text-sm">Nov 04</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="thermostat">thermostat</span>
+                            Best for 8°C - 12°C
+                        </span>
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide">
+                            Outdoor
+                        </span>
+</div>
+</div>
+</article>
+<!-- Outfit Card 4 -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-surface-container transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+<img alt="Outfit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="close-up detail shot of a beige silk blouse and delicate gold necklaces worn by a model in soft ambient light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG6X43KG_61WqT9dWTG6xPzx-yhiXcxUYpMIp-naZXt0VYcxpmqrCntsM9q0GSqUac_1TuCnvmicysqQvoizFYTqCu8KPZy5khnMTj5lNgopqnZWc5_2QZf0qePePU-rA8DAOk9yjHr4huySzRtaUJ5CuQlcfqAeQ4QmX8mg-ST_RwUY-CrTfHrneMSJ31yto5SMCiIrMOWT_fOCFPcrh424g5DY4UbwQB43UzfIf2pybSxQs0OEhL3dOMaQtO48l9wiO3vTGqSVA"/>
+<div class="absolute bottom-4 right-4">
+<button class="w-10 h-10 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</button>
+</div>
+</div>
+<div class="px-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-2xl font-serif italic text-on-surface">Studio Morning</h3>
+<span class="text-secondary font-serif text-sm">Oct 30</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="thermostat">thermostat</span>
+                            Best for 15°C - 19°C
+                        </span>
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide">
+                            Creative
+                        </span>
+</div>
+</div>
+</article>
+<!-- Outfit Card 5 -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-surface-container transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+<img alt="Outfit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="minimalist outfit grid featuring a black turtle neck, wide-leg beige pants, and a leather tote on a clean studio floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5_dywkUC1zT7aVVrFwkdB771HNBLnsH2QbziPXh0TCzAX1YGO76pmckyb0VcYcfGiJy3b3uWDIWecuPXoKKUA8glpWj0o4lhA_aC4UXNhWd1l6oCvsX_9eN4eRONE61LVLvckL_iMzfnQF-w7SfydtoKaJR1s36DyRoFVoRzwl3n44UDrZmTlt1SES_S3c6lk2WEkOzoUW9RmkHR_98j3QDo-_uxw2ml-BR4lU3SkEr_F4O6h3vIKcXffj10il1edMCCl8eZUvYs"/>
+<div class="absolute bottom-4 right-4">
+<button class="w-10 h-10 rounded-full bg-surface/90 backdrop-blur-md flex items-center justify-center text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</button>
+</div>
+</div>
+<div class="px-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-2xl font-serif italic text-on-surface">Client Meeting</h3>
+<span class="text-secondary font-serif text-sm">Oct 24</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="thermostat">thermostat</span>
+                            Best for 16°C - 20°C
+                        </span>
+<span class="px-3 py-1 rounded-md bg-surface-container-low text-on-surface-variant text-[11px] font-sans tracking-wide">
+                            Professional
+                        </span>
+</div>
+</div>
+</article>
+<!-- Outfit Card 6 (AI Empty State / Suggestion) -->
+<article class="group space-y-5">
+<div class="relative aspect-[3/4] overflow-hidden rounded-xl bg-primary-container/20 flex flex-col items-center justify-center p-8 text-center transition-all duration-500 hover:bg-primary-container/30 border-2 border-dashed border-primary/20">
+<span class="material-symbols-outlined text-5xl text-primary/40 mb-4" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="text-2xl font-serif italic text-primary mb-2">New Inspiration?</h3>
+<p class="text-sm font-sans text-on-surface-variant mb-6 opacity-70">Let the Celestial Muse curate a new ensemble for your next journey.</p>
+<button class="px-6 py-2 rounded-full border border-primary text-primary font-sans text-sm font-bold hover:bg-primary hover:text-white transition-all">
+                        Consult ASK AI
+                    </button>
+</div>
+</article>
+</div>
+<!-- Pagination / Load More -->
+<div class="mt-20 flex flex-col items-center border-t border-surface-container-high pt-12">
+<p class="font-serif italic text-stone-500 mb-6">Discovery of 24 ensembles completed</p>
+<button class="px-10 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-sans tracking-widest text-xs font-bold uppercase hover:bg-surface-variant transition-all">
+                Load Archive
+            </button>
+</div>
+</main>
+<!-- Mobile Navigation (Visible only on small screens) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl flex justify-around items-center py-4 px-6 z-50 border-t border-surface-container-high">
+<button class="flex flex-col items-center gap-1 text-stone-400">
+<span class="material-symbols-outlined" data-icon="person_outline">person_outline</span>
+<span class="text-[10px] font-sans uppercase tracking-tighter">Profile</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-stone-400">
+<span class="material-symbols-outlined" data-icon="checkroom">checkroom</span>
+<span class="text-[10px] font-sans uppercase tracking-tighter">Wardrobe</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="text-[10px] font-sans uppercase tracking-tighter font-bold">Lookbook</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-stone-400">
+<span class="material-symbols-outlined" data-icon="tempest">storm</span>
+<span class="text-[10px] font-sans uppercase tracking-tighter">Ask AI</span>
+</button>
+</nav>
+</body></html>

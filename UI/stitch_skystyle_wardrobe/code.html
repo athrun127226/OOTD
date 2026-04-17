@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fcf9f2",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#241a00",
+                        "primary-fixed": "#d2eca2",
+                        "outline": "#75786e",
+                        "secondary-fixed-dim": "#e9c349",
+                        "inverse-primary": "#b6d088",
+                        "primary": "#4d6328",
+                        "primary-container": "#657c3e",
+                        "on-tertiary-fixed-variant": "#514061",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container": "#f1eee7",
+                        "inverse-on-surface": "#f3f0e9",
+                        "on-tertiary-fixed": "#241433",
+                        "tertiary-fixed": "#f0dbff",
+                        "on-primary-fixed": "#131f00",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#faffe8",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f6f3ec",
+                        "surface-dim": "#dcdad3",
+                        "on-surface": "#1c1c18",
+                        "tertiary-fixed-dim": "#d5bee6",
+                        "primary-fixed-dim": "#b6d088",
+                        "tertiary": "#675577",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#ebe8e1",
+                        "outline-variant": "#c5c8bc",
+                        "secondary-fixed": "#ffe088",
+                        "tertiary-container": "#806d91",
+                        "on-primary-fixed-variant": "#394d14",
+                        "on-secondary-container": "#745c00",
+                        "secondary-container": "#fed65b",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#50652a",
+                        "on-background": "#1c1c18",
+                        "surface-container-highest": "#e5e2db",
+                        "inverse-surface": "#31312c",
+                        "on-surface-variant": "#45483f",
+                        "surface-bright": "#fcf9f2",
+                        "secondary": "#735c00",
+                        "surface-variant": "#e5e2db",
+                        "on-secondary-fixed-variant": "#574500",
+                        "surface": "#fcf9f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #fcf9f2;
+        }
+        .serif-header {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar Component -->
+<aside class="h-full w-72 fixed left-0 top-0 bg-[#fcf9f2] dark:bg-stone-950 border-r border-stone-200 dark:border-stone-800 shadow-[32px_0_32px_rgba(0,0,0,0.03)] hidden md:flex flex-col py-8 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-serif text-[#4d6328] serif-header">The Naturalist</h1>
+<p class="text-stone-500 text-xs font-label uppercase tracking-widest mt-1">Celestial Advisor</p>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-1"><li>
+<a class="flex items-center gap-4 bg-[#657c3e]/10 text-[#4d6328] dark:text-[#7D8F69] rounded-r-full py-3 px-6 transition-transform translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_search</span>
+<span class="font-bold">Style Profile</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 text-stone-600 dark:text-stone-400 py-3 px-6 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all" href="#">
+<span class="material-symbols-outlined">checkroom</span>
+<span class="font-medium">Wardrobe</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 text-stone-600 dark:text-stone-400 py-3 px-6 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-medium">Lookbook</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 text-stone-600 dark:text-stone-400 py-3 px-6 hover:bg-stone-100 dark:hover:bg-stone-900 transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-medium">ASK AI</span>
+</a>
+</li></ul>
+</nav>
+<div class="mt-auto px-6 border-t border-stone-100 pt-6">
+<div class="flex items-center gap-3 mb-8 bg-surface-container p-3 rounded-xl">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a person with minimalist aesthetic, soft natural lighting, earthy neutral background colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtkJ0p2cMUX2O65_ozgxOQ9gTEciqz7nkjNotNSc7dhjyHeCBLiaVN0zYaBGtJnfCiogPDPdTGCIV0tjrhFKJLqL0JYMyH9y212fnMrN7P6ao7sPGb9Y4f38hfOBbXAM2Pzt7X-oEcW_Bdjh-Eo3AN5bn-4AoQkXilr50FFqYi8cs_BC6z_-xSvNuJUjhIK72QwS6shgsPfeypXqloBo7wu4QDed9Pr3rk8gvanjrXFXe1gSMOYuAq7_p5RBEp8v9ZZczHbGlgnJI"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Alex</p>
+<p class="text-[10px] text-stone-500 uppercase tracking-tighter">Scorpio • London</p>
+</div>
+</div>
+<ul class="space-y-1 mb-6">
+<li>
+<a class="flex items-center gap-4 text-stone-600 py-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 text-stone-600 py-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">help_outline</span>
+<span class="text-sm font-medium">Support</span>
+</a>
+</li>
+</ul>
+<button class="w-full py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary-container rounded-xl font-bold shadow-sm relative overflow-hidden group">
+<span class="relative z-10">Daily Insight</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-72 min-h-screen px-6 py-12 md:px-16 md:py-20 max-w-7xl">
+<!-- Editorial Header -->
+<header class="mb-16 relative">
+<div class="absolute -top-10 -left-10 text-[12rem] font-serif italic text-primary/5 select-none pointer-events-none">A</div>
+<p class="font-label text-secondary text-xs uppercase tracking-[0.2em] mb-4">Identity &amp; Intent</p>
+<h2 class="serif-header text-5xl md:text-7xl font-light text-on-surface leading-tight">Alex's <span class="italic text-primary">Aura Profile</span></h2>
+<div class="h-px w-32 bg-primary mt-8 opacity-30"></div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Personal Info Card (Asymmetric) -->
+<div class="md:col-span-8 bg-surface-container-low rounded-[2rem] p-8 md:p-12 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
+<div class="flex flex-col md:flex-row gap-10 items-start relative z-10">
+<div class="relative">
+<div class="w-40 h-40 rounded-full overflow-hidden border-4 border-surface shadow-2xl">
+<img class="w-full h-full object-cover" data-alt="Modern close-up portrait of a person looking at camera, warm natural sunset lighting, organic feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFSTPi_nP4bMVxpVOUD18etK1LSDIFKV3kS2L7AApucrluGwVngKCdbYUH-Z_jnRlkRPZiehtQqZFHZ--VW-edZHc1-avX3v9UXVTaKUf36ptrmba8WZLv7IbzsoluovChv090NfI5ax-hJwpHfjRa94_N_gHq-8mQisLCfJ9pOl_U0X1r4MYeTHeulc8A0F50msw8VyVcmfBxkDSlgN1TtqD3qo_7I2fMnksvKd48dbKnmL7nLyJnfTsI3q1uPKIVdY9yCSOPjAc"/>
+</div>
+<button class="absolute bottom-2 right-2 bg-secondary text-on-secondary rounded-full p-2 shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div class="flex-grow space-y-6">
+<div>
+<h3 class="serif-header text-3xl text-on-surface">Personal Essence</h3>
+<p class="text-on-surface-variant font-label text-sm mt-1">Manage how the stars perceive you.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-primary/70 px-1">Display Name</label>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 px-5 text-on-surface focus:ring-1 focus:ring-primary/20 transition-all" type="text" value="Alex"/>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-primary/70 px-1">Email Connection</label>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 px-5 text-on-surface focus:ring-1 focus:ring-primary/20 transition-all" type="email" value="alex@celestial.style"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Zodiac Card (The Celestial Highlight) -->
+<div class="md:col-span-4 bg-tertiary-fixed text-on-tertiary-fixed rounded-[2rem] p-8 relative flex flex-col justify-between overflow-hidden">
+<div class="absolute -right-8 -top-8 text-on-tertiary-fixed-variant opacity-20">
+<span class="material-symbols-outlined text-[10rem]" style="font-variation-settings: 'wght' 100;">star</span>
+</div>
+<div class="relative z-10">
+<span class="bg-secondary/20 text-secondary text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-secondary/20">The Sign</span>
+<h3 class="serif-header text-4xl mt-6">Scorpio</h3>
+<p class="text-sm mt-2 opacity-80 leading-relaxed italic">Intense, stylish, and naturally magnetic.</p>
+</div>
+<div class="mt-12 relative z-10">
+<label class="block text-[10px] font-bold uppercase tracking-widest opacity-60 mb-2">Adjust Celestial Alignment</label>
+<select class="w-full bg-white/20 backdrop-blur-md border-none rounded-xl py-4 px-4 text-on-tertiary-fixed font-bold focus:ring-0">
+<option>Aries</option>
+<option>Taurus</option>
+<option>Gemini</option>
+<option>Cancer</option>
+<option>Leo</option>
+<option>Virgo</option>
+<option>Libra</option>
+<option selected="">Scorpio</option>
+<option>Sagittarius</option>
+<option>Capricorn</option>
+<option>Aquarius</option>
+<option>Pisces</option>
+</select>
+</div>
+</div>
+<!-- Localization Card -->
+<div class="md:col-span-5 bg-surface-container rounded-[2rem] p-8 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-8">
+<span class="material-symbols-outlined text-primary text-4xl">location_on</span>
+<div class="text-right">
+<p class="text-xs font-bold text-stone-400 uppercase tracking-widest">Timezone</p>
+<p class="text-sm font-medium">GMT +0 (London)</p>
+</div>
+</div>
+<h3 class="serif-header text-2xl mb-4">Primary City</h3>
+<p class="text-sm text-on-surface-variant mb-6 leading-relaxed">Your location dictates the atmospheric metadata we use to refine your daily wardrobe advice.</p>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 px-5 pr-12 text-on-surface focus:ring-1 focus:ring-primary/20 transition-all font-bold" placeholder="London, UK" type="text" value="London"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-primary/40">search</span>
+</div>
+<div class="mt-10 pt-8 border-t border-primary/10">
+<p class="text-[10px] font-bold text-primary/60 uppercase tracking-[0.2em] mb-4">Atmospheric Pulse</p>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-primary/80">cloudy_snowing</span>
+<div>
+<span class="serif-header text-4xl font-light text-on-surface">18°C</span>
+</div>
+</div>
+<div class="h-8 w-px bg-primary/10"></div>
+<div>
+<p class="text-sm font-medium text-on-surface">Misted Rain</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Current conditions</p>
+</div>
+</div>
+<p class="mt-6 text-[11px] italic text-primary/70 leading-relaxed">
+        "The soft humidity today suggests natural fibers and structured silhouettes to maintain form."
+    </p>
+</div></div>
+<!-- Style Goals (The "Editorial Grid") -->
+<div class="md:col-span-7 bg-surface-container-low rounded-[2rem] p-8 md:p-10 border border-outline-variant/10">
+<div class="flex justify-between items-end mb-10">
+<div>
+<h3 class="serif-header text-3xl">Style Goals</h3>
+<p class="text-sm text-on-surface-variant mt-2">Choose the aesthetic rhythm of your closet.</p>
+</div>
+<span class="text-xs font-label text-stone-400">2 selected</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<!-- Option 1 -->
+<div class="group cursor-pointer">
+<div class="bg-primary text-on-primary-container p-6 rounded-2xl h-full flex flex-col justify-between border border-primary/20 shadow-lg shadow-primary/5 transition-all">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-bold text-sm mt-8">Minimalist</span>
+</div>
+</div>
+<!-- Option 2 -->
+<div class="group cursor-pointer">
+<div class="bg-primary text-on-primary-container p-6 rounded-2xl h-full flex flex-col justify-between border border-primary/20 shadow-lg shadow-primary/5 transition-all">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-bold text-sm mt-8">Professional</span>
+</div>
+</div>
+<!-- Option 3 -->
+<div class="group cursor-pointer">
+<div class="bg-white/50 border border-stone-200 p-6 rounded-2xl h-full flex flex-col justify-between hover:bg-white hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-3xl text-stone-300">circle</span>
+<span class="font-medium text-sm text-stone-500 mt-8">Avant-Garde</span>
+</div>
+</div>
+<!-- Option 4 -->
+<div class="group cursor-pointer">
+<div class="bg-white/50 border border-stone-200 p-6 rounded-2xl h-full flex flex-col justify-between hover:bg-white hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-3xl text-stone-300">circle</span>
+<span class="font-medium text-sm text-stone-500 mt-8">Vintage</span>
+</div>
+</div>
+<!-- Option 5 -->
+<div class="group cursor-pointer">
+<div class="bg-white/50 border border-stone-200 p-6 rounded-2xl h-full flex flex-col justify-between hover:bg-white hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-3xl text-stone-300">circle</span>
+<span class="font-medium text-sm text-stone-500 mt-8">Bohemian</span>
+</div>
+</div>
+<!-- Option 6 -->
+<div class="group cursor-pointer">
+<div class="bg-white/50 border border-stone-200 p-6 rounded-2xl h-full flex flex-col justify-between hover:bg-white hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-3xl text-stone-300">add</span>
+<span class="font-medium text-sm text-stone-500 mt-8">Custom...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<footer class="mt-16 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-stone-200 pt-10">
+<div class="flex items-center gap-4 text-stone-500 text-xs italic">
+<span class="material-symbols-outlined text-sm">history</span>
+                Last sync with the stars: Today, 11:24 AM
+            </div>
+<div class="flex gap-4 w-full md:w-auto">
+<button class="flex-grow md:flex-none px-10 py-4 text-primary font-bold hover:bg-primary/5 rounded-xl transition-colors">
+                    Discard Changes
+                </button>
+<button class="flex-grow md:flex-none px-12 py-4 bg-primary text-on-primary font-bold rounded-xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Preserve Settings
+                </button>
+</div>
+</footer>
+</main>
+<!-- Decorative Corner Element -->
+<div class="fixed bottom-0 right-0 p-12 pointer-events-none opacity-10 hidden xl:block">
+<span class="material-symbols-outlined text-[15rem]" style="font-variation-settings: 'wght' 100;">eco</span>
+</div>
+</body></html>

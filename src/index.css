@@ -2,51 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
 @layer base {
   :root {
-    /* 现代时尚紫配色系统 */
-    --background: 0 0% 98%;           /* #FAFAFA 浅灰白背景 */
-    --foreground: 220 15% 15%;        /* #1F2937 深灰文字 */
-    --card: 0 0% 100%;                /* #FFFFFF 纯白卡片 */
-    --card-foreground: 220 15% 15%;
+    /* 橄榄绿自然配色系统 */
+    --background: 48 27% 97%;           /* #fcf9f2 奶油色背景 */
+    --foreground: 60 5% 10%;             /* #1c1c18 深灰文字 */
+    --card: 0 0% 100%;                   /* #FFFFFF 纯白卡片 */
+    --card-foreground: 60 5% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
-    --primary: 262 83% 58%;           /* #7C3AED 时尚紫 */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 262 60% 96%;         /* #F5F3FF 淡紫背景 */
-    --secondary-foreground: 262 70% 40%;
-    --muted: 220 10% 96%;             /* #F3F4F6 浅灰 */
-    --muted-foreground: 220 10% 46%; /* #6B7280 灰色文字 */
-    --accent: 262 83% 70%;           /* #A78BFA 亮紫强调 */
-    --accent-foreground: 0 0% 100%;
+    --popover-foreground: 60 5% 10%;
+    --primary: 85 41% 27%;               /* #4d6328 橄榄绿 */
+    --primary-foreground: 0 0% 100%;    /* #FFFFFF 白色文字 */
+    --secondary: 43 100% 23%;           /* #735c00 金棕色 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 40 16% 93%;                 /* #f1eee7 浅表面 */
+    --muted-foreground: 40 8% 30%;       /* #45483f 变体文字 */
+    --accent: 85 35% 39%;               /* #657c3e 主色容器 */
+    --accent-foreground: 80 100% 96%;   /* #faffe8 浅绿背景 */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 91%;            /* #E5E7EB 边框 */
-    --input: 220 13% 91%;
-    --ring: 262 83% 58%;
-    --radius: 0.875rem;              /* 14px 圆角 */
+    --border: 40 12% 78%;                /* #c5c8bc 边框 */
+    --input: 40 12% 78%;
+    --ring: 85 41% 27%;
+    --radius: 2rem;                     /* 32px 大圆角 */
+    
+    /* 额外设计系统颜色 - Material Design 3 */
+    --surface: #fcf9f2;
+    --surface-container: #f1eee7;
+    --surface-container-low: #f6f3ec;
+    --surface-container-lowest: #ffffff;
+    --surface-container-high: #ebe8e1;
+    --surface-container-highest: #e5e2db;
+    --surface-dim: #dcdad3;
+    --surface-bright: #fcf9f2;
+    --surface-variant: #e5e2db;
+    
+    --primary-container: #657c3e;
+    --primary-fixed: #d2eca2;
+    --primary-fixed-dim: #b6d088;
+    --on-primary-container: #faffe8;
+    --on-primary-fixed: #131f00;
+    --on-primary-fixed-variant: #394d14;
+    
+    --secondary-container: #fed65b;
+    --secondary-fixed: #ffe088;
+    --secondary-fixed-dim: #e9c349;
+    --on-secondary-fixed: #241a00;
+    --on-secondary-container: #745c00;
+    
+    --tertiary: #675577;
+    --tertiary-container: #806d91;
+    --tertiary-fixed: #f0dbff;
+    --tertiary-fixed-dim: #d5bee6;
+    --on-tertiary-fixed: #241433;
+    --on-tertiary-container: #fffbff;
+    
+    --tertiary: #675577;
+    --tertiary-fixed: #f0dbff;
+    --outline: #75786e;
+    --outline-variant: #c5c8bc;
+    
+    --on-surface: #1c1c18;
+    --on-surface-variant: #45483f;
+    --on-tertiary: #ffffff;
+    --on-secondary: #ffffff;
   }
 
   .dark {
-    --background: 262 50% 8%;        /* 深紫黑背景 */
-    --foreground: 0 0% 95%;
-    --card: 262 40% 12%;
-    --card-foreground: 0 0% 95%;
-    --popover: 262 40% 12%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 262 83% 65%;          /* 亮紫 */
+    --background: 0 0% 8%;             /* 深色背景 */
+    --foreground: 48 20% 95%;
+    --card: 0 0% 12%;
+    --card-foreground: 48 20% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 48 20% 95%;
+    --primary: 85 30% 45%;             /* 浅橄榄绿 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 262 40% 20%;
-    --secondary-foreground: 262 70% 80%;
-    --muted: 262 30% 18%;
-    --muted-foreground: 262 20% 55%;
-    --accent: 262 83% 70%;
+    --secondary: 43 80% 35%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 85 25% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 262 30% 22%;
-    --input: 262 30% 22%;
-    --ring: 262 83% 65%;
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
+    --ring: 85 30% 45%;
+    
+    /* 深色模式额外颜色 */
+    --surface: #0a0a0a;
+    --surface-container: #141414;
+    --surface-container-low: #0f0f0f;
+    --surface-container-high: #1a1a1a;
+    --surface-container-highest: #242424;
+    --tertiary: #8b7a9e;
+    --tertiary-fixed: #2a2233;
+    --outline: #5a5a5a;
+    --outline-variant: #3a3a3a;
   }
 }
  
@@ -56,8 +111,21 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
+    font-family: 'Manrope', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+  }
+}
+
+/* 衬线字体类 */
+.serif-text {
+  font-family: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+}
+
+/* 标题衬线字体 */
+.font-headline {
+  font-family: 'Newsreader', serif;
 }
 
 /* Custom scrollbar */
@@ -72,48 +140,49 @@
   border-radius: 3px;
 }
 
-/* Gradient text utility - 时尚紫渐变 */
+/* Gradient text utility - 橄榄绿渐变 */
 .gradient-text {
-  background: linear-gradient(135deg, #7C3AED, #A78BFA);
+  background: linear-gradient(135deg, #4d6328, #657c3e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Card hover effect - 现代卡片悬浮 */
+/* Card hover effect - 编辑风格卡片悬浮 */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
-/* Glass morphism - 现代毛玻璃 */
+/* Glass morphism - 自然毛玻璃 */
 .glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(252, 249, 242, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(197, 200, 188, 0.3);
 }
 
 .dark .glass {
-  background: rgba(20, 15, 35, 0.85);
+  background: rgba(10, 10, 10, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* 现代网格卡片 */
+/* 编辑风格网格卡片 */
 .grid-card {
-  @apply bg-card rounded-2xl border border-border overflow-hidden;
-  transition: all 0.2s ease;
+  @apply bg-surface-container rounded-4xl overflow-hidden;
+  transition: all 0.3s ease;
 }
 .grid-card:hover {
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
 }
 
-/* 时尚按钮样式 */
+/* 自然风格按钮 */
 .btn-fashion {
-  @apply bg-primary text-white font-medium rounded-xl px-4 py-2;
+  @apply bg-primary text-white font-medium rounded-2xl px-6 py-3;
   transition: all 0.2s ease;
 }
 .btn-fashion:hover {
@@ -123,10 +192,53 @@
 
 /* 标签样式 */
 .tag-style {
-  @apply px-3 py-1 rounded-full text-sm font-medium bg-secondary text-primary;
+  @apply px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase;
+}
+
+/* 大圆角卡片 */
+.editorial-card {
+  @apply bg-surface-container rounded-4xl overflow-hidden relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 /* 底部安全区域 */
 .pb-safe {
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 70px);
+}
+
+/* Material Icons 样式（如果使用） */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* Editorial Shadow */
+.editorial-shadow {
+  box-shadow: 0 32px 64px -12px rgba(28, 28, 24, 0.06);
+}
+
+/* 编辑风格标题 */
+.editorial-title {
+  font-family: 'Newsreader', serif;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+/* 交错网格布局 */
+.staggered-grid > *:nth-child(even) {
+  @apply md:translate-y-6;
+}
+
+/* 悬浮阴影效果 */
+.hover-shadow-lg {
+  transition: box-shadow 0.3s ease;
+}
+.hover-shadow-lg:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
