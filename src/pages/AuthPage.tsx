@@ -34,9 +34,19 @@ export default function AuthPage() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '登录失败，请重试'
       // 用户取消弹窗不算错误
-      if (!msg.includes('popup-closed-by-user') && !msg.includes('cancelled')) {
-        setError(msg)
+      if (msg.includes('popup-closed-by-user') || msg.includes('cancelled')) {
+        setLoading(false)
+        return
       }
+      
+      // Firebase 内部错误时，自动降级到演示模式
+      if (msg.includes('internal-error') || msg.includes('Firebase')) {
+        console.warn('[Auth] Firebase 出错，降级到演示模式:', msg)
+        handleDemoLogin()
+        return
+      }
+      
+      setError(msg)
     } finally {
       setLoading(false)
     }
