@@ -4,14 +4,35 @@ import { useAuthStore } from '@/store'
 import PaymentModal from '@/components/PaymentModal'
 import type { ZodiacSign } from '@/types'
 
-// 城市背景图片（使用 Unsplash）
-const CITY_IMAGES = [
+// 真实城市图片映射
+const CITY_IMAGE_MAP: Record<string, string> = {
+  '上海': 'https://images.unsplash.com/photo-1545893835-abaa50cbe628?w=800&q=80', // 上海外滩
+  '北京': 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80', // 北京故宫
+  '深圳': 'https://images.unsplash.com/photo-1598135753163-6167c1a1ad65?w=800&q=80', // 深圳
+  '广州': 'https://images.unsplash.com/photo-1583859028040-6d26a06e9e5a?w=800&q=80', // 广州塔
+  '杭州': 'https://images.unsplash.com/photo-1591122947157-26bad3a117d2?w=800&q=80', // 西湖
+  '成都': 'https://images.unsplash.com/photo-1590103514966-5e2a11c13e21?w=800&q=80', // 成都
+  '南京': 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=800&q=80', // 南京
+  '武汉': 'https://images.unsplash.com/photo-1576506295286-5cda18df43eb?w=800&q=80', // 武汉
+  '西安': 'https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?w=800&q=80', // 西安
+  '重庆': 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', // 重庆
+  'London': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', // 伦敦
+  'New York': 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80', // 纽约
+  'Tokyo': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', // 东京
+  'Paris': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80', // 巴黎
+  'Sydney': 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80', // 悉尼
+}
+
+// 默认城市图片（随机使用）
+const DEFAULT_CITY_IMAGES = [
   'https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?w=800&q=80', // 城市夜景
   'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80', // 城市天际线
   'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80', // 城市街道
-  'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80', // 城市建筑
   'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&q=80', // 城市黄昏
 ]
+
+// 全局存储选中的默认图片（只在首次加载时随机）
+let selectedDefaultImage: string | null = null
 
 // 星座符号映射
 const ZODIAC_SYMBOLS: Record<ZodiacSign, string> = {
@@ -36,11 +57,22 @@ export default function ProfilePage() {
 
   const isEn = i18n.language === 'en'
 
-  // 随机选择城市图片
+  // 获取城市图片：优先使用真实城市图片，否则使用默认图片
   const cityImage = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * CITY_IMAGES.length)
-    return CITY_IMAGES[randomIndex]
-  }, [])
+    const userCity = user?.city || '上海'
+    
+    // 如果有真实城市图片，使用它
+    if (CITY_IMAGE_MAP[userCity]) {
+      return CITY_IMAGE_MAP[userCity]
+    }
+    
+    // 否则使用默认图片（只在首次加载时随机）
+    if (!selectedDefaultImage) {
+      const randomIndex = Math.floor(Math.random() * DEFAULT_CITY_IMAGES.length)
+      selectedDefaultImage = DEFAULT_CITY_IMAGES[randomIndex]
+    }
+    return selectedDefaultImage
+  }, [user?.city])
 
   if (!user) return null
 
