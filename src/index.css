@@ -157,6 +157,11 @@
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
+/* Editorial shadow - 柔和编辑风格阴影 */
+.editorial-shadow {
+  box-shadow: 0 32px 64px -12px rgba(28, 28, 24, 0.06);
+}
+
 /* Glass morphism - 自然毛玻璃 */
 .glass {
   background: rgba(252, 249, 242, 0.9);

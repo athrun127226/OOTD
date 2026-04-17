@@ -11,18 +11,12 @@ const ZODIACS_ZH: ZodiacSign[] = [
 ]
 
 const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
-  '白羊座': { zh: '白羊座', en: 'Aries' },
-  '金牛座': { zh: '金牛座', en: 'Taurus' },
-  '双子座': { zh: '双子座', en: 'Gemini' },
-  '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
-  '狮子座': { zh: '狮子座', en: 'Leo' },
-  '处女座': { zh: '处女座', en: 'Virgo' },
-  '天秤座': { zh: '天秤座', en: 'Libra' },
-  '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
-  '射手座': { zh: '射手座', en: 'Sagittarius' },
-  '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
-  '水瓶座': { zh: '水瓶座', en: 'Aquarius' },
-  '双鱼座': { zh: '双鱼座', en: 'Pisces' },
+  '白羊座': { zh: '白羊座', en: 'Aries' }, '金牛座': { zh: '金牛座', en: 'Taurus' },
+  '双子座': { zh: '双子座', en: 'Gemini' }, '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
+  '狮子座': { zh: '狮子座', en: 'Leo' }, '处女座': { zh: '处女座', en: 'Virgo' },
+  '天秤座': { zh: '天秤座', en: 'Libra' }, '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
+  '射手座': { zh: '射手座', en: 'Sagittarius' }, '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
+  '水瓶座': { zh: '水瓶座', en: 'Aquarius' }, '双鱼座': { zh: '双鱼座', en: 'Pisces' },
 }
 
 const STYLE_OPTIONS = [
@@ -32,6 +26,12 @@ const STYLE_OPTIONS = [
   { id: 'vintage', en: 'Vintage', zh: '复古风' },
   { id: 'bohemian', en: 'Bohemian', zh: '波西米亚' },
 ]
+
+const ZODIAC_SYMBOLS: Record<ZodiacSign, string> = {
+  '白羊座': '♈', '金牛座': '♉', '双子座': '♊', '巨蟹座': '♋',
+  '狮子座': '♌', '处女座': '♍', '天秤座': '♎', '天蝎座': '♏',
+  '射手座': '♐', '摩羯座': '♑', '水瓶座': '♒', '双鱼座': '♓',
+}
 
 export default function SettingsPage() {
   const { i18n } = useTranslation()
@@ -69,14 +69,14 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen pb-28 md:pb-8 bg-background">
+    <div className="min-h-screen pb-28 md:pb-8 bg-surface">
       <div className="w-full max-w-screen-xl mx-auto px-6 md:px-16 pt-8 md:pt-12 space-y-8">
         {/* Header */}
         <section className="mb-12 max-w-3xl">
           <p className="text-[10px] font-label uppercase tracking-[0.3em] text-on-surface-variant mb-3">
             {isEn ? 'Preferences' : '偏好设置'}
           </p>
-          <h1 className="text-5xl md:text-7xl font-serif font-light text-foreground tracking-tight editorial-title">
+          <h1 className="text-5xl md:text-7xl font-headline font-light text-on-surface tracking-tight">
             {isEn ? (
               <>Your <span className="text-primary italic">Celestial</span> Settings</>
             ) : (
@@ -88,26 +88,26 @@ export default function SettingsPage() {
         {/* Settings Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card 0: Profile - 头像和名称 */}
-          <div className="bg-surface-container rounded-[2rem] p-8 animate-slide-up">
-            <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label mb-4">
+          <div className="bg-surface-container rounded-[2rem] p-8 editorial-shadow animate-slide-up">
+            <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label mb-6">
               {isEn ? 'Identity' : '身份'}
             </span>
             
             <div className="flex gap-6">
               {/* Avatar */}
               <div className="relative group flex-shrink-0">
-                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/20">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary-container shadow-lg shadow-primary/20">
                   {avatar ? (
                     <img src={avatar} alt={name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white text-3xl font-bold">
+                    <div className="w-full h-full flex items-center justify-center text-on-primary text-3xl font-bold">
                       {name?.charAt(0)?.toUpperCase() || '?'}
                     </div>
                   )}
                 </div>
                 <button 
                   onClick={() => fileInputRef.current?.click()}
-                  className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md border-2 border-[#fcf9f2] opacity-90 hover:opacity-100 transition-opacity"
+                  className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md border-2 border-surface opacity-90 hover:opacity-100 transition-opacity"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -129,32 +129,34 @@ export default function SettingsPage() {
                     {isEn ? 'Display Name' : '显示名称'}
                   </label>
                   <input
-                    className="w-full h-11 rounded-xl bg-surface-container-highest px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 border-0"
+                    className="w-full h-11 rounded-xl bg-surface-container-highest px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 border-0"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <p className="text-xs text-on-surface-variant/60 italic">
+                <p className="text-xs text-on-surface-variant/60 font-body italic">
                   {isEn ? 'Click the pencil to change your avatar.' : '点击铅笔图标更换头像。'}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Card 1: Zodiac */}
-          <div className="bg-tertiary-fixed/40 rounded-[2rem] p-8 relative overflow-hidden animate-slide-up">
-            {/* Decorative star */}
-            <span className="material-symbols-outlined absolute top-4 right-4 text-tertiary/20 text-[120px] pointer-events-none select-none">
-              star
-            </span>
+          {/* Card 1: Zodiac - 星座选择 */}
+          <div className="bg-tertiary-fixed/20 rounded-[2rem] p-8 relative overflow-hidden editorial-shadow animate-slide-up">
+            {/* 装饰星座符号 */}
+            <div className="absolute top-4 right-4 opacity-10 pointer-events-none">
+              <span className="text-[120px] text-tertiary font-light">{ZODIAC_SYMBOLS[zodiac]}</span>
+            </div>
+            
             <div className="relative z-10">
               <span className="inline-block bg-tertiary-fixed/60 backdrop-blur-sm text-on-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label mb-4">
                 {isEn ? 'The Sign' : '星座'}
               </span>
-              <h2 className="font-headline text-3xl text-on-surface mb-2">
+              <h2 className="font-headline text-3xl text-on-surface mb-2 flex items-center gap-3">
+                <span className="text-tertiary text-4xl">{ZODIAC_SYMBOLS[zodiac]}</span>
                 {isEn ? zodiacTranslations[zodiac].en : zodiac}
               </h2>
-              <p className="text-sm text-on-surface-variant/80 font-serif leading-relaxed mb-6">
+              <p className="text-sm text-on-surface-variant font-body italic leading-relaxed mb-6">
                 {isEn 
                   ? 'Your zodiac sign influences the atmospheric energy of your style suggestions.'
                   : '你的星座影响着风格建议的大气能量。'}
@@ -167,7 +169,7 @@ export default function SettingsPage() {
                 <select
                   value={zodiac}
                   onChange={(e) => setZodiac(e.target.value as ZodiacSign)}
-                  className="w-full h-11 rounded-xl bg-white/60 backdrop-blur-sm px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-tertiary/30 border border-outline-variant/20"
+                  className="w-full h-11 rounded-xl bg-surface-container-highest/80 backdrop-blur-sm px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-tertiary/30 border-0"
                 >
                   {ZODIACS_ZH.map((z) => (
                     <option key={z} value={z}>
@@ -179,22 +181,22 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Card 2: Primary City */}
-          <div className="bg-surface-container rounded-[2rem] p-8 animate-slide-up">
+          {/* Card 2: Primary City - 城市设置 */}
+          <div className="bg-surface-container rounded-[2rem] p-8 editorial-shadow animate-slide-up">
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <span className="material-symbols-outlined text-primary">location_on</span>
               </div>
               <div>
                 <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">
                   {isEn ? 'Timezone' : '时区'}
                 </p>
-                <p className="text-xs text-on-surface-variant">GMT+{city === '上海' ? '8' : '0'} ({city === '上海' ? 'Shanghai/CST' : city})</p>
+                <p className="text-xs text-on-surface-variant font-body">GMT+{city === '上海' ? '8' : '0'} ({city === '上海' ? 'Shanghai/CST' : city})</p>
               </div>
             </div>
 
             <h3 className="font-headline text-2xl text-on-surface mb-2">{isEn ? 'Primary City' : '主要城市'}</h3>
-            <p className="text-sm text-on-surface-variant/80 font-serif leading-relaxed mb-6">
+            <p className="text-sm text-on-surface-variant font-body italic leading-relaxed mb-6">
               {isEn 
                 ? 'Your location dictates the atmospheric metadata we use to refine your daily wardrobe advice.'
                 : '你的位置决定了我们用于优化每日穿搭建议的大气元数据。'}
@@ -202,7 +204,7 @@ export default function SettingsPage() {
 
             <div className="relative">
               <input
-                className="w-full h-12 rounded-xl bg-surface-container-highest px-4 pl-11 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 border-0"
+                className="w-full h-12 rounded-xl bg-surface-container-highest px-4 pl-11 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 border-0"
                 placeholder={isEn ? 'London' : '上海'}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
@@ -211,7 +213,7 @@ export default function SettingsPage() {
             </div>
 
             {/* Weather Preview */}
-            <div className="mt-6 pt-6 border-t border-outline-variant/10">
+            <div className="mt-6 pt-6 bg-surface-container-low/50 -mx-8 -mb-8 px-8 pb-8 rounded-b-[2rem]">
               <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-3">
                 {isEn ? 'Atmospheric Pulse' : '大气脉搏'}
               </p>
@@ -227,10 +229,10 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Card 3: Style Goals */}
-          <div className="bg-surface-container rounded-[2rem] p-8 animate-slide-up">
+          {/* Card 3: Style Goals - 风格目标 */}
+          <div className="bg-surface-container rounded-[2rem] p-8 editorial-shadow animate-slide-up">
             <h3 className="font-headline text-2xl text-on-surface mb-2">{isEn ? 'Style Goals' : '风格目标'}</h3>
-            <p className="text-sm text-on-surface-variant/80 font-serif leading-relaxed mb-6">
+            <p className="text-sm text-on-surface-variant font-body italic leading-relaxed mb-6">
               {isEn ? 'Choose the aesthetic rhythm of your closet.' : '选择你衣橱的美学节奏。'}
             </p>
 
@@ -248,7 +250,7 @@ export default function SettingsPage() {
                     onClick={() => toggleStyle(style.id)}
                     className={`rounded-xl aspect-square flex flex-col items-center justify-center transition-all ${
                       isSelected
-                        ? 'bg-primary text-white shadow-md'
+                        ? 'bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-lg shadow-primary/20'
                         : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
                     }`}
                   >
@@ -265,7 +267,7 @@ export default function SettingsPage() {
                 )
               })}
               {/* Custom add button */}
-              <button className="rounded-xl aspect-square flex flex-col items-center justify-center bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all border border-dashed border-outline-variant/30">
+              <button className="rounded-xl aspect-square flex flex-col items-center justify-center bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-all">
                 <span className="material-symbols-outlined text-lg mb-0.5">add</span>
                 <span className="text-[10px] font-label">{isEn ? 'Custom...' : '自定义...'}</span>
               </button>
@@ -285,7 +287,7 @@ export default function SettingsPage() {
             </Button>
             <Button
               onClick={handleSave}
-              className="rounded-xl bg-primary text-white font-label text-sm tracking-wide shadow-lg shadow-primary/20 hover:bg-primary/90"
+              className="rounded-xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-label text-sm tracking-wide shadow-lg shadow-primary/20 hover:shadow-xl transition-all"
             >
               {isEn ? 'Preserve Settings' : '保存设置'}
             </Button>

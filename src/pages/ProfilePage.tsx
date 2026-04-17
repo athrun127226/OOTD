@@ -15,33 +15,18 @@ const CITY_IMAGES = [
 
 // 星座符号映射
 const ZODIAC_SYMBOLS: Record<ZodiacSign, string> = {
-  '白羊座': '♈',
-  '金牛座': '♉',
-  '双子座': '♊',
-  '巨蟹座': '♋',
-  '狮子座': '♌',
-  '处女座': '♍',
-  '天秤座': '♎',
-  '天蝎座': '♏',
-  '射手座': '♐',
-  '摩羯座': '♑',
-  '水瓶座': '♒',
-  '双鱼座': '♓',
+  '白羊座': '♈', '金牛座': '♉', '双子座': '♊', '巨蟹座': '♋',
+  '狮子座': '♌', '处女座': '♍', '天秤座': '♎', '天蝎座': '♏',
+  '射手座': '♐', '摩羯座': '♑', '水瓶座': '♒', '双鱼座': '♓',
 }
 
 const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
-  '白羊座': { zh: '白羊座', en: 'Aries' },
-  '金牛座': { zh: '金牛座', en: 'Taurus' },
-  '双子座': { zh: '双子座', en: 'Gemini' },
-  '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
-  '狮子座': { zh: '狮子座', en: 'Leo' },
-  '处女座': { zh: '处女座', en: 'Virgo' },
-  '天秤座': { zh: '天秤座', en: 'Libra' },
-  '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
-  '射手座': { zh: '射手座', en: 'Sagittarius' },
-  '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
-  '水瓶座': { zh: '水瓶座', en: 'Aquarius' },
-  '双鱼座': { zh: '双鱼座', en: 'Pisces' },
+  '白羊座': { zh: '白羊座', en: 'Aries' }, '金牛座': { zh: '金牛座', en: 'Taurus' },
+  '双子座': { zh: '双子座', en: 'Gemini' }, '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
+  '狮子座': { zh: '狮子座', en: 'Leo' }, '处女座': { zh: '处女座', en: 'Virgo' },
+  '天秤座': { zh: '天秤座', en: 'Libra' }, '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
+  '射手座': { zh: '射手座', en: 'Sagittarius' }, '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
+  '水瓶座': { zh: '水瓶座', en: 'Aquarius' }, '双鱼座': { zh: '双鱼座', en: 'Pisces' },
 }
 
 export default function ProfilePage() {
@@ -60,14 +45,14 @@ export default function ProfilePage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen pb-28 md:pb-8 bg-background">
+    <div className="min-h-screen pb-28 md:pb-8 bg-surface">
       <div className="w-full max-w-screen-xl mx-auto px-6 md:px-16 pt-8 md:pt-12 space-y-8">
-        {/* Header */}
+        {/* Header - Editorial Style */}
         <section className="mb-12 max-w-3xl">
           <p className="text-[10px] font-label uppercase tracking-[0.3em] text-on-surface-variant mb-3">
             {isEn ? 'Identity & Intent' : '身份与意向'}
           </p>
-          <h1 className="text-5xl md:text-7xl font-serif font-light text-foreground tracking-tight editorial-title">
+          <h1 className="text-5xl md:text-7xl font-headline font-light text-on-surface tracking-tight">
             {isEn ? (
               <>{user.name}'s <span className="text-primary italic">Aura</span> Profile</>
             ) : (
@@ -79,15 +64,15 @@ export default function ProfilePage() {
         {/* 2x2 Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card 1: Personal Essence */}
-          <div className="bg-surface-container rounded-[2rem] p-8 animate-slide-up">
+          <div className="bg-surface-container rounded-[2rem] p-8 editorial-shadow animate-slide-up">
             <div className="flex gap-6">
               {/* Avatar */}
               <div className="relative group flex-shrink-0">
-                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/20">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary to-primary-container shadow-lg shadow-primary/20">
                   {user.avatar ? (
                     <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-white text-3xl font-bold">
+                    <div className="w-full h-full flex items-center justify-center text-on-primary text-3xl font-bold">
                       {user.name?.charAt(0)?.toUpperCase() || '?'}
                     </div>
                   )}
@@ -97,37 +82,37 @@ export default function ProfilePage() {
               {/* User Info */}
               <div className="flex-1 space-y-4 pt-1">
                 <div>
-                  <label className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant block mb-2">
+                  <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-1">
                     {isEn ? 'Display Name' : '显示名称'}
-                  </label>
-                  <p className="text-lg font-bold text-on-surface">{user.name}</p>
+                  </p>
+                  <p className="text-xl font-headline text-on-surface">{user.name}</p>
                 </div>
                 <div>
-                  <label className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant block mb-2">
+                  <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-1">
                     {isEn ? 'Email Connection' : '邮箱关联'}
-                  </label>
+                  </p>
                   <p className="text-sm text-on-surface-variant">{user.email}</p>
                 </div>
               </div>
             </div>
-            <p className="mt-6 text-sm text-on-surface-italic opacity-70 font-serif leading-relaxed">
+            <p className="mt-6 text-sm text-on-surface-variant font-body italic leading-relaxed">
               {isEn ? 'Manage how the stars perceive you.' : '管理星象对你的认知方式。'}
             </p>
-            <p className="mt-2 text-xs text-primary underline cursor-pointer" onClick={() => window.location.href = '/settings'}>
+            <p className="mt-3 text-xs text-primary underline cursor-pointer font-label" onClick={() => window.location.href = '/settings'}>
               {isEn ? 'Edit name & avatar in Settings →' : '在设置中编辑名称和头像 →'}
             </p>
           </div>
 
-          {/* Card 2: Zodiac - 星座星象图 */}
-          <div className="bg-[#0a0a12] rounded-[2rem] p-8 relative overflow-hidden animate-slide-up min-h-[320px]">
+          {/* Card 2: Zodiac - 星座星象图（深色宇宙背景） */}
+          <div className="bg-[#1c1c24] rounded-[2rem] p-8 relative overflow-hidden editorial-shadow animate-slide-up min-h-[320px]">
             {/* 星座符号背景 */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-10">
-              <span className="text-[280px] font-light text-white/20">{ZODIAC_SYMBOLS[user.zodiac]}</span>
+            <div className="absolute inset-0 flex items-center justify-center opacity-5">
+              <span className="text-[320px] font-light text-white">{ZODIAC_SYMBOLS[user.zodiac]}</span>
             </div>
             
             {/* 装饰性星点 */}
-            <div className="absolute inset-0 overflow-hidden">
-              {Array.from({ length: 30 }).map((_, i) => (
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {Array.from({ length: 40 }).map((_, i) => (
                 <div
                   key={i}
                   className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
@@ -135,55 +120,55 @@ export default function ProfilePage() {
                     top: `${Math.random() * 100}%`,
                     left: `${Math.random() * 100}%`,
                     animationDelay: `${Math.random() * 3}s`,
-                    opacity: Math.random() * 0.8 + 0.2,
+                    opacity: Math.random() * 0.7 + 0.3,
                   }}
                 />
               ))}
             </div>
             
             {/* 星座连线图 */}
-            <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 400 320">
-              {/* 随机生成星座连线 */}
-              {Array.from({ length: 5 }).map((_, i) => (
+            <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 400 320">
+              {Array.from({ length: 6 }).map((_, i) => (
                 <line
                   key={i}
-                  x1={50 + Math.random() * 300}
-                  y1={50 + Math.random() * 220}
-                  x2={50 + Math.random() * 300}
-                  y2={50 + Math.random() * 220}
-                  stroke="white"
+                  x1={40 + Math.random() * 320}
+                  y1={40 + Math.random() * 240}
+                  x2={40 + Math.random() * 320}
+                  y2={40 + Math.random() * 240}
+                  stroke="#f0dbff"
                   strokeWidth="1"
-                  opacity={0.3}
                 />
               ))}
-              {Array.from({ length: 8 }).map((_, i) => (
+              {Array.from({ length: 10 }).map((_, i) => (
                 <circle
                   key={`star-${i}`}
-                  cx={50 + Math.random() * 300}
-                  cy={50 + Math.random() * 220}
-                  r={3}
-                  fill="white"
-                  opacity={0.6}
+                  cx={40 + Math.random() * 320}
+                  cy={40 + Math.random() * 240}
+                  r={2}
+                  fill="#f0dbff"
+                  opacity={0.8}
                 />
               ))}
             </svg>
             
             <div className="relative z-10 h-full flex flex-col justify-between">
               <div>
-                <span className="inline-block bg-white/10 backdrop-blur-sm text-white/80 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label mb-4">
+                <span className="inline-block bg-tertiary-fixed/20 backdrop-blur-sm text-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase font-label mb-4">
                   {isEn ? 'The Sign' : '星座'}
                 </span>
                 <h2 className="font-headline text-5xl text-white mb-2 flex items-center gap-4">
-                  <span className="text-tertiary">{ZODIAC_SYMBOLS[user.zodiac]}</span>
-                  {isEn ? zodiacTranslations[user.zodiac].en : user.zodiac}
+                  <span className="text-tertiary-fixed text-6xl">{ZODIAC_SYMBOLS[user.zodiac]}</span>
+                  <div>
+                    <p className="text-3xl">{isEn ? zodiacTranslations[user.zodiac].en : user.zodiac}</p>
+                  </div>
                 </h2>
               </div>
               
               <div className="mt-auto">
-                <p className="text-sm text-white/60 font-serif italic leading-relaxed">
+                <p className="text-sm text-white/60 font-body italic leading-relaxed">
                   {isEn ? 'Your celestial energy radiates through the cosmos.' : '你的天体能量在宇宙中闪耀。'}
                 </p>
-                <p className="mt-2 text-xs text-tertiary underline cursor-pointer" onClick={() => window.location.href = '/settings'}>
+                <p className="mt-3 text-xs text-tertiary-fixed underline cursor-pointer font-label" onClick={() => window.location.href = '/settings'}>
                   {isEn ? 'Adjust alignment in Settings →' : '在设置中调整对齐 →'}
                 </p>
               </div>
@@ -191,10 +176,10 @@ export default function ProfilePage() {
           </div>
 
           {/* Card 3: Primary City - 城市背景图 */}
-          <div className="relative rounded-[2rem] overflow-hidden animate-slide-up min-h-[320px]">
+          <div className="relative rounded-[2rem] overflow-hidden editorial-shadow animate-slide-up min-h-[320px]">
             {/* 城市背景图 */}
             <div 
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
               style={{ backgroundImage: `url(${cityImage})` }}
             />
             {/* 渐变遮罩 */}
@@ -214,14 +199,14 @@ export default function ProfilePage() {
               </div>
 
               <h3 className="font-headline text-4xl text-white mb-2">{user.city}</h3>
-              <p className="text-sm text-white/70 font-serif leading-relaxed mb-6">
+              <p className="text-sm text-white/70 font-body italic leading-relaxed mb-6">
                 {isEn 
                   ? 'Your atmospheric coordinates influence daily styling advice.'
                   : '你的大气坐标影响每日穿搭建议。'}
               </p>
 
               {/* Weather Preview */}
-              <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-4">
                 <span className="material-symbols-outlined text-4xl text-white">cloud</span>
                 <div>
                   <p className="text-3xl font-headline font-light text-white">18°C</p>
@@ -231,16 +216,16 @@ export default function ProfilePage() {
                 </div>
               </div>
               
-              <p className="mt-4 text-xs text-white/60 underline cursor-pointer" onClick={() => window.location.href = '/settings'}>
+              <p className="mt-4 text-xs text-white/60 underline cursor-pointer font-label" onClick={() => window.location.href = '/settings'}>
                 {isEn ? 'Change city in Settings →' : '在设置中更改城市 →'}
               </p>
             </div>
           </div>
 
           {/* Card 4: Style Goals Preview */}
-          <div className="bg-surface-container rounded-[2rem] p-8 animate-slide-up min-h-[320px] flex flex-col">
+          <div className="bg-surface-container-low rounded-[2rem] p-8 editorial-shadow animate-slide-up min-h-[320px] flex flex-col">
             <h3 className="font-headline text-2xl text-on-surface mb-2">{isEn ? 'Style Goals' : '风格目标'}</h3>
-            <p className="text-sm text-on-surface-variant/80 font-serif leading-relaxed mb-6">
+            <p className="text-sm text-on-surface-variant font-body italic leading-relaxed mb-6">
               {isEn ? 'Your aesthetic rhythm.' : '你的美学节奏。'}
             </p>
 
@@ -259,20 +244,20 @@ export default function ProfilePage() {
                   return (
                     <span
                       key={styleId}
-                      className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-sm font-label font-bold tracking-wide"
+                      className="px-4 py-2 bg-primary-fixed/20 text-primary rounded-full text-sm font-label font-bold tracking-wide"
                     >
                       {isEn ? style?.en : style?.zh}
                     </span>
                   )
                 })
               ) : (
-                <span className="text-sm text-on-surface-variant/60 italic">
+                <span className="text-sm text-on-surface-variant/60 font-body italic">
                   {isEn ? 'No style goals set' : '未设置风格目标'}
                 </span>
               )}
             </div>
             
-            <p className="mt-4 text-xs text-primary underline cursor-pointer" onClick={() => window.location.href = '/settings'}>
+            <p className="mt-6 text-xs text-primary underline cursor-pointer font-label" onClick={() => window.location.href = '/settings'}>
               {isEn ? 'Edit style goals in Settings →' : '在设置中编辑风格目标 →'}
             </p>
           </div>
@@ -280,28 +265,28 @@ export default function ProfilePage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-surface-container rounded-[2rem] p-6 animate-slide-up">
+          <div className="bg-surface-container rounded-[2rem] p-6 editorial-shadow animate-slide-up">
             <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2">
               {isEn ? 'Closet Size' : '衣橱规模'}
             </p>
             <p className="text-4xl font-headline font-light text-on-surface">42</p>
-            <p className="text-xs text-on-surface-variant mt-1">{isEn ? 'items curated' : '件精选单品'}</p>
+            <p className="text-xs text-on-surface-variant mt-1 font-body">{isEn ? 'items curated' : '件精选单品'}</p>
           </div>
-          <div className="bg-surface-container rounded-[2rem] p-6 animate-slide-up">
+          <div className="bg-surface-container rounded-[2rem] p-6 editorial-shadow animate-slide-up">
             <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2">
               {isEn ? 'Outfits Created' : '已创建搭配'}
             </p>
             <p className="text-4xl font-headline font-light text-on-surface">18</p>
-            <p className="text-xs text-on-surface-variant mt-1">{isEn ? 'looks saved' : '套造型已保存'}</p>
+            <p className="text-xs text-on-surface-variant mt-1 font-body">{isEn ? 'looks saved' : '套造型已保存'}</p>
           </div>
-          <div className="bg-tertiary-fixed/40 rounded-[2rem] p-6 animate-slide-up">
+          <div className="bg-tertiary-fixed/30 rounded-[2rem] p-6 editorial-shadow animate-slide-up">
             <p className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2">
               {isEn ? 'Membership' : '会员状态'}
             </p>
             <p className="text-4xl font-headline font-light text-primary">{user.isPro ? 'PRO' : 'FREE'}</p>
             <button 
               onClick={() => setShowPayment(true)}
-              className="text-xs text-primary underline mt-1"
+              className="text-xs text-primary underline mt-1 font-label"
             >
               {user.isPro ? (isEn ? 'Manage subscription' : '管理订阅') : (isEn ? 'Upgrade now' : '立即升级')}
             </button>
