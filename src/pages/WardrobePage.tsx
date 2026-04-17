@@ -159,16 +159,11 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
 export default function WardrobePage() {
   const { t, i18n } = useTranslation()
   const { items, addItem, removeItem } = useWardrobeStore()
-  const [activeCategory, setActiveCategory] = useState<ClothingCategory | 'all'>('all')
+  const [activeCategory] = useState<ClothingCategory | 'all'>('all')
   const [showUpload, setShowUpload] = useState(false)
   const [showGuide, setShowGuide] = useState(items.length === 0)
 
   const isEn = i18n.language === 'en'
-
-  // 获取分类的显示名称
-  const getCategoryLabel = (cat: ClothingCategory) => {
-    return isEn ? categoryTranslations[cat].en : categoryTranslations[cat].zh
-  }
 
   const filtered = activeCategory === 'all' ? items : items.filter((i) => {
     return i.category === activeCategory

@@ -50,7 +50,7 @@ const STYLE_OPTIONS = [
 ]
 
 export default function ProfilePage() {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const { user, updateProfile } = useAuthStore()
   const [name, setName] = useState(user?.name || '')
   const [city, setCity] = useState(user?.city || '上海')
