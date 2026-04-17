@@ -7,11 +7,13 @@ import {
   AutoAwesome,
   AutoStories,
   SettingsOutline,
-  HelpOutline
+  HelpOutline,
+  DiamondOutline,
+  LanguageOutline
 } from '@/components/icons'
 
 export default function SideNav() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const location = useLocation()
   const user = useAuthStore((s) => s.user)
   
@@ -27,6 +29,10 @@ export default function SideNav() {
       return location.pathname === '/'
     }
     return location.pathname.startsWith(path)
+  }
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en')
   }
 
   return (
@@ -89,6 +95,28 @@ export default function SideNav() {
           
           {/* 设置菜单 */}
           <ul className="space-y-1 mb-6">
+            {/* 会员入口 */}
+            <li>
+              <Link
+                to="/membership"
+                className="flex items-center gap-4 text-[#735c00] py-2 hover:text-[#4d6328] transition-colors"
+              >
+                <DiamondOutline className="w-5 h-5" />
+                <span className="text-sm font-bold">{t('nav.membership')}</span>
+              </Link>
+            </li>
+            {/* 语言切换 */}
+            <li>
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-4 text-stone-600 dark:text-stone-400 py-2 hover:text-[#4d6328] dark:hover:text-[#7D8F69] transition-colors w-full"
+              >
+                <LanguageOutline className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  {i18n.language === 'en' ? '中文' : 'English'}
+                </span>
+              </button>
+            </li>
             <li>
               <Link
                 to="/settings"

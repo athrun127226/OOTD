@@ -150,17 +150,14 @@ function AppContent() {
     return <AuthPage />
   }
 
-  // 判断当前路由是否使用 TopAppBar 模式（Wardrobe / AskAI）
-  // Profile / Lookbook / Membership 使用 SideNav 左侧边栏模式
-  const useTopNav = location.pathname === '/wardrobe' || location.pathname === '/'
-
+  // 统一使用 SideNav 左侧边栏
   return (
     <div className="relative min-h-screen bg-[#fcf9f2]">
-      {/* 条件导航：TopNavBar 或 SideNav */}
-      {useTopNav ? <TopNavBar /> : <SideNav />}
+      {/* 统一导航：SideNav */}
+      <SideNav />
       
       {/* 主内容区域 */}
-      <main className={useTopNav ? 'min-h-screen' : 'md:ml-72 min-h-screen'}>
+      <main className="md:ml-72 min-h-screen">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/wardrobe" element={<WardrobePage />} />
