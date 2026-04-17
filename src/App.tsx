@@ -10,6 +10,7 @@ import WardrobePage from '@/pages/WardrobePage'
 import ProfilePage from '@/pages/ProfilePage'
 import LookbookPage from '@/pages/LookbookPage'
 import MembershipPage from '@/pages/MembershipPage'
+import SettingsPage from '@/pages/SettingsPage'
 import SideNav from '@/components/layout/SideNav'
 
 function AppContent() {
@@ -163,6 +164,7 @@ function AppContent() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/lookbook" element={<LookbookPage />} />
           <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           {/* Fallback */}
           <Route path="*" element={<HomePage />} />
         </Routes>
