@@ -124,6 +124,7 @@ function PromotionalCard({ isEn }: { isEn: boolean }) {
 export default function LookbookPage() {
   const { t, i18n } = useTranslation()
   const [activeFilter, setActiveFilter] = useState('autumn')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [favorites] = useState(new Set(['1', '3']))
 
   const isEn = i18n.language === 'en'

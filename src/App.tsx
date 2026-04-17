@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import './i18n' // 导入 i18n 配置

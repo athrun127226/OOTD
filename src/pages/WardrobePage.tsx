@@ -40,40 +40,6 @@ const categoryTranslations: Record<ClothingCategory, { zh: string; en: string }>
   '配饰': { zh: '配饰', en: 'Accessories' },
 }
 
-function ClothingCard({
-  item,
-  onDelete,
-}: {
-  item: ClothingItem
-  onDelete: (id: string) => void
-}) {
-  const [showDelete, setShowDelete] = useState(false)
-
-  return (
-    <div
-      className="relative rounded-3xl overflow-hidden bg-surface-container border border-outline/10 group cursor-pointer transition-all hover:shadow-xl"
-      onMouseEnter={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
-    >
-      <div className="aspect-square bg-surface-container-low">
-        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
-        <p className="text-xs font-medium text-white truncate font-serif">{item.name}</p>
-        <p className="text-xs text-white/80 mt-0.5">{item.color}</p>
-      </div>
-      {showDelete && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onDelete(item.id) }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm text-white flex items-center justify-center text-sm hover:bg-destructive transition-all shadow-lg"
-        >
-          ✕
-        </button>
-      )}
-    </div>
-  )
-}
-
 function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (item: ClothingItem) => void }) {
   const { t, i18n } = useTranslation()
   const [name, setName] = useState('')
@@ -198,8 +164,7 @@ export default function WardrobePage() {
   const [showGuide, setShowGuide] = useState(items.length === 0)
 
   const isEn = i18n.language === 'en'
-  const categories = CATEGORIES_ZH
-  
+
   // 获取分类的显示名称
   const getCategoryLabel = (cat: ClothingCategory) => {
     return isEn ? categoryTranslations[cat].en : categoryTranslations[cat].zh
