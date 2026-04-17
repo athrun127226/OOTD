@@ -11,7 +11,6 @@ import ProfilePage from '@/pages/ProfilePage'
 import LookbookPage from '@/pages/LookbookPage'
 import MembershipPage from '@/pages/MembershipPage'
 import SideNav from '@/components/layout/SideNav'
-import TopNavBar from '@/components/layout/TopNavBar'
 
 function AppContent() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
