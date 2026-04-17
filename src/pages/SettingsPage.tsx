@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/store'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/Toast'
 import type { ZodiacSign } from '@/types'
 
 const ZODIACS_ZH: ZodiacSign[] = [
@@ -36,6 +37,7 @@ const ZODIAC_SYMBOLS: Record<ZodiacSign, string> = {
 export default function SettingsPage() {
   const { i18n } = useTranslation()
   const { user, updateProfile } = useAuthStore()
+  const { showToast } = useToast()
   const [name, setName] = useState(user?.name || '')
   const [avatar, setAvatar] = useState(user?.avatar || '')
   const [city, setCity] = useState(user?.city || '上海')
@@ -49,6 +51,7 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     updateProfile({ name, avatar, city, zodiac, style: selectedStyles })
+    showToast(isEn ? 'Settings saved successfully' : '设置已保存')
   }
 
   const toggleStyle = (styleId: string) => {

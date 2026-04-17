@@ -12,6 +12,7 @@ import LookbookPage from '@/pages/LookbookPage'
 import MembershipPage from '@/pages/MembershipPage'
 import SettingsPage from '@/pages/SettingsPage'
 import SideNav from '@/components/layout/SideNav'
+import { ToastProvider } from '@/components/ui/Toast'
 
 function AppContent() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -152,24 +153,26 @@ function AppContent() {
 
   // 统一使用 SideNav 左侧边栏
   return (
-    <div className="relative min-h-screen bg-[#fcf9f2]">
-      {/* 统一导航：SideNav */}
-      <SideNav />
-      
-      {/* 主内容区域 */}
-      <main className="md:ml-72 min-h-screen">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/wardrobe" element={<WardrobePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/lookbook" element={<LookbookPage />} />
-          <Route path="/membership" element={<MembershipPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          {/* Fallback */}
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      </main>
-    </div>
+    <ToastProvider>
+      <div className="relative min-h-screen bg-[#fcf9f2]">
+        {/* 统一导航：SideNav */}
+        <SideNav />
+        
+        {/* 主内容区域 */}
+        <main className="md:ml-72 min-h-screen">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/wardrobe" element={<WardrobePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/lookbook" element={<LookbookPage />} />
+            <Route path="/membership" element={<MembershipPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            {/* Fallback */}
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </main>
+      </div>
+    </ToastProvider>
   )
 }
 

@@ -162,6 +162,22 @@
   box-shadow: 0 32px 64px -12px rgba(28, 28, 24, 0.06);
 }
 
+/* Toast animation - 提示框动画 */
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.3s ease-out;
+}
+
 /* Glass morphism - 自然毛玻璃 */
 .glass {
   background: rgba(252, 249, 242, 0.9);

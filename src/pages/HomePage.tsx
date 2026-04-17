@@ -7,18 +7,12 @@ import { Button } from '@/components/ui/button'
 import type { OOTDOutfit, ZodiacSign } from '@/types'
 
 const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
-  '白羊座': { zh: '白羊座', en: 'Aries' },
-  '金牛座': { zh: '金牛座', en: 'Taurus' },
-  '双子座': { zh: '双子座', en: 'Gemini' },
-  '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
-  '狮子座': { zh: '狮子座', en: 'Leo' },
-  '处女座': { zh: '处女座', en: 'Virgo' },
-  '天秤座': { zh: '天秤座', en: 'Libra' },
-  '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
-  '射手座': { zh: '射手座', en: 'Sagittarius' },
-  '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
-  '水瓶座': { zh: '水瓶座', en: 'Aquarius' },
-  '双鱼座': { zh: '双鱼座', en: 'Pisces' },
+  '白羊座': { zh: '白羊座', en: 'Aries' }, '金牛座': { zh: '金牛座', en: 'Taurus' },
+  '双子座': { zh: '双子座', en: 'Gemini' }, '巨蟹座': { zh: '巨蟹座', en: 'Cancer' },
+  '狮子座': { zh: '狮子座', en: 'Leo' }, '处女座': { zh: '处女座', en: 'Virgo' },
+  '天秤座': { zh: '天秤座', en: 'Libra' }, '天蝎座': { zh: '天蝎座', en: 'Scorpio' },
+  '射手座': { zh: '射手座', en: 'Sagittarius' }, '摩羯座': { zh: '摩羯座', en: 'Capricorn' },
+  '水瓶座': { zh: '水瓶座', en: 'Aquarius' }, '双鱼座': { zh: '双鱼座', en: 'Pisces' },
 }
 
 const colorTranslations: Record<string, { zh: string; en: string }> = {
@@ -29,14 +23,21 @@ const colorTranslations: Record<string, { zh: string; en: string }> = {
 }
 
 // Chromatic color match data
-const COLOR_MATCHES = [
+const COLOR_MATCHES_ZH = [
+  { name: '丝巾', percent: 98, hex: '#E9C349' },
+  { name: '亚麻长裤', percent: 82, hex: '#C5A02E' },
+  { name: '羊毛大衣', percent: 75, hex: '#735C00' },
+  { name: '棉质T恤', percent: null, hex: '#FED65B', recommended: true },
+]
+
+const COLOR_MATCHES_EN = [
   { name: 'Silk Scarf', percent: 98, hex: '#E9C349' },
   { name: 'Linen Trousers', percent: 82, hex: '#C5A02E' },
   { name: 'Wool Coat', percent: 75, hex: '#735C00' },
   { name: 'Cotton Tee', percent: null, hex: '#FED65B', recommended: true },
 ]
 
-const weatherIcons: Record<string, string> = { sunny: '\u2600\uFE0F', cloudy: '\u26C5\uFE0F', rainy: '\uD83C\uDF27\uFE0F', overcast: '\u2601\uFE0F', windy: '\uD83C\uDF2C' }
+const weatherIcons: Record<string, string> = { sunny: '☀️', cloudy: '⛅', rainy: '🌧️', overcast: '☁️', windy: '🌬️' }
 
 function StarRating({ score }: { score: number }) {
   return (
@@ -49,7 +50,7 @@ function StarRating({ score }: { score: number }) {
 function ClothingCard({ item, label }: { item: { imageUrl: string; name: string }; label: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-surface-container shadow-sm border border-outline/10">
+      <div className="w-16 h-16 rounded-2xl overflow-hidden bg-surface-container shadow-sm">
         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
       </div>
       <span className="text-xs text-muted-foreground font-label uppercase tracking-wider">{label}</span>
@@ -59,16 +60,24 @@ function ClothingCard({ item, label }: { item: { imageUrl: string; name: string 
 
 function OutfitCard({ outfit, isActive, isEn }: { outfit: OOTDOutfit; isActive: boolean; isEn: boolean }) {
   const items = outfit.items
-  const labels: Record<string,string> = isEn ? {'连衣裙':'Dress','上衣':'Top','外套':'Outerwear','下装':'Bottom','鞋子':'Shoes','配饰':'Accessory'} : {'连衣裙':'连衣裙','上衣':'上衣','外套':'外套','下装':'下装','鞋子':'鞋子','配饰':'配饰'}
+  const labels: Record<string,string> = isEn 
+    ? {'连衣裙':'Dress','上衣':'Top','外套':'Outerwear','下装':'Bottom','鞋子':'Shoes','配饰':'Accessory'}
+    : {'连衣裙':'连衣裙','上衣':'上衣','外套':'外套','下装':'下装','鞋子':'鞋子','配饰':'配饰'}
   return (
-    <div className={`rounded-3xl border-2 transition-all duration-300 overflow-hidden ${isActive ? 'border-primary shadow-xl scale-100 bg-surface-container' : 'border-outline/20 shadow-md scale-95 opacity-70 bg-surface-container-low'}`}>
+    <div className={`rounded-3xl transition-all duration-300 overflow-hidden ${isActive ? 'shadow-xl scale-100 bg-surface-container' : 'shadow-md scale-95 opacity-70 bg-surface-container-low'}`}>
       <div className="p-6">
         <div className="flex items-start justify-between mb-5">
           <div>
             <h3 className="font-serif text-lg font-light editorial-title">{outfit.name}</h3>
-            <div className="flex items-center gap-2 mt-2"><span className="text-xs rounded-full px-3 py-1 bg-primary/10 text-primary border-0">{outfit.style}</span><span className="text-xs rounded-full px-3 py-1 border outline/30">{outfit.occasion}</span></div>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-xs rounded-full px-3 py-1 bg-primary/10 text-primary">{outfit.style}</span>
+              <span className="text-xs rounded-full px-3 py-1 bg-surface-container-high text-on-surface-variant">{outfit.occasion}</span>
+            </div>
           </div>
-          <div className="text-right"><StarRating score={outfit.score}/><span className="text-xs text-muted-foreground mt-1 block">{outfit.score.toFixed(1)}{isEn?'':'分'}</span></div>
+          <div className="text-right">
+            <StarRating score={outfit.score}/>
+            <span className="text-xs text-muted-foreground mt-1 block">{outfit.score.toFixed(1)}{isEn?'':'分'}</span>
+          </div>
         </div>
         <div className="flex gap-3 justify-center py-4 flex-wrap">
           {items.dress && <ClothingCard item={items.dress} label={labels['连衣裙']}/>}
@@ -78,8 +87,10 @@ function OutfitCard({ outfit, isActive, isEn }: { outfit: OOTDOutfit; isActive: 
           {items.shoes && <ClothingCard item={items.shoes} label={labels['鞋子']}/>}
           {items.accessories?.map((a,i)=><ClothingCard key={i} item={a} label={labels['配饰']}/>)}
         </div>
-        <div className="mt-5 p-4 rounded-2xl bg-surface-container-low border border-outline/10">
-          <p className="text-xs text-foreground/80 leading-relaxed"><span className="font-semibold text-primary">✨ AI Comment:</span> {outfit.aiComment}</p>
+        <div className="mt-5 p-4 rounded-2xl bg-surface-container-low">
+          <p className="text-xs text-foreground/80 leading-relaxed">
+            <span className="font-semibold text-primary">✨ {isEn ? 'AI Comment' : 'AI点评'}:</span> {outfit.aiComment}
+          </p>
           {outfit.luckyReason && <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 flex items-center gap-1.5">🍀{outfit.luckyReason}</p>}
         </div>
       </div>
@@ -115,16 +126,22 @@ export default function HomePage() {
     catch { setError(isEn?'Generation failed':'生成失败'); setStatus('error') }
   }
 
+  const colorMatches = isEn ? COLOR_MATCHES_EN : COLOR_MATCHES_ZH
+
   return (
-    <div className="min-h-screen pb-24 md:pb-8 bg-background pt-[64px]">
+    <div className="min-h-screen pb-24 md:pb-8 bg-background">
       <div className="relative max-w-screen-xl mx-auto px-6 md:px-16 pt-8 md:pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Content - 8 cols */}
           <div className="lg:col-span-8 space-y-12">
             <section className="animate-fade-in">
-              <h1 className="text-5xl lg:text-7xl font-headline text-on-surface mb-4 tracking-tight">The Oracle's Eye</h1>
+              <h1 className="text-5xl lg:text-7xl font-headline text-on-surface mb-4 tracking-tight">
+                {isEn ? "The Oracle's Eye" : '神谕之眼'}
+              </h1>
               <p className="font-body text-on-surface-variant max-w-xl leading-relaxed italic opacity-80">
-                Consult the celestial alignment for your next silhouette. Upload a garment or let the cosmos browse your curated collection.
+                {isEn 
+                  ? 'Consult the celestial alignment for your next silhouette. Upload a garment or let the cosmos browse your curated collection.'
+                  : '咨询天体对齐，为你的下一个造型寻找灵感。上传一件单品，或让宇宙浏览你的精选收藏。'}
               </p>
             </section>
 
@@ -133,15 +150,25 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10 p-8">
                   <span className="material-symbols-outlined text-5xl text-primary mb-4 block">add_photo_alternate</span>
-                  <h3 className="font-headline text-2xl mb-2 text-primary">Introduce a Muse</h3>
-                  <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">Drag or tap to upload garment</p>
+                  <h3 className="font-headline text-2xl mb-2 text-primary">
+                    {isEn ? 'Introduce a Muse' : '引入灵感'}
+                  </h3>
+                  <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
+                    {isEn ? 'Drag or tap to upload garment' : '拖拽或点击上传单品'}
+                  </p>
                 </div>
               </div>
               <div className="bg-surface-container-highest rounded-[2rem] p-8 flex flex-col justify-between items-start min-h-[340px] relative overflow-hidden group">
                 <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"/>
                 <div>
                   <span className="material-symbols-outlined text-3xl text-primary mb-4">checkroom</span>
-                  <h3 className="font-headline text-3xl text-on-surface leading-tight">Generate from your<br/>current collection</h3>
+                  <h3 className="font-headline text-3xl text-on-surface leading-tight">
+                    {isEn ? (
+                      <>Generate from your<br/>current collection</>
+                    ) : (
+                      <>从你的<br/>当前收藏生成</>
+                    )}
+                  </h3>
                 </div>
                 <button onClick={handleGenerate} disabled={status==='loading'||!weather||!fortune}
                   className="bg-gradient-to-r from-primary to-primary-container text-on-primary px-8 py-4 rounded-xl font-label text-sm uppercase tracking-[0.2em] shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95 flex items-center gap-3 disabled:opacity-50">
@@ -154,21 +181,32 @@ export default function HomePage() {
             <section className="bg-surface-container rounded-[2.5rem] p-8 lg:p-12 overflow-hidden relative animate-slide-up">
               <div className="absolute top-0 right-0 p-8"><span className="material-symbols-outlined text-secondary opacity-30 text-8xl" style={{fontWeight:100}}>star_half</span></div>
               <div className="relative z-10">
-                <h2 className="font-headline text-3xl mb-8">Chromatic Alignment</h2>
+                <h2 className="font-headline text-3xl mb-8">
+                  {isEn ? 'Chromatic Alignment' : '色彩对齐'}
+                </h2>
                 <div className="flex flex-col md:flex-row items-center gap-10">
                   <div className="w-full md:w-1/3">
                     <div className="aspect-square rounded-full bg-secondary-container flex items-center justify-center editorial-shadow p-2 mx-auto max-w-[240px]">
                       <div className="w-full h-full rounded-full border-4 border-white/20 flex flex-col items-center justify-center text-center">
-                        <span className="font-label text-[10px] uppercase tracking-[0.3em] text-on-secondary-fixed-variant mb-2">Lucky Transit</span>
-                        <span className="font-headline text-4xl text-on-secondary-fixed">Zodiac Gold</span>
+                        <span className="font-label text-[10px] uppercase tracking-[0.3em] text-on-secondary-fixed-variant mb-2">
+                          {isEn ? 'Lucky Transit' : '幸运过境'}
+                        </span>
+                        <span className="font-headline text-4xl text-on-secondary-fixed">
+                          {isEn ? 'Zodiac Gold' : '星座金'}
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="w-full md:w-2/3 grid grid-cols-2 gap-4">
-                    {COLOR_MATCHES.map((m,i)=>(
+                    {colorMatches.map((m,i)=>(
                       <div key={i} className="bg-surface p-4 rounded-2xl flex items-center gap-4">
                         <div className="w-12 h-12 rounded-lg" style={{backgroundColor:m.hex}}/>
-                        <div><div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{m.name}</div><div className="font-body text-sm font-bold">{m.percent?`${m.percent}% Match`:'Recommended'}</div></div>
+                        <div>
+                          <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{m.name}</div>
+                          <div className="font-body text-sm font-bold">
+                            {m.percent ? `${m.percent}% ${isEn ? 'Match' : '匹配'}` : (isEn ? 'Recommended' : '推荐')}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -179,30 +217,57 @@ export default function HomePage() {
 
           {/* Sidebar - Active Analysis 4 cols */}
           <aside className="lg:col-span-4 space-y-8">
-            <div className="bg-surface-container-low rounded-[2rem] p-8 editorial-shadow border border-outline-variant/10">
-              <div className="flex items-center gap-3 mb-8"><div className="w-2 h-2 rounded-full bg-primary animate-pulse"/><h3 className="font-label text-xs uppercase tracking-[0.25em] text-primary font-bold">Active Analysis</h3></div>
+            <div className="bg-surface-container-low rounded-[2rem] p-8 editorial-shadow">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse"/>
+                <h3 className="font-label text-xs uppercase tracking-[0.25em] text-primary font-bold">
+                  {isEn ? 'Active Analysis' : '活跃分析'}
+                </h3>
+              </div>
               
               {/* Fabric Detection */}
               <div className="mb-10">
-                <div className="flex justify-between items-end mb-4"><h4 className="font-headline text-xl">Fabric Detection</h4><span className="material-symbols-outlined text-on-surface-variant">texture</span></div>
-                {[{n:'Organic Cotton',p:45},{n:'Raw Silk',p:32},{n:'Recycled Wool',p:23}].map((f)=>(
+                <div className="flex justify-between items-end mb-4">
+                  <h4 className="font-headline text-xl">{isEn ? 'Fabric Detection' : '面料检测'}</h4>
+                  <span className="material-symbols-outlined text-on-surface-variant">texture</span>
+                </div>
+                {[
+                  { n: isEn ? 'Organic Cotton' : '有机棉', p: 45 },
+                  { n: isEn ? 'Raw Silk' : '生丝', p: 32 },
+                  { n: isEn ? 'Recycled Wool' : '再生羊毛', p: 23 },
+                ].map((f) => (
                   <div key={f.n} className="mb-4 last:mb-0">
-                    <div className="flex justify-between text-xs font-label uppercase tracking-widest mb-2 text-on-surface-variant"><span>{f.n}</span><span>{f.p}%</span></div>
-                    <div className="h-1 bg-surface-variant rounded-full overflow-hidden"><div className="h-full bg-primary" style={{width:`${f.p}%`}}/></div>
+                    <div className="flex justify-between text-xs font-label uppercase tracking-widest mb-2 text-on-surface-variant">
+                      <span>{f.n}</span><span>{f.p}%</span>
+                    </div>
+                    <div className="h-1 bg-surface-variant rounded-full overflow-hidden">
+                      <div className="h-full bg-primary" style={{width:`${f.p}%`}}/>
+                    </div>
                   </div>
                 ))}
               </div>
 
               {/* Style DNA */}
               <div>
-                <div className="flex justify-between items-end mb-6"><h4 className="font-headline text-xl">Style DNA</h4><span className="material-symbols-outlined text-on-surface-variant">biotech</span></div>
-                <div className="flex flex-wrap gap-2 mb-8">
-                  <span className="px-4 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-full text-[10px] font-label uppercase tracking-widest font-bold">Ethereal Minimalist</span>
-                  <span className="px-4 py-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-[10px] font-label uppercase tracking-widest font-bold">Earth Core</span>
-                  <span className="px-4 py-2 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-label uppercase tracking-widest font-bold">Structural Softness</span>
+                <div className="flex justify-between items-end mb-6">
+                  <h4 className="font-headline text-xl">{isEn ? 'Style DNA' : '风格基因'}</h4>
+                  <span className="material-symbols-outlined text-on-surface-variant">biotech</span>
                 </div>
-                <div className="mt-8 p-6 bg-surface rounded-2xl border border-outline-variant/20 italic text-sm text-on-surface-variant leading-relaxed">
-                  "Your current wardrobe trajectory suggests a 'Lunar Transition' phase. We recommend prioritizing high-contrast textures over saturated colors."
+                <div className="flex flex-wrap gap-2 mb-8">
+                  <span className="px-4 py-2 bg-secondary-fixed text-on-secondary-fixed rounded-full text-[10px] font-label uppercase tracking-widest font-bold">
+                    {isEn ? 'Ethereal Minimalist' : '空灵极简'}
+                  </span>
+                  <span className="px-4 py-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-[10px] font-label uppercase tracking-widest font-bold">
+                    {isEn ? 'Earth Core' : '大地核心'}
+                  </span>
+                  <span className="px-4 py-2 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-label uppercase tracking-widest font-bold">
+                    {isEn ? 'Structural Softness' : '结构柔和'}
+                  </span>
+                </div>
+                <div className="mt-8 p-6 bg-surface rounded-2xl italic text-sm text-on-surface-variant leading-relaxed">
+                  {isEn 
+                    ? '"Your current wardrobe trajectory suggests a \'Lunar Transition\' phase. We recommend prioritizing high-contrast textures over saturated colors."'
+                    : '"你当前的衣橱轨迹显示正处于\'月相过渡\'阶段。我们建议优先选择高对比度质感而非饱和色彩。"'}
                 </div>
               </div>
             </div>
@@ -210,11 +275,19 @@ export default function HomePage() {
             {!initialLoading && (
               <>
                 {weather && (
-                  <div className="bg-surface-container-low rounded-[2rem] p-8 editorial-shadow border border-outline-variant/10">
-                    <div className="flex items-center gap-2 mb-6"><span className="material-symbols-outlined text-primary">wb_sunny</span><h3 className="font-label text-xs uppercase tracking-[0.25em] text-primary font-bold">Weather</h3></div>
+                  <div className="bg-surface-container-low rounded-[2rem] p-8 editorial-shadow">
+                    <div className="flex items-center gap-2 mb-6">
+                      <span className="material-symbols-outlined text-primary">wb_sunny</span>
+                      <h3 className="font-label text-xs uppercase tracking-[0.25em] text-primary font-bold">
+                        {isEn ? 'Weather' : '天气'}
+                      </h3>
+                    </div>
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="text-5xl">{weatherIcons[weather.conditionCode]||'\uD83C\uDF24\uFE0F'}</span>
-                      <div><p className="text-xs text-on-surface-variant uppercase tracking-wider">{weather.city}</p><p className="font-serif text-3xl text-primary">{weather.temperature.current}°</p></div>
+                      <span className="text-5xl">{weatherIcons[weather.conditionCode]||'🌤️'}</span>
+                      <div>
+                        <p className="text-xs text-on-surface-variant uppercase tracking-wider">{weather.city}</p>
+                        <p className="font-serif text-3xl text-primary">{weather.temperature.current}°</p>
+                      </div>
                     </div>
                     <p className="text-xs text-on-surface-variant">{weather.temperature.min}° ~ {weather.temperature.max}°</p>
                   </div>
@@ -225,7 +298,10 @@ export default function HomePage() {
                     <div className="relative z-10">
                       <span className="material-symbols-outlined text-tertiary-fixed mb-4">auto_awesome</span>
                       <h4 className="font-serif text-2xl mb-2">{isEn&&zodiacTranslations[fortune.zodiac as ZodiacSign]?zodiacTranslations[fortune.zodiac as ZodiacSign].en:fortune.zodiac}</h4>
-                      <div className="flex items-center gap-2 mb-3"><div className="w-8 h-8 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0" style={{backgroundColor:'#EC4899'}}/><p className="text-sm font-bold">{isEn&&colorTranslations[fortune.luckyColor]?colorTranslations[fortune.luckyColor].en:fortune.luckyColor}</p></div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-8 h-8 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0" style={{backgroundColor:'#EC4899'}}/>
+                        <p className="text-sm font-bold">{isEn&&colorTranslations[fortune.luckyColor]?colorTranslations[fortune.luckyColor].en:fortune.luckyColor}</p>
+                      </div>
                       <p className="text-sm opacity-90 leading-relaxed">{fortune.todayTip}</p>
                     </div>
                   </div>
@@ -234,8 +310,12 @@ export default function HomePage() {
                   <img alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-1000" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400"/>
                   <div className="relative z-10">
                     <span className="material-symbols-outlined text-tertiary-fixed mb-4">lightbulb</span>
-                    <h4 className="font-headline text-2xl mb-2">Cosmic Guidance</h4>
-                    <p className="font-body text-sm opacity-90 leading-relaxed">Mercury is in retrograde. Opt for familiar silhouettes and vintage layers today to maintain your energetic grounding.</p>
+                    <h4 className="font-headline text-2xl mb-2">{isEn ? 'Cosmic Guidance' : '宇宙指引'}</h4>
+                    <p className="font-body text-sm opacity-90 leading-relaxed">
+                      {isEn 
+                        ? 'Mercury is in retrograde. Opt for familiar silhouettes and vintage layers today to maintain your energetic grounding.'
+                        : '水星正在逆行。今天选择熟悉的轮廓和复古叠穿，以保持你的能量接地。'}
+                    </p>
                   </div>
                 </div>
               </>
@@ -243,28 +323,46 @@ export default function HomePage() {
           </aside>
         </div>
 
-        {error && <div className="bg-destructive/10 text-destructive rounded-2xl p-4 text-sm text-center border border-destructive/20 mt-8">{error}</div>}
+        {error && <div className="bg-destructive/10 text-destructive rounded-2xl p-4 text-sm text-center mt-8">{error}</div>}
 
         {status==='success'&&outfits.length>0&&(
           <div className="space-y-5 animate-slide-up mt-12">
-            <div className="flex items-center justify-between"><h2 className="font-serif text-xl font-light text-foreground editorial-title">{t('home.todayOutfit')}</h2><span className="text-xs text-muted-foreground uppercase tracking-wider">{outfits.length} Plans</span></div>
-            <div className="flex gap-2">{outfits.map((o,i)=>(<button key={o.id} onClick={()=>setActiveOutfitIndex(i)} className={`flex-1 py-2.5 px-4 rounded-2xl text-xs font-medium transition-all ${activeOutfitIndex===i?'bg-primary text-primary-foreground shadow-md':'bg-surface-container text-muted-foreground hover:bg-surface-container-high'}`}>Plan {i+1}</button>))}</div>
+            <div className="flex items-center justify-between">
+              <h2 className="font-serif text-xl font-light text-foreground editorial-title">{t('home.todayOutfit')}</h2>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">{outfits.length} {isEn ? 'Plans' : '套方案'}</span>
+            </div>
+            <div className="flex gap-2">
+              {outfits.map((o,i)=>(
+                <button key={o.id} onClick={()=>setActiveOutfitIndex(i)} className={`flex-1 py-2.5 px-4 rounded-2xl text-xs font-medium transition-all ${activeOutfitIndex===i?'bg-primary text-primary-foreground shadow-md':'bg-surface-container text-muted-foreground hover:bg-surface-container-high'}`}>
+                  {isEn ? `Plan ${i+1}` : `方案 ${i+1}`}
+                </button>
+              ))}
+            </div>
             {outfits.map((o,i)=><div key={o.id} className={`transition-all duration-300 ${i===activeOutfitIndex?'block':'hidden'}`}><OutfitCard outfit={o} isActive={true} isEn={isEn}/></div>)}
-            <div className="flex gap-3 pb-4"><Button variant="outline" className="flex-1 rounded-2xl gap-2 h-12 border-outline/30 hover:bg-surface-container" onClick={handleGenerate}>🔄 Regenerate</Button><Button className="flex-1 rounded-2xl gap-2 h-12 bg-primary hover:bg-primary/90">📤 Share</Button></div>
+            <div className="flex gap-3 pb-4">
+              <Button variant="outline" className="flex-1 rounded-2xl gap-2 h-12 hover:bg-surface-container" onClick={handleGenerate}>🔄 {isEn ? 'Regenerate' : '重新生成'}</Button>
+              <Button className="flex-1 rounded-2xl gap-2 h-12 bg-primary hover:bg-primary/90">📤 {isEn ? 'Share' : '分享'}</Button>
+            </div>
           </div>
         )}
       </div>
 
       {showEmptyWardrobeTip&&(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6" onClick={()=>setShowEmptyWardrobeTip(false)}>
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"/><div className="relative w-full max-w-sm bg-background rounded-3xl p-6 shadow-2xl animate-slide-up" onClick={(e)=>e.stopPropagation()}>
-            <div className="flex flex-col items-center text-center"><span className="text-5xl mb-4">👗</span><h3 className="text-xl font-serif font-light editorial-title mb-2">{t('home.emptyWardrobe.title')}</h3><p className="text-sm text-muted-foreground mb-6">{t('home.emptyWardrobe.message')}</p>
-              <div className="flex gap-3 w-full"><button onClick={()=>setShowEmptyWardrobeTip(false)} className="flex-1 py-3 rounded-2xl bg-surface-container text-foreground font-medium hover:bg-surface-container-high transition-colors">{t('common.cancel')}</button><button onClick={()=>{setShowEmptyWardrobeTip(false);window.location.href='/wardrobe'}} className="flex-1 py-3 rounded-2xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors">{t('home.emptyWardrobe.action')}</button></div></div>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"/>
+          <div className="relative w-full max-w-sm bg-background rounded-3xl p-6 shadow-2xl animate-slide-up" onClick={(e)=>e.stopPropagation()}>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-5xl mb-4">👗</span>
+              <h3 className="text-xl font-serif font-light editorial-title mb-2">{t('home.emptyWardrobe.title')}</h3>
+              <p className="text-sm text-muted-foreground mb-6">{t('home.emptyWardrobe.message')}</p>
+              <div className="flex gap-3 w-full">
+                <button onClick={()=>setShowEmptyWardrobeTip(false)} className="flex-1 py-3 rounded-2xl bg-surface-container text-foreground font-medium hover:bg-surface-container-high transition-colors">{t('common.cancel')}</button>
+                <button onClick={()=>{setShowEmptyWardrobeTip(false);window.location.href='/wardrobe'}} className="flex-1 py-3 rounded-2xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors">{t('home.emptyWardrobe.action')}</button>
+              </div>
+            </div>
           </div>
         </div>
       )}
-
-      {/* Payment Modal would go here if needed */}
     </div>
   )
 }
