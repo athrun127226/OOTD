@@ -2,10 +2,10 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore, useOOTDStore, useWardrobeStore } from '@/store'
 import { fetchWeather, fetchFortune, generateOOTD } from '@/services/mockApi'
-import type { Lang, FortuneData, WeatherData } from '@/services/mockApi'
+import type { Lang } from '@/services/mockApi'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/Toast'
-import type { OOTDOutfit, ZodiacSign, ClothingItem } from '@/types'
+import type { OOTDOutfit, ZodiacSign } from '@/types'
 
 const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
   '白羊座': { zh: '白羊座', en: 'Aries' }, '金牛座': { zh: '金牛座', en: 'Taurus' },
@@ -87,18 +87,18 @@ const ZODIAC_FORTUNES_EN: Record<ZodiacSign, {
   health: string
   tip: string
 }> = {
-  'Aries':     { overall: '★★★★☆', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'High energy today — bold styles and red accents will amplify your power.' },
-  'Taurus':    { overall: '★★★☆☆', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Choose comfort and earthy tones for grounded confidence. Quality fabrics matter most.' },
-  'Gemini':    { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Social energy peaks! Bright colors and layered looks make you the center of attention.' },
-  'Cancer':    { overall: '★★★☆☆', love: '★★★★☆', career: '★★★☆☆', health: '★★★★★', tip: 'Emotional sensitivity calls for soft textures and gentle pastels that nurture your spirit.' },
-  'Leo':       { overall: '★★★★★', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Your spotlight day! Gold or warm accents boost your aura — wear confidence proudly.' },
-  'Virgo':     { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Details matter. Clean lines and minimal palettes bring order and good fortune.' },
-  'Libra':     { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Harmony & beauty rule today. Pink-purple tones and elegant curves enhance your charm.' },
-  'Scorpio':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Mystery is your weapon. Deep purples or black tones amplify your presence for key moments.' },
-  'Sagittarius':{ overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★★', tip: 'Freedom calls! Blue tones and relaxed silhouettes fuel your adventurous spirit.' },
-  'Capricorn': { overall: '★★★☆☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Steady progress. Dark neutrals and sharp tailoring project professionalism and authority.' },
-  'Aquarius':  { overall: '★★★★☆', love: '★★★★☆', career: '★★★★★', health: '★★★☆☆', tip: 'Creative breakthrough! Electric blue or futuristic metallic elements set you apart.' },
-  'Pisces':    { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Intuition flows strong. Ocean blues, gradients, and dreamy textures align with your inner energy.' },
+  '白羊座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'High energy today — bold styles and red accents will amplify your power.' },
+  '金牛座':   { overall: '★★★☆☆', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Choose comfort and earthy tones for grounded confidence. Quality fabrics matter most.' },
+  '双子座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Social energy peaks! Bright colors and layered looks make you the center of attention.' },
+  '巨蟹座':   { overall: '★★★☆☆', love: '★★★★☆', career: '★★★☆☆', health: '★★★★★', tip: 'Emotional sensitivity calls for soft textures and gentle pastels that nurture your spirit.' },
+  '狮子座':   { overall: '★★★★★', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Your spotlight day! Gold or warm accents boost your aura — wear confidence proudly.' },
+  '处女座':   { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Details matter. Clean lines and minimal palettes bring order and good fortune.' },
+  '天秤座':   { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Harmony & beauty rule today. Pink-purple tones and elegant curves enhance your charm.' },
+  '天蝎座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Mystery is your weapon. Deep purples or black tones amplify your presence for key moments.' },
+  '射手座':   { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★★', tip: 'Freedom calls! Blue tones and relaxed silhouettes fuel your adventurous spirit.' },
+  '摩羯座':   { overall: '★★★☆☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Steady progress. Dark neutrals and sharp tailoring project professionalism and authority.' },
+  '水瓶座':   { overall: '★★★★☆', love: '★★★★☆', career: '★★★★★', health: '★★★☆☆', tip: 'Creative breakthrough! Electric blue or futuristic metallic elements set you apart.' },
+  '双鱼座':   { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Intuition flows strong. Ocean blues, gradients, and dreamy textures align with your inner energy.' },
 }
 
 const weatherIcons: Record<string, string> = { sunny: '☀️', cloudy: '⛅', rainy: '🌧️', overcast: '☁️', windy: '🌬️' }
@@ -184,8 +184,8 @@ export default function HomePage() {
   const luckyColorInfo = ZODIAC_LUCKY_COLORS[userZodiac]
   // 获取运势信息
   const fortuneInfo = isEn 
-    ? ZODIAC_FORTUNES_EN[userZodiac as keyof typeof ZODIAC_FORTUNES_EN] || ZODIAC_FORTUNES_EN['Libra']
-    : ZODIAC_FORTUNES_ZH[userZodiac] || ZODIAC_FORTUNES_ZH['天秤座']
+    ? ZODIAC_FORTUNES_EN[userZodiac]
+    : ZODIAC_FORTUNES_ZH[userZodiac]
 
   useEffect(() => {
     if (!user) return
@@ -236,7 +236,6 @@ export default function HomePage() {
   const colorMatches = getColorMatches(luckyColorInfo.hex, isEn)
 
   // 从衣橱中筛选幸运色单品（基于颜色名近似匹配）
-  const luckyColorName = isEn ? luckyColorInfo.nameEn : luckyColorInfo.nameZh
   const luckyWardrobeItems = wardrobeItems.filter(item => {
     // 简单的颜色关键词匹配
     const colorLower = item.color.toLowerCase()
