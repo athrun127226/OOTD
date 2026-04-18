@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore, useOOTDStore, useWardrobeStore } from '@/store'
 import { fetchWeather, fetchFortune, generateOOTD } from '@/services/mockApi'
-import type { Lang } from '@/services/mockApi'
+import type { Lang, FortuneData, WeatherData } from '@/services/mockApi'
 import { Button } from '@/components/ui/button'
-import type { OOTDOutfit, ZodiacSign } from '@/types'
+import { useToast } from '@/components/ui/Toast'
+import type { OOTDOutfit, ZodiacSign, ClothingItem } from '@/types'
 
 const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
   '白羊座': { zh: '白羊座', en: 'Aries' }, '金牛座': { zh: '金牛座', en: 'Taurus' },
@@ -15,27 +16,90 @@ const zodiacTranslations: Record<ZodiacSign, { zh: string; en: string }> = {
   '水瓶座': { zh: '水瓶座', en: 'Aquarius' }, '双鱼座': { zh: '双鱼座', en: 'Pisces' },
 }
 
-const colorTranslations: Record<string, { zh: string; en: string }> = {
-  '玫瑰粉': { zh: '玫瑰粉', en: 'Rose Pink' }, '天空蓝': { zh: '天空蓝', en: 'Sky Blue' },
-  '薄荷绿': { zh: '薄荷绿', en: 'Mint Green' }, '奶油白': { zh: '奶油白', en: 'Cream White' },
-  '珊瑚橙': { zh: '珊瑚橙', en: 'Coral Orange' }, '紫罗兰': { zh: '紫罗兰', en: 'Violet' },
-  '金色': { zh: '金色', en: 'Gold' }, '米白': { zh: '米白', en: 'Beige' },
+const ZODIAC_SYMBOLS: Record<ZodiacSign, string> = {
+  '白羊座': '♈', '金牛座': '♉', '双子座': '♊', '巨蟹座': '♋',
+  '狮子座': '♌', '处女座': '♍', '天秤座': '♎', '天蝎座': '♏',
+  '射手座': '♐', '摩羯座': '♑', '水瓶座': '♒', '双鱼座': '♓',
 }
 
-// Chromatic color match data
-const COLOR_MATCHES_ZH = [
-  { name: '丝巾', percent: 98, hex: '#E9C349' },
-  { name: '亚麻长裤', percent: 82, hex: '#C5A02E' },
-  { name: '羊毛大衣', percent: 75, hex: '#735C00' },
-  { name: '棉质T恤', percent: null, hex: '#FED65B', recommended: true },
-]
+// 幸运色统一映射：每个星座对应一个固定的幸运色（名称 + hex色值）
+const ZODIAC_LUCKY_COLORS: Record<ZodiacSign, { nameZh: string; nameEn: string; hex: string }> = {
+  '白羊座':   { nameZh: '热情红',   nameEn: 'Fiery Red',    hex: '#E53935' },
+  '金牛座':   { nameZh: '翡翠绿',   nameEn: 'Emerald Green', hex: '#43A047' },
+  '双子座':   { nameZh: '明黄色',   nameEn: 'Bright Yellow', hex: '#FDD835' },
+  '巨蟹座':   { nameZh: '银白色',   nameEn: 'Silver White',  hex: '#CFD8DC' },
+  '狮子座':   { nameZh: '辉煌金',   nameEn: 'Radiant Gold',  hex: '#FFB300' },
+  '处女座':   { nameZh: '大地棕',   nameEn: 'Earth Brown',   hex: '#8D6E63' },
+  '天秤座':   { nameZh: '玫瑰粉',   nameEn: 'Rose Pink',     hex: '#EC407A' },
+  '天蝎座':   { nameZh: '深邃紫',   nameEn: 'Deep Purple',   hex: '#7B1FA2' },
+  '射手座':   { nameZh: '天空蓝',   nameEn: 'Sky Blue',      hex: '#1E88E5' },
+  '摩羯座':   { nameZh: '墨黑色',   nameEn: 'Jet Black',      hex: '#37474F' },
+  '水瓶座':   { nameZh: '电光蓝',   nameEn: 'Electric Blue',  hex: '#00ACC1' },
+  '双鱼座':   { nameZh: '海蓝色',   nameEn: 'Sea Blue',       hex: '#26C6DA' },
+}
 
-const COLOR_MATCHES_EN = [
-  { name: 'Silk Scarf', percent: 98, hex: '#E9C349' },
-  { name: 'Linen Trousers', percent: 82, hex: '#C5A02E' },
-  { name: 'Wool Coat', percent: 75, hex: '#735C00' },
-  { name: 'Cotton Tee', percent: null, hex: '#FED65B', recommended: true },
-]
+// 色彩对齐匹配数据 - 根据幸运色动态生成
+function getColorMatches(luckyColorHex: string, isEn: boolean) {
+  // 基于幸运色的同色系匹配项
+  return [
+    { name: isEn ? 'Silk Scarf' : '丝巾', percent: 98, hex: luckyColorHex },
+    { name: isEn ? 'Linen Trousers' : '亚麻长裤', percent: 82, hex: adjustBrightness(luckyColorHex, -30) },
+    { name: isEn ? 'Wool Coat' : '羊毛大衣', percent: 75, hex: adjustBrightness(luckyColorHex, -60) },
+    { name: isEn ? 'Cotton Tee' : '棉质T恤', percent: null, hex: adjustBrightness(luckyColorHex, 40), recommended: true },
+  ]
+}
+
+// 简单的亮度调整工具
+function adjustBrightness(hex: string, amount: number): string {
+  const num = parseInt(hex.replace('#', ''), 16)
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount))
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount))
+  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount))
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+}
+
+// 星座运势数据（中英文）
+const ZODIAC_FORTUNES_ZH: Record<ZodiacSign, {
+  overall: string
+  love: string
+  career: string
+  health: string
+  tip: string
+}> = {
+  '白羊座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: '今日行动力旺盛，适合尝试大胆的穿搭风格。红色系单品能为你注入更多能量。' },
+  '金牛座':   { overall: '★★★☆☆', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: '今天宜选择舒适质感的面料，大地色调会让你感到踏实安心，有助于做出明智决定。' },
+  '双子座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: '社交能量高涨的一天！明亮配色和层次感搭配能让你成为人群焦点。' },
+  '巨蟹座':   { overall: '★★★☆☆', love: '★★★★☆', career: '★★★☆☆', health: '★★★★★', tip: '情绪敏感期，柔软的面料和柔和的浅色调能给你带来安全感与舒适感。' },
+  '狮子座':   { overall: '★★★★★', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: '今天是你的高光时刻！金色或暖色调配饰能为你的气场加分，自信穿搭出街。' },
+  '处女座':   { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: '注重细节的一天，整洁利落的剪裁和简约配色会带来好运。避免过于繁复的设计。' },
+  '天秤座':   { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: '和谐美感是你今天的主题。粉紫色调和优雅曲线设计能提升你的人缘运势。' },
+  '天蝎座':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: '神秘感是你的魅力武器。深紫色或黑色系单品能增强你的气场，适合重要场合。' },
+  '射手座':   { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★★', tip: '自由奔放的好日子！蓝色系和宽松廓形让你活力满满，适合户外活动或旅行穿搭。' },
+  '摩羯座':   { overall: '★★★☆☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: '稳扎稳打的日子，深色正装或极简风格能展现你的专业度，事业运势强劲。' },
+  '水瓶座':   { overall: '★★★★☆', love: '★★★★☆', career: '★★★★★', health: '★★★☆☆', tip: '创意灵感迸发！电光蓝或未来感的金属色元素能让你的穿搭脱颖而出，引人注目。' },
+  '双鱼座':   { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: '直觉敏锐的一天。海蓝色、渐变色或梦幻面料能与你的内在能量产生共鸣。' },
+}
+
+const ZODIAC_FORTUNES_EN: Record<ZodiacSign, {
+  overall: string
+  love: string
+  career: string
+  health: string
+  tip: string
+}> = {
+  'Aries':     { overall: '★★★★☆', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'High energy today — bold styles and red accents will amplify your power.' },
+  'Taurus':    { overall: '★★★☆☆', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Choose comfort and earthy tones for grounded confidence. Quality fabrics matter most.' },
+  'Gemini':    { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Social energy peaks! Bright colors and layered looks make you the center of attention.' },
+  'Cancer':    { overall: '★★★☆☆', love: '★★★★☆', career: '★★★☆☆', health: '★★★★★', tip: 'Emotional sensitivity calls for soft textures and gentle pastels that nurture your spirit.' },
+  'Leo':       { overall: '★★★★★', love: '★★★★☆', career: '★★★★★', health: '★★★★☆', tip: 'Your spotlight day! Gold or warm accents boost your aura — wear confidence proudly.' },
+  'Virgo':     { overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Details matter. Clean lines and minimal palettes bring order and good fortune.' },
+  'Libra':     { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Harmony & beauty rule today. Pink-purple tones and elegant curves enhance your charm.' },
+  'Scorpio':   { overall: '★★★★☆', love: '★★★★★', career: '★★★★☆', health: '★★★☆☆', tip: 'Mystery is your weapon. Deep purples or black tones amplify your presence for key moments.' },
+  'Sagittarius':{ overall: '★★★★☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★★', tip: 'Freedom calls! Blue tones and relaxed silhouettes fuel your adventurous spirit.' },
+  'Capricorn': { overall: '★★★☆☆', love: '★★★☆☆', career: '★★★★★', health: '★★★★☆', tip: 'Steady progress. Dark neutrals and sharp tailoring project professionalism and authority.' },
+  'Aquarius':  { overall: '★★★★☆', love: '★★★★☆', career: '★★★★★', health: '★★★☆☆', tip: 'Creative breakthrough! Electric blue or futuristic metallic elements set you apart.' },
+  'Pisces':    { overall: '★★★★★', love: '★★★★★', career: '★★★☆☆', health: '★★★★☆', tip: 'Intuition flows strong. Ocean blues, gradients, and dreamy textures align with your inner energy.' },
+}
 
 const weatherIcons: Record<string, string> = { sunny: '☀️', cloudy: '⛅', rainy: '🌧️', overcast: '☁️', windy: '🌬️' }
 
@@ -103,9 +167,25 @@ export default function HomePage() {
   const user = useAuthStore((s) => s.user)
   const { weather, fortune, outfits, status, error, activeOutfitIndex, setWeather, setFortune, setOutfits, setStatus, setError, setActiveOutfitIndex } = useOOTDStore()
   const { items: wardrobeItems } = useWardrobeStore()
+  const { showToast } = useToast()
   const [initialLoading, setInitialLoading] = useState(true)
   const [showEmptyWardrobeTip, setShowEmptyWardrobeTip] = useState(false)
+  
+  // 引入灵感 - 拖拽/上传状态
+  const [museImage, setMuseImage] = useState<string | null>(null)
+  const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const isEn = i18n.language === 'en'
+  
+  // 获取用户当前星座
+  const userZodiac: ZodiacSign = user?.zodiac || '天秤座'
+  // 获取统一的幸运色信息
+  const luckyColorInfo = ZODIAC_LUCKY_COLORS[userZodiac]
+  // 获取运势信息
+  const fortuneInfo = isEn 
+    ? ZODIAC_FORTUNES_EN[userZodiac as keyof typeof ZODIAC_FORTUNES_EN] || ZODIAC_FORTUNES_EN['Libra']
+    : ZODIAC_FORTUNES_ZH[userZodiac] || ZODIAC_FORTUNES_ZH['天秤座']
 
   useEffect(() => {
     if (!user) return
@@ -117,6 +197,32 @@ export default function HomePage() {
     })()
   },[user,setWeather,setFortune,isEn])
 
+  // 处理图片上传/拖拽
+  const handleImageUpload = useCallback((file: File) => {
+    if (!file.type.startsWith('image/')) {
+      showToast(isEn ? 'Please upload an image file' : '请上传图片文件')
+      return
+    }
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setMuseImage(reader.result as string)
+      showToast(isEn ? 'Muse image uploaded! AI will generate around this piece' : '灵感图片已上传！AI将围绕此单品生成穿搭方案')
+    }
+    reader.readAsDataURL(file)
+  }, [isEn, showToast])
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    const file = e.dataTransfer.files[0]
+    if (file) handleImageUpload(file)
+  }, [handleImageUpload])
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) handleImageUpload(file)
+  }, [handleImageUpload])
+
   const handleGenerate = async () => {
     if (wardrobeItems.length===0){setShowEmptyWardrobeTip(true);return}
     if(status==='loading')return
@@ -126,7 +232,22 @@ export default function HomePage() {
     catch { setError(isEn?'Generation failed':'生成失败'); setStatus('error') }
   }
 
-  const colorMatches = isEn ? COLOR_MATCHES_EN : COLOR_MATCHES_ZH
+  // 根据幸运色生成色彩匹配数据
+  const colorMatches = getColorMatches(luckyColorInfo.hex, isEn)
+
+  // 从衣橱中筛选幸运色单品（基于颜色名近似匹配）
+  const luckyColorName = isEn ? luckyColorInfo.nameEn : luckyColorInfo.nameZh
+  const luckyWardrobeItems = wardrobeItems.filter(item => {
+    // 简单的颜色关键词匹配
+    const colorLower = item.color.toLowerCase()
+    const keywords = getLuckyColorKeywords(luckyColorInfo.hex)
+    return keywords.some(kw => colorLower.includes(kw.toLowerCase()))
+  }).slice(0, 4)
+
+  // 如果没有匹配到，随机推荐几件作为占位
+  const displayLuckyItems = luckyWardrobeItems.length > 0 
+    ? luckyWardrobeItems 
+    : wardrobeItems.slice(0, Math.min(4, wardrobeItems.length))
 
   return (
     <div className="min-h-screen pb-24 md:pb-8 bg-background">
@@ -146,18 +267,73 @@ export default function HomePage() {
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up">
-              <div className="bg-surface-container-low group cursor-pointer relative overflow-hidden rounded-[2rem] p-1 border-2 border-dashed border-outline-variant/50 hover:border-primary/50 transition-all duration-500 min-h-[340px] flex flex-col items-center justify-center text-center">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10 p-8">
-                  <span className="material-symbols-outlined text-5xl text-primary mb-4 block">add_photo_alternate</span>
-                  <h3 className="font-headline text-2xl mb-2 text-primary">
-                    {isEn ? 'Introduce a Muse' : '引入灵感'}
-                  </h3>
-                  <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-                    {isEn ? 'Drag or tap to upload garment' : '拖拽或点击上传单品'}
-                  </p>
-                </div>
+              {/* 引入灵感 - 支持拖拽和点击上传 */}
+              <div
+                className={`bg-surface-container-low group cursor-pointer relative overflow-hidden rounded-[2rem] min-h-[340px] flex flex-col items-center justify-center text-center transition-all duration-300 border-2 ${
+                  isDragOver 
+                    ? 'border-primary bg-primary/5 scale-[1.02]' 
+                    : museImage 
+                      ? 'border-solid border-outline-variant/30 p-2'
+                      : 'border-dashed border-outline-variant/50 hover:border-primary/50'
+                }`}
+                onDragOver={(e) => { e.preventDefault(); setIsDragOver(true) }}
+                onDragLeave={() => setIsDragOver(false)}
+                onDrop={handleDrop}
+                onClick={() => !museImage && fileInputRef.current?.click()}
+              >
+                {museImage ? (
+                  /* 已上传图片预览 */
+                  <div className="relative w-full h-full rounded-[1.75rem] overflow-hidden">
+                    <img src={museImage} alt="Muse" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-4 left-0 right-0 px-6">
+                      <p className="font-headline text-lg text-white mb-1">
+                        {isEn ? 'Inspiration Loaded' : '灵感已加载'}
+                      </p>
+                      <p className="font-label text-xs text-white/80 uppercase tracking-widest">
+                        {isEn ? 'AI will generate around this garment' : 'AI将围绕此单品生成穿搭方案'}
+                      </p>
+                    </div>
+                    {/* 替换按钮 */}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setMuseImage(null) }}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-colors"
+                      title={isEn ? 'Replace image' : '更换图片'}
+                    >
+                      <svg className="w-4 h-4 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  /* 上传提示区 */
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[2rem]" />
+                    <div className="relative z-10 p-8">
+                      <span className={`material-symbols-outlined text-5xl mb-4 block transition-colors ${isDragOver ? 'text-primary' : 'text-primary'}`}>
+                        add_photo_alternate
+                      </span>
+                      <h3 className="font-headline text-2xl mb-2 text-primary">
+                        {isEn ? 'Introduce a Muse' : '引入灵感'}
+                      </h3>
+                      <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
+                        {isDragOver
+                          ? (isEn ? 'Release to upload' : '松手上传')
+                          : (isEn ? 'Drag or tap to upload garment' : '拖拽或点击上传单品')
+                        }
+                      </p>
+                    </div>
+                  </>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </div>
+
               <div className="bg-surface-container-highest rounded-[2rem] p-8 flex flex-col justify-between items-start min-h-[340px] relative overflow-hidden group">
                 <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"/>
                 <div>
@@ -177,7 +353,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Chromatic Alignment Section */}
+            {/* Chromatic Alignment Section - 统一使用星座幸运色 */}
             <section className="bg-surface-container rounded-[2.5rem] p-8 lg:p-12 overflow-hidden relative animate-slide-up">
               <div className="absolute top-0 right-0 p-8"><span className="material-symbols-outlined text-secondary opacity-30 text-8xl" style={{fontWeight:100}}>star_half</span></div>
               <div className="relative z-10">
@@ -185,22 +361,37 @@ export default function HomePage() {
                   {isEn ? 'Chromatic Alignment' : '色彩对齐'}
                 </h2>
                 <div className="flex flex-col md:flex-row items-center gap-10">
+                  {/* 左侧：幸运色大圆 - 使用统一的星座幸运色 */}
                   <div className="w-full md:w-1/3">
-                    <div className="aspect-square rounded-full bg-secondary-container flex items-center justify-center editorial-shadow p-2 mx-auto max-w-[240px]">
-                      <div className="w-full h-full rounded-full border-4 border-white/20 flex flex-col items-center justify-center text-center">
-                        <span className="font-label text-[10px] uppercase tracking-[0.3em] text-on-secondary-fixed-variant mb-2">
+                    <div className="aspect-square rounded-full flex items-center justify-center editorial-shadow p-2 mx-auto max-w-[240px]" style={{ backgroundColor: luckyColorInfo.hex + '30' }}>
+                      <div className="w-full h-full rounded-full flex flex-col items-center justify-center text-center" style={{ backgroundColor: luckyColorInfo.hex }}>
+                        <span className="font-label text-[10px] uppercase tracking-[0.3em] mb-2" style={{ color: '#fff', opacity: 0.85 }}>
                           {isEn ? 'Lucky Transit' : '幸运过境'}
                         </span>
-                        <span className="font-headline text-4xl text-on-secondary-fixed">
-                          {isEn ? 'Zodiac Gold' : '星座金'}
+                        <span className="font-headline text-4xl text-white">
+                          {isEn ? luckyColorInfo.nameEn : luckyColorInfo.nameZh}
                         </span>
                       </div>
                     </div>
                   </div>
+                  {/* 右侧：匹配衣物卡片（展示用户衣橱中的幸运色单品） */}
                   <div className="w-full md:w-2/3 grid grid-cols-2 gap-4">
-                    {colorMatches.map((m,i)=>(
+                    {displayLuckyItems.length > 0 ? displayLuckyItems.map((item, i) => (
+                      <div key={item.id} className="bg-surface p-4 rounded-2xl flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-low">
+                          <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant truncate">{item.name}</div>
+                          <div className="font-body text-sm font-bold truncate">
+                            {item.color}
+                            {i === 0 && <span className="ml-2 text-[10px] font-label text-primary">{isEn ? 'Best Match' : '最佳匹配'}</span>}
+                          </div>
+                        </div>
+                      </div>
+                    )) : colorMatches.map((m, i) => (
                       <div key={i} className="bg-surface p-4 rounded-2xl flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg" style={{backgroundColor:m.hex}}/>
+                        <div className="w-12 h-12 rounded-lg flex-shrink-0" style={{backgroundColor:m.hex}}/>
                         <div>
                           <div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{m.name}</div>
                           <div className="font-body text-sm font-bold">
@@ -225,26 +416,37 @@ export default function HomePage() {
                 </h3>
               </div>
               
-              {/* Fabric Detection */}
+              {/* 今日星座运势 - 替代原来的面料检测 */}
               <div className="mb-10">
                 <div className="flex justify-between items-end mb-4">
-                  <h4 className="font-headline text-xl">{isEn ? 'Fabric Detection' : '面料检测'}</h4>
-                  <span className="material-symbols-outlined text-on-surface-variant">texture</span>
+                  <h4 className="font-headline text-xl">{isEn ? 'Daily Horoscope' : '今日星象'}</h4>
+                  <span className="text-xl">{ZODIAC_SYMBOLS[userZodiac]}</span>
                 </div>
-                {[
-                  { n: isEn ? 'Organic Cotton' : '有机棉', p: 45 },
-                  { n: isEn ? 'Raw Silk' : '生丝', p: 32 },
-                  { n: isEn ? 'Recycled Wool' : '再生羊毛', p: 23 },
-                ].map((f) => (
-                  <div key={f.n} className="mb-4 last:mb-0">
-                    <div className="flex justify-between text-xs font-label uppercase tracking-widest mb-2 text-on-surface-variant">
-                      <span>{f.n}</span><span>{f.p}%</span>
-                    </div>
-                    <div className="h-1 bg-surface-variant rounded-full overflow-hidden">
-                      <div className="h-full bg-primary" style={{width:`${f.p}%`}}/>
-                    </div>
+                
+                {/* 运势评分 */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-label text-on-surface-variant">{isEn ? 'Overall' : '整体运势'}</span>
+                    <span className="text-xs font-medium text-on-surface">{fortuneInfo.overall}</span>
                   </div>
-                ))}
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-label text-on-surface-variant">{isEn ? 'Love 💕' : '爱情 💕'}</span>
+                    <span className="text-xs font-medium text-pink-500">{fortuneInfo.love}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-label text-on-surface-variant">{isEn ? 'Career 💼' : '事业 💼'}</span>
+                    <span className="text-xs font-medium text-blue-500">{fortuneInfo.career}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-label text-on-surface-variant">{isEn ? 'Health 🌿' : '健康 🌿'}</span>
+                    <span className="text-xs font-medium text-green-500">{fortuneInfo.health}</span>
+                  </div>
+                </div>
+
+                {/* 今日建议 */}
+                <div className="mt-4 p-4 rounded-2xl bg-surface italic text-sm text-on-surface-variant leading-relaxed">
+                  "{fortuneInfo.tip}"
+                </div>
               </div>
 
               {/* Style DNA */}
@@ -268,6 +470,7 @@ export default function HomePage() {
                   {isEn 
                     ? '"Your current wardrobe trajectory suggests a \'Lunar Transition\' phase. We recommend prioritizing high-contrast textures over saturated colors."'
                     : '"你当前的衣橱轨迹显示正处于\'月相过渡\'阶段。我们建议优先选择高对比度质感而非饱和色彩。"'}
+
                 </div>
               </div>
             </div>
@@ -292,20 +495,34 @@ export default function HomePage() {
                     <p className="text-xs text-on-surface-variant">{weather.temperature.min}° ~ {weather.temperature.max}°</p>
                   </div>
                 )}
+                
+                {/* 星座卡片 - 统一幸运色信息 */}
                 {fortune && (
                   <div className="bg-tertiary-container text-on-tertiary-container rounded-[2rem] p-8 relative overflow-hidden group">
                     <img alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-1000" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400"/>
                     <div className="relative z-10">
                       <span className="material-symbols-outlined text-tertiary-fixed mb-4">auto_awesome</span>
                       <h4 className="font-serif text-2xl mb-2">{isEn&&zodiacTranslations[fortune.zodiac as ZodiacSign]?zodiacTranslations[fortune.zodiac as ZodiacSign].en:fortune.zodiac}</h4>
+                      
+                      {/* 统一的幸运色显示 - 色块和文字一致 */}
                       <div className="flex items-center gap-2 mb-3">
-                        <div className="w-8 h-8 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0" style={{backgroundColor:'#EC4899'}}/>
-                        <p className="text-sm font-bold">{isEn&&colorTranslations[fortune.luckyColor]?colorTranslations[fortune.luckyColor].en:fortune.luckyColor}</p>
+                        <div className="w-8 h-8 rounded-full border-2 border-white/30 shadow-sm flex-shrink-0" style={{backgroundColor: luckyColorInfo.hex}}/>
+                        <p className="text-sm font-bold">
+                          {isEn ? luckyColorInfo.nameEn : luckyColorInfo.nameZh}
+                        </p>
                       </div>
-                      <p className="text-sm opacity-90 leading-relaxed">{fortune.todayTip}</p>
+                      
+                      <p className="text-sm opacity-90 leading-relaxed">
+                        {isEn 
+                          ? `Today's lucky color is ${luckyColorInfo.nameEn}. Wearing ${luckyColorInfo.nameEn.toLowerCase()} items can enhance your fortune ✨`
+                          : `今日幸运色为${luckyColorInfo.nameZh}，穿着${luckyColorInfo.nameZh}单品可提升运势 ✨`
+                        }
+                      </p>
                     </div>
                   </div>
                 )}
+
+                {/* 宇宙指引 - 保留 */}
                 <div className="bg-tertiary-container text-on-tertiary-container rounded-[2rem] p-8 relative overflow-hidden group">
                   <img alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-110 transition-transform duration-1000" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400"/>
                   <div className="relative z-10">
@@ -365,4 +582,24 @@ export default function HomePage() {
       )}
     </div>
   )
+}
+
+// 辅助函数：根据hex颜色获取匹配的关键词
+function getLuckyColorKeywords(hex: string): string[] {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  
+  // 简单的颜色分类
+  if (r > 200 && g < 100 && b < 100) return ['红', 'red']
+  if (r > 180 && g > 120 && b < 100) return ['黄', '金', '橙', 'yellow', 'gold', 'orange']
+  if (g > 150 && r < 100 && b < 150) return ['绿', 'green']
+  if (b > 150 && r < 150 && g < 150) return ['蓝', 'blue']
+  if (r > 140 && g < 100 && b > 140) return ['紫', 'purple']
+  if (r > 180 && g > 170 && b > 170) return ['白', '白', 'white', '银']
+  if (r < 80 && g < 80 && b < 80) return ['黑', '黑', 'black', '深']
+  if (r > 220 && g < 130 && b > 160) return ['粉', 'pink', '玫']
+  if (Math.abs(r-g) < 30 && Math.abs(g-b) < 30 && r < 150) return ['灰', '灰', 'gray', '棕', 'brown']
+  
+  return []
 }

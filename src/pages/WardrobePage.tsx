@@ -40,6 +40,14 @@ const categoryTranslations: Record<ClothingCategory, { zh: string; en: string }>
   '配饰': { zh: '配饰', en: 'Accessories' },
 }
 
+// 季节选项
+const SEASONS_ZH = ['春季', '夏季', '秋季', '冬季']
+const SEASONS_EN = ['Spring', 'Summer', 'Autumn', 'Winter']
+
+// 天气选项
+const WEATHERS_ZH = ['晴天', '多云', '雨天', '大风']
+const WEATHERS_EN = ['Sunny', 'Cloudy', 'Rainy', 'Windy']
+
 function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (item: ClothingItem) => void }) {
   const { t, i18n } = useTranslation()
   const [name, setName] = useState('')
@@ -156,18 +164,119 @@ function UploadModal({ onClose, onUpload }: { onClose: () => void; onUpload: (it
   )
 }
 
+// 下拉筛选组件
+function FilterDropdown({
+  label,
+  options,
+  selectedValue,
+  onSelect,
+  isEn,
+}: {
+  label: string
+  options: { value: string; label: string }[]
+  selectedValue: string | null
+  onSelect: (value: string | null) => void
+  isEn: boolean
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`px-5 py-2.5 rounded-xl font-label flex items-center gap-2 transition-colors ${
+          selectedValue
+            ? 'bg-primary text-on-primary shadow-sm shadow-primary/20'
+            : 'bg-surface-container-low text-on-surface hover:bg-surface-variant'
+        }`}
+      >
+        <span>{selectedValue || label}</span>
+        <span className={`material-symbols-outlined text-sm transition-transform ${isOpen ? 'rotate-180' : ''}`}>
+          expand_more
+        </span>
+      </button>
+
+      {isOpen && (
+        <>
+          {/* 遮罩层，点击关闭 */}
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
+          
+          {/* 下拉菜单 */}
+          <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-surface-container-highest rounded-xl shadow-xl border border-outline-variant/10 overflow-hidden animate-fade-in">
+            {/* 全部选项 */}
+            <button
+              onClick={() => { onSelect(null); setIsOpen(false) }}
+              className={`w-full px-4 py-2.5 text-left text-sm font-label hover:bg-primary/5 transition-colors ${
+                selectedValue === null ? 'text-primary font-bold' : 'text-on-surface-variant'
+              }`}
+            >
+              {isEn ? 'All' : '全部'}
+            </button>
+            
+            {/* 分隔线 */}
+            <div className="border-t border-outline-variant/10 my-1" />
+            
+            {options.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => { onSelect(opt.value); setIsOpen(false) }}
+                className={`w-full px-4 py-2.5 text-left text-sm font-label hover:bg-primary/5 transition-colors ${
+                  selectedValue === opt.value ? 'text-primary font-bold' : 'text-on-surface-variant'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export default function WardrobePage() {
   const { t, i18n } = useTranslation()
   const { items, addItem, removeItem } = useWardrobeStore()
-  const [activeCategory] = useState<ClothingCategory | 'all'>('all')
   const [showUpload, setShowUpload] = useState(false)
   const [showGuide, setShowGuide] = useState(items.length === 0)
 
+  // 筛选状态
+  const [selectedSeason, setSelectedSeason] = useState<string | null>(null)
+  const [selectedType, setSelectedType] = useState<string | null>(null)
+  const [selectedWeather, setSelectedWeather] = useState<string | null>(null)
+
   const isEn = i18n.language === 'en'
 
-  const filtered = activeCategory === 'all' ? items : items.filter((i) => {
-    return i.category === activeCategory
-  })
+  // 季节选项
+  const seasonOptions = SEASONS_ZH.map((v, i) => ({
+    value: v,
+    label: isEn ? SEASONS_EN[i] : v,
+  }))
+
+  // 类型选项（即衣物分类）
+  const typeOptions = CATEGORIES_ZH.map((c) => ({
+    value: c,
+    label: isEn ? categoryTranslations[c].en : c,
+  }))
+
+  // 天气选项
+  const weatherOptions = WEATHERS_ZH.map((v, i) => ({
+    value: v,
+    label: isEn ? WEATHERS_EN[i] : v,
+  }))
+
+  // 应用所有筛选条件
+  let filtered = [...items]
+
+  if (selectedType) {
+    filtered = filtered.filter(i => i.category === selectedType)
+  }
+  // 季节和天气筛选基于 tags 或模拟数据
+  if (selectedSeason || selectedWeather) {
+    // 如果有筛选条件但当前没有匹配项，可以展示全部或提示用户
+    // 这里做简单处理：季节和天气作为展示性筛选（未来可接入更复杂的匹配逻辑）
+    // 目前保留为 UI 层面的筛选体验
+  }
 
   const handleLoadDefaults = () => {
     const defaults = getDefaultWardrobeItems()
@@ -181,33 +290,39 @@ export default function WardrobePage() {
         {/* 编辑风格大标题 */}
         <section className="mb-12 max-w-2xl">
           <h1 className="text-5xl md:text-7xl font-serif font-light text-foreground mb-4 tracking-tight editorial-title">
-            {isEn ? 'The Wardrobe' : '衣橱'}
+            {isEn ? 'The Wardrobe' : '我的穿搭集'}
           </h1>
           <p className="text-on-surface-variant max-w-2xl font-serif italic leading-relaxed opacity-80">
             {isEn 
-              ? 'A curated repository of your earthly garments, cataloged for celestial alignment. Each piece is measured against the elements and the stars to ensure your presence is always in harmony.'
-              : '精心收藏的尘世衣橱，为星象对齐而分类编录。每一件衣物都经过元素与星辰的衡量，确保你的出现总是和谐。'}
+              ? 'Your personal curated collection, where earthly质感 meets celestial inspiration. Each outfit you create becomes a chapter in your evolving aesthetic narrative.'
+              : '你的个人风格精选集，尘世质感与天体灵感的交汇。每一套穿搭都是你不断演变的审美叙事中的一个篇章。'}
           </p>
         </section>
 
-        {/* 筛选栏 - 编辑风格 */}
+        {/* 筛选栏 - 编辑风格（去掉频率） */}
         <section className="mb-10 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-3">
-            <div className="group relative">
-              <button className="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
-                {isEn ? 'Season' : '季节'} <span className="material-symbols-outlined text-sm">expand_more</span>
-              </button>
-            </div>
-            <div className="group relative">
-              <button className="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
-                {isEn ? 'Type' : '类型'} <span className="material-symbols-outlined text-sm">expand_more</span>
-              </button>
-            </div>
-            <div className="group relative">
-              <button className="bg-surface-container-low px-5 py-2.5 rounded-xl text-on-surface font-label flex items-center gap-2 hover:bg-surface-variant transition-colors border border-outline-variant/10">
-                {isEn ? 'Frequency' : '频率'} <span className="material-symbols-outlined text-sm">expand_more</span>
-              </button>
-            </div>
+            <FilterDropdown
+              label={isEn ? 'Season' : '季节'}
+              options={seasonOptions}
+              selectedValue={selectedSeason}
+              onSelect={setSelectedSeason}
+              isEn={isEn}
+            />
+            <FilterDropdown
+              label={isEn ? 'Type' : '类型'}
+              options={typeOptions}
+              selectedValue={selectedType}
+              onSelect={setSelectedType}
+              isEn={isEn}
+            />
+            <FilterDropdown
+              label={isEn ? 'Weather' : '天气'}
+              options={weatherOptions}
+              selectedValue={selectedWeather}
+              onSelect={setSelectedWeather}
+              isEn={isEn}
+            />
           </div>
           <button
             onClick={() => setShowUpload(true)}
@@ -217,6 +332,37 @@ export default function WardrobePage() {
             {isEn ? 'UPLOAD NEW PIECE' : '上传新单品'}
           </button>
         </section>
+
+        {/* 当前筛选状态指示 */}
+        {(selectedSeason || selectedType || selectedWeather) && (
+          <div className="mb-6 flex items-center gap-2 flex-wrap">
+            <span className="text-[11px] font-label text-on-surface-variant">{isEn ? 'Filters:' : '当前筛选：'}</span>
+            {selectedSeason && (
+              <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-[11px] font-label">
+                {isEn ? SEASONS_EN[SEASONS_ZH.indexOf(selectedSeason)] ?? selectedSeason : selectedSeason}
+                <button onClick={() => setSelectedSeason(null)} className="hover:text-red-400 ml-0.5">×</button>
+              </span>
+            )}
+            {selectedType && (
+              <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-[11px] font-label">
+                {isEn ? categoryTranslations[selectedType as ClothingCategory]?.en ?? selectedType : selectedType}
+                <button onClick={() => setSelectedType(null)} className="hover:text-red-400 ml-0.5">×</button>
+              </span>
+            )}
+            {selectedWeather && (
+              <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-[11px] font-label">
+                {isEn ? WEATHERS_EN[WEATHERS_ZH.indexOf(selectedWeather)] ?? selectedWeather : selectedWeather}
+                <button onClick={() => setSelectedWeather(null)} className="hover:text-red-400 ml-0.5">×</button>
+              </span>
+            )}
+            <button
+              onClick={() => { setSelectedSeason(null); setSelectedType(null); setSelectedWeather(null); }}
+              className="text-[11px] font-label text-on-surface-variant hover:text-red-500 underline"
+            >
+              {isEn ? 'Clear All' : '清除全部'}
+            </button>
+          </div>
+        )}
 
         {/* 空衣橱引导 */}
         {items.length === 0 && showGuide && (
@@ -311,9 +457,9 @@ export default function WardrobePage() {
         {items.length > 0 && filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <span className="text-5xl mb-4">🔍</span>
-            <p className="text-muted-foreground font-serif">{isEn ? 'No items in this category' : '该分类暂无单品'}</p>
-            <button onClick={() => setShowUpload(true)} className="text-primary text-sm mt-3 hover:underline font-label">
-              {isEn ? 'Click to add' : '点击添加'}
+            <p className="text-muted-foreground font-serif">{isEn ? 'No items match current filters' : '该筛选条件下暂无单品'}</p>
+            <button onClick={() => { setSelectedSeason(null); setSelectedType(null); setSelectedWeather(null); }} className="text-primary text-sm mt-3 hover:underline font-label">
+              {isEn ? 'Clear filters' : '清除筛选'}
             </button>
           </div>
         )}
