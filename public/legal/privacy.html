@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - OOTD</title>
+  <style>
+    :root {
+      --bg: #fcf9f2; --fg: #2d2a26; --muted: #78716c;
+      --accent: #4d6328; --card: #ffffff; --border: #e7e5e4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      background: var(--bg); color: var(--fg);
+      line-height: 1.7; padding: 2rem 1rem; min-height: 100vh;
+    }
+    .container {
+      max-width: 720px; margin: 0 auto;
+      background: var(--card); border-radius: 1rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06); padding: 3rem 2.5rem;
+    }
+    .header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    .logo {
+      width: 64px; height: 64px; background: linear-gradient(135deg,#4d6328,#657c3e);
+      border-radius: 18px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 0.75rem; font-size: 28px; color: white;
+    }
+    h1 { font-family: Georgia, serif; font-size: 1.65rem; color: var(--fg); letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 0.88rem; margin-top: 0.4rem; }
+    h2 {
+      font-family: Georgia, serif; font-size: 1.1rem; font-weight: 600;
+      color: var(--accent); margin: 1.75rem 0 0.65rem; letter-spacing: -0.01em;
+    }
+    p { color: var(--muted); margin-bottom: 0.6rem; font-size: 0.93rem; }
+    ul { list-style: none; padding-left: 0; }
+    li {
+      position: relative; padding-left: 1.5rem; margin-bottom: 0.45rem;
+      color: var(--muted); font-size: 0.92rem;
+    }
+    li::before { content: "•"; position: absolute; left: 0.25rem; color: var(--accent); font-weight: bold; }
+    .box {
+      background: rgba(77,99,40,0.06); border-radius: 0.75rem;
+      padding: 1.15rem 1.35rem; margin: 1rem 0; border-left: 3px solid var(--accent);
+    }
+    .contact {
+      background: #f5f4f0; border-radius: 0.75rem; padding: 1.15rem 1.35rem; margin-top: 1.75rem;
+    }
+    .contact p { margin-bottom: 0.3rem; font-size: 0.91rem; }
+    a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    a:hover { text-decoration: underline; }
+    .footer {
+      text-align: center; margin-top: 1.75rem; padding-top: 1.25rem;
+      border-top: 1px solid var(--border); font-size: 0.8rem; color: #a8a29e;
+    }
+    @media(max-width:480px) {
+      body{padding:1rem 0.4rem} .container{padding:2rem 1.4rem}
+      h1{font-size:1.35rem}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">✨</div>
+    <h1>Privacy Policy</h1>
+    <p class="sub">OOTD — AI-Powered Outfit Assistant<br>Effective Date: April 23, 2026</p>
+  </div>
+
+  <div class="box">
+    <p><strong>We take your privacy seriously.</strong> This policy explains what data we collect, why we collect it, and how we protect it. By using OOTD, you agree to this policy.</p>
+  </div>
+
+  <h2>1. Information We Collect</h2>
+  <ul>
+    <li><strong>Account Info:</strong> Email address, display name, and profile photo from Sign in with Apple or Google Sign-In.</li>
+    <li><strong>Wardrobe Data:</strong> Photos of clothing items you upload, plus optional tags (season, type, style, color).</li>
+    <li><strong>User Preferences:</strong> Zodiac sign, location (for weather), and style settings you configure.</li>
+    <li><strong>Usage Analytics:</strong> Anonymous analytics about which features you use (via Vercel Analytics). No personally identifiable information.</li>
+    <li><strong>Purchase Records:</strong> Subscription status processed securely through Apple's App Store. We never see your credit card details.</li>
+  </ul>
+
+  <h2>2. How We Use Your Information</h2>
+  <ul>
+    <li>To provide core app features: AI outfit generation, wardrobe management, daily recommendations.</li>
+    <li>To authenticate your account via Apple or Google identity providers.</li>
+    <li>To deliver personalized suggestions based on your zodiac sign and local weather.</li>
+    <li>To verify your Pro membership through Apple's In-App Purchase system.</li>
+    <li>To improve our service through anonymized usage statistics.</li>
+    <li>To comply with legal obligations and protect against fraud or abuse.</li>
+  </ul>
+
+  <h2>3. Data Storage & Security</h2>
+  <ul>
+    <li><strong>Firebase / Google:</strong> Authentication data stored securely by Firebase Auth. Encrypted in transit (TLS) and at rest.</li>
+    <li><strong>Your Device:</strong> Wardrobe photos and preferences are stored locally on your device using browser localStorage/IndexedDB (persisted via Zustand). This data stays on-device unless you choose to sync.</li>
+    <li><strong>Apple:</strong> All subscription & payment info is handled by Apple's servers. We do not store or process any payment card data.</li>
+    <li><strong>No Selling:</strong> We never sell, rent, or share your personal data with third parties for marketing purposes.</li>
+  </ul>
+
+  <h2>4. Data Sharing</h2>
+  <ul>
+    <li><strong>Apple Inc.</strong> — For App Store authentication and In-App Purchase processing only.</li>
+    <li><strong>Google LLC</strong> — For Firebase Authentication when using Google Sign-In.</li>
+    <li><strong>Vercel Inc.</strong> — For anonymized usage analytics. No PII shared.</li>
+    <li><strong>AI Service Provider</strong> — Wardrobe photos may be sent to our AI provider for outfit analysis. Photos are not permanently stored on their servers after processing.</li>
+    <li><strong>Legal Requirement</strong> — If required by law, court order, or governmental authority.</li>
+  </ul>
+
+  <h2>5. Your Rights & Choices</h2>
+  <ul>
+    <li><strong>Delete Account:</strong> Request full account deletion anytime at support@ootd.app. All data removed within 30 days.</li>
+    <li><strong>Export Data:</strong> Contact us to receive a copy of all personal data we hold about you.</li>
+    <li><strong>Opt Out of Analytics:</strong> Disable tracking in device Settings → Privacy → Tracking.</li>
+    <li><strong>Manage Subscriptions:</strong> Cancel or manage via iOS Settings → Apple ID → Subscriptions.</li>
+    <li><strong>Clear Local Data:</strong> Uninstalling the app removes all locally-stored wardrobe data from your device.</li>
+  </ul>
+
+  <h2>6. Children's Privacy</h2>
+  <p>OOTD is not directed to children under 13 years of age. We do not knowingly collect personal information from children under 13. If we learn we have collected such data, we will delete it promptly.</p>
+
+  <h2>7. International Users (GDPR / CCPA)</h2>
+  <p><strong>EEA Users (GDPR):</strong> Lawful bases for processing include: (a) your consent given at signup, (b) performance of contract to provide the service, (c) legitimate interest in improving security and service quality. You have the right to access, rectify, erase, restrict, port, and object to processing. Contact us to exercise these rights.</p>
+  <p><strong>California Residents (CCPA):</strong> You have the right to know what personal information we collect, request deletion, and opt-out of the sale of personal information (note: we do not "sell" personal information under CCPA).</p>
+
+  <h2>8. Data Retention</h2>
+  <p>We retain your personal information only as long as necessary to provide the services described in this policy, or as required by law. Account data may be retained for up to 12 months after account deletion for legal compliance purposes.</p>
+
+  <h2>9. Changes to This Policy</h2>
+  <p>We may update this privacy policy from time to time. Material changes will be notified in-app before they take effect. The "Effective Date" at the top indicates when this version was last updated.</p>
+
+  <div class="contact">
+    <p><strong>Contact Us</strong></p>
+    <p>📧 Email: <a href="mailto:support@ootd.app">support@ootd.app</a></p>
+    <p>🏢 Developer: 元乘象 (YuanChengXiang)</p>
+  </div>
+
+  <div class="footer">Last updated: April 23, 2026</div>
+
+</div>
+</body>
+</html>
